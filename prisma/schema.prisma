@@ -1,0 +1,36 @@
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Message {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String
+  content   String
+  createdAt DateTime @default(now())
+}
+
+model Skill {
+  id    Int    @id @default(autoincrement())
+  name  String
+  level Int    // 1-100
+}
+
+model Publication {
+  id    Int    @id @default(autoincrement())
+  title String
+  link  String
+  year  Int
+}
+
+model Certification {
+  id    Int    @id @default(autoincrement())
+  name  String
+  issuer String
+  year  Int
+}

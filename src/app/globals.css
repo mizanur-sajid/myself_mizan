@@ -1,0 +1,74 @@
+:root {
+  --bg-color: #f0f4f8;
+  --text-color: #1a202c;
+  --primary-color: #3182ce;
+  --accent-color: #805ad5;
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.3);
+  --card-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+}
+
+[data-theme='dark'] {
+  --bg-color: #0b0c10;
+  --text-color: #c5c6c7;
+  --primary-color: #66fcf1;
+  --accent-color: #45a29e;
+  --glass-bg: rgba(11, 12, 16, 0.6);
+  --glass-border: rgba(102, 252, 241, 0.2);
+  --card-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.7);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-family: Arial, Helvetica, sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.glass-panel {
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--card-shadow);
+  border-radius: 16px;
+}
+
+.neon-text {
+  text-shadow: 0 0 5px var(--primary-color), 0 0 20px var(--primary-color);
+}
+
+.gradient-text {
+  background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-weight: bold;
+  background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
+  color: #fff;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px var(--primary-color);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
