@@ -5,7 +5,7 @@ import { ImageCropperModal } from './ImageCropperModal';
 
 export const AdminProfileCard = () => {
   const [avatarUrl, setAvatarUrl] = useState('/admin-avatar.png');
-  const [timestamp, setTimestamp] = useState(Date.now());
+  const [timestamp, setTimestamp] = useState<number | null>(null);
   const [uploading, setUploading] = useState(false);
   const [cropImageSrc, setCropImageSrc] = useState<string | null>(null);
   const [showMenu, setShowMenu] = useState(false);
@@ -90,7 +90,7 @@ export const AdminProfileCard = () => {
   };
 
   return (
-    <div style={{ padding: '1.5rem 1rem', background: 'rgba(255,255,255,0.02)', borderRadius: '12px', border: '1px solid var(--glass-border)', marginBottom: '0.5rem', position: 'relative' }}>
+    <div style={{ padding: '1.25rem 0.75rem', background: 'rgba(255,255,255,0.02)', borderRadius: '12px', border: '1px solid var(--glass-border)', marginBottom: '0.5rem', position: 'relative' }}>
       
       {cropImageSrc && (
         <ImageCropperModal 
@@ -100,14 +100,14 @@ export const AdminProfileCard = () => {
         />
       )}
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.25rem', position: 'relative' }}>
-        <div style={{ position: 'relative' }}>
-          <div 
-            onClick={() => setShowMenu(!showMenu)}
-            style={{ 
-              width: '60px', 
-              height: '60px', 
-              borderRadius: '50%', 
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.25rem', position: 'relative' }}>
+          <div style={{ position: 'relative' }}>
+            <div 
+              onClick={() => setShowMenu(!showMenu)}
+              style={{ 
+                width: '48px', 
+                height: '48px', 
+                borderRadius: '50%', 
               background: 'linear-gradient(135deg, var(--primary-color), var(--accent-color))', 
               display: 'flex', 
               alignItems: 'center', 
@@ -127,7 +127,7 @@ export const AdminProfileCard = () => {
               <span style={{ fontSize: '0.75rem' }}>...</span>
             ) : (
               <img 
-                src={`${avatarUrl}?t=${timestamp}`} 
+                src={timestamp ? `${avatarUrl}?t=${timestamp}` : avatarUrl} 
                 alt="A" 
                 onError={(e) => {
                   e.currentTarget.style.display = 'none';
@@ -158,8 +158,8 @@ export const AdminProfileCard = () => {
               zIndex: 10,
               minWidth: '120px'
             }}>
-              <button onClick={handleUploadClick} style={{ background: 'transparent', border: 'none', textAlign: 'left', padding: '0.5rem 1rem', cursor: 'pointer', borderRadius: '4px', color: 'var(--text-primary)' }} className="hover:bg-white/5">Upload Photo</button>
-              <button onClick={handleRemove} style={{ background: 'transparent', border: 'none', textAlign: 'left', padding: '0.5rem 1rem', cursor: 'pointer', borderRadius: '4px', color: '#ff4d4f' }} className="hover:bg-white/5">Remove Photo</button>
+              <button onClick={handleUploadClick} style={{ background: 'transparent', border: 'none', textAlign: 'left', padding: '0.5rem 1rem', cursor: 'pointer', borderRadius: '4px', color: 'var(--text-primary)', whiteSpace: 'nowrap' }} className="hover:bg-white/5">Upload Photo</button>
+              <button onClick={handleRemove} style={{ background: 'transparent', border: 'none', textAlign: 'left', padding: '0.5rem 1rem', cursor: 'pointer', borderRadius: '4px', color: '#ff4d4f', whiteSpace: 'nowrap' }} className="hover:bg-white/5">Remove Photo</button>
             </div>
           )}
 
@@ -172,8 +172,8 @@ export const AdminProfileCard = () => {
           />
         </div>
         
-        <div style={{ flex: 1, minWidth: 0 }}>
-          <p style={{ margin: 0, fontWeight: 600, fontSize: '1rem', color: 'var(--primary-color)' }}>Administrator</p>
+        <div style={{ flex: 1, minWidth: 0, paddingRight: '0.25rem' }}>
+          <p style={{ margin: 0, fontWeight: 600, fontSize: '0.9rem', color: 'var(--primary-color)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>Administrator</p>
           
           {isEditingName ? (
             <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.25rem' }}>

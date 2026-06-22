@@ -12,13 +12,12 @@ interface RichEditorProps {
 
 export const RichEditor = ({ value, onChange, placeholder }: RichEditorProps) => {
   return (
-    <div style={{ background: '#fff', color: '#000', borderRadius: '8px', overflow: 'hidden' }}>
+    <div className="quill-glass" style={{ width: '100%' }}>
       <ReactQuill 
         theme="snow" 
         value={value} 
         onChange={onChange} 
         placeholder={placeholder}
-        style={{ height: '200px', borderBottom: 'none' }}
       />
     </div>
   );

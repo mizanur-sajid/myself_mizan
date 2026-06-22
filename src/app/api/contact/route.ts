@@ -38,3 +38,32 @@ export async function GET() {
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
+
+export async function PUT(req: Request) {
+  try {
+    const { id, archived, deleted } = await req.json();
+    const updateData: any = {};
+    if (archived !== undefined) updateData.archived = archived;
+    if (deleted !== undefined) updateData.deleted = deleted;
+
+    const message = await prisma.message.update({
+      where: { id },
+      data: updateData
+    });
+    return NextResponse.json(message);
+  } catch (error) {
+    console.error('Failed to update message:', error);
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+  }
+}
+
+export async function DELETE(req: Request) {
+  try {
+    const { id } = await req.json();
+    await prisma.message.delete({ where: { id } });
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error('Failed to delete message:', error);
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+  }
+}

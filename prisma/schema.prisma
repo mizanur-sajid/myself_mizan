@@ -13,6 +13,8 @@ model Message {
   email     String
   content   String
   createdAt DateTime @default(now())
+  archived  Boolean  @default(false)
+  deleted   Boolean  @default(false)
 }
 
 model Skill {
@@ -43,4 +45,13 @@ model Certification {
 model SiteStat {
   id    Int @id @default(autoincrement())
   views Int @default(0)
+}
+
+model Project {
+  id          Int     @id @default(autoincrement())
+  title       String
+  link        String?
+  year        Int
+  description String? // Rich text
+  fileUrl     String? // Uploaded file
 }

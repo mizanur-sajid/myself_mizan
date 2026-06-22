@@ -18,20 +18,22 @@ export default async function Home() {
   const skills = await prisma.skill.findMany();
   const publications = await prisma.publication.findMany();
   const certifications = await prisma.certification.findMany();
+  const projects = await prisma.project.findMany();
 
   return (
-    <main style={{ padding: '0 2rem', display: 'flex', flexDirection: 'column', gap: '8rem', maxWidth: '1200px', margin: '0 auto' }}>
+    <main style={{ padding: '0 2rem', maxWidth: '1200px', margin: '0 auto' }}>
       <StickyNav />
 
-      <section style={{ minHeight: '70vh', display: 'flex', alignItems: 'center', justifyContent: 'space-between', position: 'relative', gap: '4rem', flexWrap: 'wrap-reverse' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '8rem' }}>
+      <section className="hero-section" style={{ minHeight: '70vh', display: 'flex', alignItems: 'center', justifyContent: 'space-between', position: 'relative', gap: '4rem', flexWrap: 'wrap-reverse' }}>
         <div style={{ maxWidth: '600px', zIndex: 10, flex: '1 1 400px' }}>
           <p className="accent-text" style={{ marginBottom: '1.5rem' }}>Full-Stack Engineer</p>
           <h2 className="section-title" style={{ fontSize: 'clamp(3rem, 8vw, 5.5rem)', marginBottom: '1.5rem', lineHeight: 1.05 }}>
-            Crafting digital <br />
-            <span className="gradient-text">experiences</span>.
+            Mizanur <br />
+            <span className="gradient-text">Rahman</span>.
           </h2>
           <p style={{ fontSize: '1.25rem', marginBottom: '3rem', opacity: 0.7, maxWidth: '600px', lineHeight: 1.6 }}>
-            I build sophisticated, scalable web applications with a focus on cutting-edge aesthetics and flawless user experience.
+            Computer Science and IT Engineer with strong problem-solving skills and a passion for building practical technology solutions. Ready to contribute to impactful projects while continuously expanding professional expertise.
           </p>
           <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
             <a href="#contact">
@@ -125,6 +127,30 @@ export default async function Home() {
         </div>
       </section>
 
+      <section id="projects" style={{ padding: '4rem 0' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '4rem' }}>
+          <div>
+            <p className="accent-text" style={{ marginBottom: '0.5rem' }}>Showcase</p>
+            <h2 className="section-title" style={{ fontSize: '3rem' }}>Projects</h2>
+          </div>
+        </div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))', gap: '2rem' }}>
+          {projects.length > 0 ? projects.map(project => (
+            <GlassCard key={project.id} style={{ padding: '2rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                <h3 style={{ fontSize: '1.25rem', margin: 0 }}>{project.title}</h3>
+                <span style={{ fontSize: '0.875rem', color: 'var(--primary-color)', fontFamily: 'var(--font-space)' }}>{project.year}</span>
+              </div>
+              {project.link && <a href={project.link} target="_blank" rel="noreferrer" className="visit-site-btn">Visit Site ↗</a>}
+              {project.fileUrl && <a href={project.fileUrl} target="_blank" rel="noreferrer" style={{ color: 'var(--primary-color)', fontSize: '0.875rem', display: 'block', margin: '0.5rem 0' }}>View Image</a>}
+              {project.description && <div style={{ marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid var(--glass-border)', fontSize: '0.9rem' }} dangerouslySetInnerHTML={{ __html: project.description }} />}
+            </GlassCard>
+          )) : (
+            <p style={{ opacity: 0.5 }}>System awaiting projects...</p>
+          )}
+        </div>
+      </section>
+
       <section id="contact" style={{ padding: '6rem 0 10rem 0' }}>
         <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
           <p className="accent-text" style={{ marginBottom: '0.5rem' }}>Initiate Connection</p>
@@ -132,6 +158,7 @@ export default async function Home() {
         </div>
         <ContactForm />
       </section>
+      </div>
     </main>
   );
 }

@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { Button } from './Button';
 import { GlassCard } from './GlassCard';
+import { RichEditor } from './RichEditor';
 
 export const ContactForm = () => {
   const [formData, setFormData] = useState({ name: '', email: '', content: '' });
@@ -38,7 +39,7 @@ export const ContactForm = () => {
   return (
     <GlassCard style={{ maxWidth: '600px', margin: '0 auto', padding: '3rem' }}>
       <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-        <div style={{ display: 'flex', gap: '1.5rem' }}>
+        <div className="contact-flex" style={{ display: 'flex', gap: '1.5rem' }}>
           <div style={{ flex: 1 }}>
             <input
               required
@@ -59,13 +60,11 @@ export const ContactForm = () => {
             />
           </div>
         </div>
-        <div>
-          <textarea
-            required
+        <div style={{ paddingBottom: '2.5rem' }}>
+          <RichEditor
             placeholder="How can I help you?"
             value={formData.content}
-            onChange={e => setFormData({ ...formData, content: e.target.value })}
-            style={{ ...inputStyles, minHeight: '160px', resize: 'vertical' }}
+            onChange={value => setFormData({ ...formData, content: value })}
           />
         </div>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '1rem' }}>
