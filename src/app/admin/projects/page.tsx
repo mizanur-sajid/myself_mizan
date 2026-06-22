@@ -278,7 +278,7 @@ export default function AdminProjects() {
                       </div>
                       {project.link && (
                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                          <LinkIcon size={14} /> <a href={project.link} target="_blank" rel="noreferrer" style={{ color: 'var(--primary-color)' }}>Link</a>
+                          <LinkIcon size={14} /> <a href={project.link} target="_blank" rel="noreferrer" style={{ color: 'var(--primary-color)' }}>Live Demo</a>
                         </div>
                       )}
                     </div>

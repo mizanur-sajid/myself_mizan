@@ -21,6 +21,8 @@ model Skill {
   id          Int     @id @default(autoincrement())
   name        String
   level       Int     // 1-100
+  category    String  @default("Technical Skills")
+  icon        String  @default("code")
   description String? // Rich text
 }
 

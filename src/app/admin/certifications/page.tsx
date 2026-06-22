@@ -241,13 +241,21 @@ export default function AdminCertifications() {
                       <span style={{ padding: '4px 8px', background: 'rgba(0, 240, 255, 0.1)', color: 'var(--primary-color)', borderRadius: '4px', fontSize: '0.75rem', fontWeight: 600 }}>
                         {cert.issuer}
                       </span>
+                    </div>
+
+                    <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: '0.5rem', alignItems: 'flex-start' }}>
                       <span style={{ padding: '4px 8px', background: 'rgba(255, 255, 255, 0.05)', color: 'var(--text-secondary)', borderRadius: '4px', fontSize: '0.75rem', fontFamily: 'var(--font-space)' }}>
                         {cert.year}
                       </span>
+                      {cert.fileUrl ? (
+                        <a href={cert.fileUrl} target="_blank" rel="noreferrer" style={{ color: 'var(--text-primary)', fontSize: '0.9rem', textDecoration: 'underline', opacity: 0.8 }} className="hover:text-primary transition-colors">View Credentials ↗</a>
+                      ) : (
+                        <span style={{ color: 'var(--text-primary)', fontSize: '0.9rem', opacity: 0.5, cursor: 'not-allowed' }}>Credentials Unavailable</span>
+                      )}
                     </div>
 
                     {cert.description && (
-                      <div style={{ paddingTop: '1rem', borderTop: '1px solid var(--glass-border)', fontSize: '0.875rem', color: 'var(--text-secondary)', flex: 1 }} dangerouslySetInnerHTML={{ __html: cert.description }} />
+                      <div style={{ paddingTop: '1rem', marginTop: '1rem', borderTop: '1px solid var(--glass-border)', fontSize: '0.875rem', color: 'var(--text-secondary)', flex: 1 }} dangerouslySetInnerHTML={{ __html: cert.description }} />
                     )}
                     
                     <div style={{ display: 'flex', gap: '0.75rem', marginTop: '1.5rem', paddingTop: '1rem', borderTop: '1px solid var(--glass-border)' }}>

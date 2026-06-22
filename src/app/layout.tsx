@@ -9,7 +9,13 @@ const spaceGrotesk = Space_Grotesk({ subsets: ['latin'], variable: '--font-space
 export const metadata: Metadata = {
   title: 'Mizan | Portfolio',
   description: 'Premium futuristic portfolio',
+  icons: {
+    icon: '/mizan-profile.jpg',
+  },
 };
+
+import { ConstructionNotice } from '@/components/ui/ConstructionNotice';
+import { SocialSidebar } from '@/components/ui/SocialSidebar';
 
 export default function RootLayout({
   children,
@@ -25,6 +31,8 @@ export default function RootLayout({
         </div>
         <ThemeProvider>
           {children}
+          <ConstructionNotice />
+          <SocialSidebar />
         </ThemeProvider>
       </body>
     </html>

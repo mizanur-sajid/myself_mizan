@@ -9,6 +9,8 @@ interface Skill {
   id: number;
   name: string;
   level: number;
+  category: string;
+  icon: string;
   description: string;
 }
 
@@ -16,6 +18,8 @@ export default function AdminSkills() {
   const [skills, setSkills] = useState<Skill[]>([]);
   const [name, setName] = useState('');
   const [level, setLevel] = useState('');
+  const [category, setCategory] = useState('Technical Skills');
+  const [icon, setIcon] = useState('code');
   const [description, setDescription] = useState('');
   const [editingId, setEditingId] = useState<number | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
@@ -32,12 +36,12 @@ export default function AdminSkills() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (editingId) {
-      await fetch('/api/skills', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: editingId, name, level: parseInt(level), description }) });
+      await fetch('/api/skills', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: editingId, name, level: parseInt(level), category, icon, description }) });
       setEditingId(null);
     } else {
-      await fetch('/api/skills', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name, level: parseInt(level), description }) });
+      await fetch('/api/skills', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name, level: parseInt(level), category, icon, description }) });
     }
-    setName(''); setLevel(''); setDescription('');
+    setName(''); setLevel(''); setCategory('Technical Skills'); setIcon('code'); setDescription('');
     fetchSkills();
   };
 
@@ -45,6 +49,8 @@ export default function AdminSkills() {
     setEditingId(skill.id);
     setName(skill.name);
     setLevel(skill.level.toString());
+    setCategory(skill.category || 'Technical Skills');
+    setIcon(skill.icon || 'code');
     setDescription(skill.description || '');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -57,7 +63,7 @@ export default function AdminSkills() {
 
   const cancelEdit = () => {
     setEditingId(null);
-    setName(''); setLevel(''); setDescription('');
+    setName(''); setLevel(''); setCategory('Technical Skills'); setIcon('code'); setDescription('');
   };
 
   const filteredSkills = skills.filter(s => s.name.toLowerCase().includes(searchQuery.toLowerCase()));
@@ -94,6 +100,21 @@ export default function AdminSkills() {
                 <div>
                   <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.875rem', color: 'var(--text-secondary)' }}>Proficiency</label>
                   <input required type="number" min="1" max="100" value={level} onChange={e => setLevel(e.target.value)} style={inputStyles} placeholder="85" />
+                </div>
+              </div>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem', alignItems: 'flex-end' }}>
+                <div>
+                  <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.875rem', color: 'var(--text-secondary)' }}>Category</label>
+                  <select required value={category} onChange={e => setCategory(e.target.value)} style={{ ...inputStyles, appearance: 'none', background: 'rgba(255,255,255,0.05)' }}>
+                    <option value="Technical Skills">Technical Skills</option>
+                    <option value="Professional Skills">Professional Skills</option>
+                    <option value="Programming & Frameworks">Programming & Frameworks</option>
+                    <option value="AI & Machine Learning">AI & Machine Learning</option>
+                  </select>
+                </div>
+                <div>
+                  <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.875rem', color: 'var(--text-secondary)' }}>Icon Name / SVG Class</label>
+                  <input required value={icon} onChange={e => setIcon(e.target.value)} style={inputStyles} placeholder="e.g. simple-icons:python or lucide:code" />
                 </div>
               </div>
               <div>

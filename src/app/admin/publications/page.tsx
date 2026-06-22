@@ -104,17 +104,25 @@ export default function AdminPublications() {
     setTitle(''); setLink(''); setYear(''); setDescription(''); clearFile();
   };
 
+  const handleAddNew = () => {
+    setEditingId(null);
+    setTitle(''); setLink(''); setYear(''); setDescription(''); clearFile();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   const inputStyles = {
     padding: '12px 16px', borderRadius: '8px', border: '1px solid var(--glass-border)', background: 'rgba(255,255,255,0.02)', color: 'var(--text-primary)', width: '100%', transition: 'all 0.3s ease'
   };
 
   return (
     <div style={{ animation: 'fadeIn 0.5s ease-out' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '3rem' }}>
-        <div>
-          <p className="accent-text" style={{ marginBottom: '0.5rem' }}>Knowledge Base</p>
-          <h2 style={{ fontSize: '3rem', margin: 0 }}>Publications</h2>
-        </div>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+        <h1 style={{ margin: 0, fontSize: '2rem', display: 'flex', alignItems: 'center', gap: '1rem' }}>
+          <BookOpen className="accent-text" /> Publications
+        </h1>
+        <Button onClick={handleAddNew} variant="primary">
+          <PlusCircle size={18} style={{ marginRight: '0.5rem' }} /> Add New Publication
+        </Button>
       </div>
       
       <div style={{ display: 'flex', gap: '3rem', flexWrap: 'wrap', alignItems: 'flex-start' }}>
@@ -124,14 +132,14 @@ export default function AdminPublications() {
           <GlassCard style={{ border: editingId ? '1px solid var(--primary-color)' : '' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem' }}>
               {editingId ? <CheckCircle className="text-primary" size={24} color="var(--primary-color)" /> : <PlusCircle className="text-accent" size={24} color="var(--accent-color)" />}
-              <h3 style={{ fontSize: '1.25rem', margin: 0 }}>{editingId ? 'Edit Publication' : 'Publish New Entry'}</h3>
+              <h3 style={{ fontSize: '1.25rem', margin: 0 }}>{editingId ? 'Edit Publication' : 'Publish New Publication'}</h3>
             </div>
             
             <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
               <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '1.5rem', alignItems: 'flex-end' }}>
                 <div>
                   <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.875rem', color: 'var(--text-secondary)' }}>Publication Title</label>
-                  <input required value={title} onChange={e => setTitle(e.target.value)} style={inputStyles} placeholder="Research Paper Title" />
+                  <input required value={title} onChange={e => setTitle(e.target.value)} style={inputStyles} placeholder="Publication Title" />
                 </div>
                 <div>
                   <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.875rem', color: 'var(--text-secondary)' }}>Year</label>
@@ -237,7 +245,10 @@ export default function AdminPublications() {
                   
                   <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', flex: 1 }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }}>
-                      <h4 style={{ margin: 0, fontSize: '1.1rem', lineHeight: 1.3 }}>{pub.title}</h4>
+                      <div>
+                        <h4 style={{ margin: 0, fontSize: '1.1rem', lineHeight: 1.3 }}>{pub.title}</h4>
+                        <p style={{ margin: '0.25rem 0 0 0', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>University Of Global Village</p>
+                      </div>
                     </div>
                     
                     <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', marginBottom: '1.5rem', color: 'var(--text-secondary)', fontSize: '0.85rem', flexWrap: 'wrap' }}>

@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 
 export async function GET() {
-  const skills = await prisma.skill.findMany();
+  const skills = await prisma.$queryRawUnsafe('SELECT * FROM Skill');
   return NextResponse.json(skills);
 }
 
