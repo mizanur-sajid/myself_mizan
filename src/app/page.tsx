@@ -1,33 +1,58 @@
+'use client';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { GlassCard } from '../components/ui/GlassCard';
 import { Button } from '../components/ui/Button';
-import { ThemeToggle } from '../components/shared/ThemeToggle';
 import { ContactForm } from '../components/ui/ContactForm';
 import { StickyNav } from '../components/ui/StickyNav';
 import { SkillIcon } from '../components/ui/SkillIcon';
 import { SirenText } from '../components/ui/SirenText';
-import { prisma } from '@/lib/prisma';
 
-export const dynamic = 'force-dynamic';
+export default function Home() {
+  const [skills, setSkills] = useState<any[]>([]);
+  const [publications, setPublications] = useState<any[]>([]);
+  const [certifications, setCertifications] = useState<any[]>([]);
+  const [projects, setProjects] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
-export default async function Home() {
-  await prisma.siteStat.upsert({
-    where: { id: 1 },
-    update: { views: { increment: 1 } },
-    create: { id: 1, views: 1 },
-  });
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Increment view counter
+        if (process.env.NODE_ENV === 'production' || process.env.ENABLE_VIEW_COUNTER === 'true') {
+          fetch('/api/stats.php', { method: 'POST' }).catch(() => {});
+        }
 
-  const rawSkills = await prisma.$queryRawUnsafe('SELECT * FROM Skill') as any[];
-  const skills = rawSkills.sort((a, b) => {
-    if (a.name.toLowerCase() === 'python') return -1;
-    if (b.name.toLowerCase() === 'python') return 1;
-    if (a.name.toLowerCase() === 'it support') return 1;
-    if (b.name.toLowerCase() === 'it support') return -1;
-    return a.id - b.id;
-  });
-  const publications = await prisma.publication.findMany();
-  const certifications = await prisma.certification.findMany();
-  const projects = await prisma.project.findMany();
+        const [skillsRes, pubsRes, certsRes, projsRes] = await Promise.all([
+          fetch('/api/skills.php'),
+          fetch('/api/publications.php'),
+          fetch('/api/certifications.php'),
+          fetch('/api/projects.php')
+        ]);
+
+        if (skillsRes.ok) {
+          const rawSkills = await skillsRes.json();
+          setSkills(rawSkills.sort((a: any, b: any) => {
+            if (a.name.toLowerCase() === 'python') return -1;
+            if (b.name.toLowerCase() === 'python') return 1;
+            if (a.name.toLowerCase() === 'it support') return 1;
+            if (b.name.toLowerCase() === 'it support') return -1;
+            return a.id - b.id;
+          }));
+        }
+        
+        if (pubsRes.ok) setPublications(await pubsRes.json());
+        if (certsRes.ok) setCertifications(await certsRes.json());
+        if (projsRes.ok) setProjects(await projsRes.json());
+      } catch (err) {
+        console.error("Failed to load data", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    fetchData();
+  }, []);
 
   return (
     <main style={{ padding: '0 2rem', maxWidth: '1200px', margin: '0 auto' }}>
@@ -71,7 +96,9 @@ export default async function Home() {
         </div>
         
         <div>
-          {skills.length > 0 ? (
+          {loading ? (
+             <p style={{ opacity: 0.5 }}>Loading skills...</p>
+          ) : skills.length > 0 ? (
             Object.entries(skills.reduce((acc, skill) => {
               const cat = skill.category === 'Technical Skills' ? 'Technical Skills' : 'Additional Skills';
               if (!acc[cat]) acc[cat] = [];
@@ -123,7 +150,9 @@ export default async function Home() {
           </div>
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-          {publications.length > 0 ? publications.map(pub => (
+          {loading ? (
+             <p style={{ opacity: 0.5 }}>Loading publications...</p>
+          ) : publications.length > 0 ? publications.map(pub => (
             <GlassCard key={pub.id} style={{ padding: '2rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                 <div>
@@ -150,7 +179,9 @@ export default async function Home() {
           </div>
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))', gap: '2rem' }}>
-          {certifications.length > 0 ? certifications.map(cert => (
+          {loading ? (
+             <p style={{ opacity: 0.5 }}>Loading certifications...</p>
+          ) : certifications.length > 0 ? certifications.map(cert => (
             <GlassCard key={cert.id} style={{ padding: '2rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
               <div>
                 <h3 style={{ fontSize: '1.25rem', margin: 0 }}>{cert.name}</h3>
@@ -180,7 +211,9 @@ export default async function Home() {
           </div>
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))', gap: '2rem' }}>
-          {projects.length > 0 ? projects.map(project => (
+          {loading ? (
+             <p style={{ opacity: 0.5 }}>Loading projects...</p>
+          ) : projects.length > 0 ? projects.map(project => (
             <GlassCard key={project.id} style={{ padding: '2rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                 <h3 style={{ fontSize: '1.25rem', margin: 0 }}>{project.title}</h3>

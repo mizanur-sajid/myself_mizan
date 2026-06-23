@@ -17,7 +17,7 @@ export const AdminProfileCard = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    fetch('/api/admin/name')
+    fetch('/api/settings.php')
       .then(r => r.json())
       .then(d => {
         if (d.name) setName(d.name);
@@ -48,7 +48,7 @@ export const AdminProfileCard = () => {
     formData.append('file', croppedBlob, 'avatar.png');
 
     try {
-      const res = await fetch('/api/admin/avatar', { method: 'POST', body: formData });
+      const res = await fetch('/api/avatar.php', { method: 'POST', body: formData });
       if (res.ok) {
         setTimestamp(Date.now());
       }
@@ -64,7 +64,7 @@ export const AdminProfileCard = () => {
     setUploading(true);
     setShowMenu(false);
     try {
-      await fetch('/api/admin/avatar', { method: 'DELETE' });
+      await fetch('/api/avatar.php', { method: 'DELETE' });
       setTimestamp(Date.now());
     } catch (err) {
       console.error(err);
@@ -79,7 +79,7 @@ export const AdminProfileCard = () => {
     
     setName(tempName);
     try {
-      await fetch('/api/admin/name', {
+      await fetch('/api/settings.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name: tempName })
@@ -90,7 +90,7 @@ export const AdminProfileCard = () => {
   };
 
   return (
-    <div style={{ padding: '1.25rem 0.75rem', background: 'rgba(255,255,255,0.02)', borderRadius: '12px', border: '1px solid var(--glass-border)', marginBottom: '0.5rem', position: 'relative' }}>
+    <div style={{ padding: '1.25rem 0.75rem', background: 'var(--panel-bg)', borderRadius: '12px', border: '1px solid var(--glass-border)', marginBottom: '0.5rem', position: 'relative' }}>
       
       {cropImageSrc && (
         <ImageCropperModal 
@@ -184,7 +184,7 @@ export const AdminProfileCard = () => {
                 onKeyDown={e => { if (e.key === 'Enter') handleNameSave(); }}
                 onBlur={handleNameSave}
                 style={{ 
-                  background: 'rgba(255,255,255,0.05)', 
+                  background: 'var(--panel-bg-hover)', 
                   border: '1px solid var(--primary-color)', 
                   color: 'var(--text-primary)', 
                   padding: '2px 6px', 
@@ -203,7 +203,7 @@ export const AdminProfileCard = () => {
                 fontSize: '0.875rem', 
                 opacity: 0.8, 
                 cursor: 'pointer',
-                borderBottom: '1px dashed rgba(255,255,255,0.3)',
+                borderBottom: '1px dashed var(--panel-border)',
                 display: 'inline-block'
               }}
               className="hover:text-primary"

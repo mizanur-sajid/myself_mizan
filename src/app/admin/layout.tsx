@@ -7,7 +7,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     <div style={{ display: 'flex', height: '100vh', overflow: 'hidden', background: 'var(--bg-color)', position: 'relative', zIndex: 1 }}>
       <AdminSidebar />
       <main style={{ flex: 1, height: '100%', overflowY: 'auto', padding: '0', display: 'flex', flexDirection: 'column', position: 'relative' }}>
-        <div style={{ padding: '1rem 2rem', display: 'flex', justifyContent: 'flex-end', borderBottom: '1px solid var(--glass-border)', background: 'rgba(255,255,255,0.01)', position: 'sticky', top: 0, zIndex: 10, backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)' }}>
+        <div style={{ padding: '1rem 2rem', display: 'flex', justifyContent: 'flex-end', borderBottom: '1px solid var(--glass-border)', background: 'var(--panel-bg)', position: 'sticky', top: 0, zIndex: 10, backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)' }}>
           <ThemeToggle />
         </div>
         <div className="admin-page-container">

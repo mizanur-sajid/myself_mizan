@@ -19,7 +19,7 @@ export default function AdminPublications() {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const fetchPubs = () => {
-    fetch('/api/publications').then(r => r.json()).then(data => {
+    fetch('/api/publications.php').then(r => r.json()).then(data => {
       if (Array.isArray(data)) setPubs(data);
     }).catch(console.error);
   };
@@ -52,7 +52,7 @@ export default function AdminPublications() {
     if (file) {
       const formData = new FormData();
       formData.append('file', file);
-      const uploadRes = await fetch('/api/upload', { method: 'POST', body: formData });
+      const uploadRes = await fetch('/api/upload.php', { method: 'POST', body: formData });
       if (uploadRes.ok) {
         const d = await uploadRes.json();
         fileUrl = d.url;
@@ -60,14 +60,14 @@ export default function AdminPublications() {
     }
 
     if (editingId) {
-      await fetch('/api/publications', {
+      await fetch('/api/publications.php', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id: editingId, title, link, year: parseInt(year), description, fileUrl })
       });
       setEditingId(null);
     } else {
-      await fetch('/api/publications', {
+      await fetch('/api/publications.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ title, link, year: parseInt(year), description, fileUrl })
@@ -91,7 +91,7 @@ export default function AdminPublications() {
 
   const handleDelete = async (id: number) => {
     if (!confirm('Are you sure you want to delete this publication?')) return;
-    await fetch('/api/publications', {
+    await fetch('/api/publications.php', {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ id })
@@ -111,7 +111,7 @@ export default function AdminPublications() {
   };
 
   const inputStyles = {
-    padding: '12px 16px', borderRadius: '8px', border: '1px solid var(--glass-border)', background: 'rgba(255,255,255,0.02)', color: 'var(--text-primary)', width: '100%', transition: 'all 0.3s ease'
+    padding: '12px 16px', borderRadius: '8px', border: '1px solid var(--glass-border)', background: 'var(--panel-bg)', color: 'var(--text-primary)', width: '100%', transition: 'all 0.3s ease'
   };
 
   return (
@@ -168,7 +168,7 @@ export default function AdminPublications() {
                 <div 
                   style={{ 
                     border: '2px dashed var(--glass-border)', borderRadius: '12px', padding: '2rem', textAlign: 'center', 
-                    background: 'rgba(255,255,255,0.02)', position: 'relative', transition: 'all 0.3s ease',
+                    background: 'var(--panel-bg)', position: 'relative', transition: 'all 0.3s ease',
                     cursor: 'pointer'
                   }}
                   onClick={() => fileInputRef.current?.click()}
@@ -233,7 +233,7 @@ export default function AdminPublications() {
               pubs.map(pub => (
                 <GlassCard key={pub.id} style={{ padding: 0, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
                   {pub.fileUrl && (
-                    <div style={{ width: '100%', height: '160px', background: 'rgba(0,0,0,0.2)', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <div style={{ width: '100%', height: '160px', background: 'var(--panel-border)', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                       {pub.fileUrl.endsWith('.pdf') ? (
                         <FileText size={48} color="var(--primary-color)" />
                       ) : (
@@ -252,11 +252,11 @@ export default function AdminPublications() {
                     </div>
                     
                     <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', marginBottom: '1.5rem', color: 'var(--text-secondary)', fontSize: '0.85rem', flexWrap: 'wrap' }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', background: 'rgba(255, 255, 255, 0.05)', padding: '4px 8px', borderRadius: '4px' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', background: 'var(--panel-bg-hover)', padding: '4px 8px', borderRadius: '4px' }}>
                         <Calendar size={14} /> {pub.year}
                       </div>
                       {pub.link && (
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', background: 'rgba(0, 240, 255, 0.1)', padding: '4px 8px', borderRadius: '4px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', background: 'var(--primary-alpha-10)', padding: '4px 8px', borderRadius: '4px' }}>
                           <LinkIcon size={14} color="var(--primary-color)" /> <a href={pub.link} target="_blank" rel="noreferrer" style={{ color: 'var(--primary-color)', fontWeight: 500 }}>Read Publication</a>
                         </div>
                       )}
@@ -267,10 +267,10 @@ export default function AdminPublications() {
                     )}
                     
                     <div style={{ display: 'flex', gap: '0.75rem', marginTop: '1.5rem', paddingTop: '1rem', borderTop: '1px solid var(--glass-border)' }}>
-                      <button onClick={() => handleEdit(pub)} style={{ background: 'rgba(255,255,255,0.05)', border: 'none', color: 'var(--text-primary)', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.5rem', flex: 1, justifyContent: 'center' }} className="hover:bg-white/10">
+                      <button onClick={() => handleEdit(pub)} style={{ background: 'var(--panel-bg-hover)', border: 'none', color: 'var(--text-primary)', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.5rem', flex: 1, justifyContent: 'center' }} className="hover:bg-white/10">
                         <Edit2 size={14} /> Edit
                       </button>
-                      <button onClick={() => handleDelete(pub.id)} style={{ background: 'rgba(255, 77, 79, 0.1)', border: 'none', color: '#ff4d4f', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.5rem', flex: 1, justifyContent: 'center' }} className="hover:bg-red-500/20">
+                      <button onClick={() => handleDelete(pub.id)} style={{ background: 'var(--danger-alpha-10)', border: 'none', color: '#ff4d4f', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.5rem', flex: 1, justifyContent: 'center' }} className="hover:bg-red-500/20">
                         <Trash2 size={14} /> Delete
                       </button>
                     </div>

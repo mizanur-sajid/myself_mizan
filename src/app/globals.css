@@ -8,6 +8,15 @@
   --glass-border: rgba(0, 0, 0, 0.05);
   --card-shadow: 0 10px 40px -10px rgba(0,0,0,0.08);
   --glow-opacity: 0.15;
+  --panel-bg: rgba(0, 0, 0, 0.03);
+  --panel-bg-hover: rgba(0, 0, 0, 0.06);
+  --panel-border: rgba(0, 0, 0, 0.08);
+  --primary-alpha-10: rgba(37, 99, 235, 0.1);
+  --primary-alpha-20: rgba(37, 99, 235, 0.2);
+  --accent-alpha-10: rgba(124, 58, 237, 0.1);
+  --danger-color: #ef4444;
+  --danger-alpha-10: rgba(239, 68, 68, 0.1);
+  --danger-alpha-20: rgba(239, 68, 68, 0.2);
 }
 
 [data-theme='dark'] {
@@ -20,6 +29,15 @@
   --glass-border: rgba(255, 255, 255, 0.08);
   --card-shadow: 0 20px 40px -10px rgba(0,0,0,0.6);
   --glow-opacity: 0.4;
+  --panel-bg: rgba(255, 255, 255, 0.02);
+  --panel-bg-hover: rgba(255, 255, 255, 0.05);
+  --panel-border: rgba(255, 255, 255, 0.1);
+  --primary-alpha-10: rgba(0, 240, 255, 0.1);
+  --primary-alpha-20: rgba(0, 240, 255, 0.2);
+  --accent-alpha-10: rgba(123, 47, 255, 0.1);
+  --danger-color: #ff4d4f;
+  --danger-alpha-10: rgba(255, 77, 79, 0.1);
+  --danger-alpha-20: rgba(255, 77, 79, 0.2);
 }
 
 * {
@@ -263,13 +281,13 @@ input:focus, textarea:focus {
 }
 
 .admin-sidebar-link:hover {
-  background: rgba(255,255,255,0.05);
+  background: var(--panel-bg-hover);
   color: var(--text-primary);
   transform: translateX(4px);
 }
 
 .admin-sidebar-link.active {
-  background: rgba(0, 240, 255, 0.08);
+  background: var(--primary-alpha-10);
   color: var(--primary-color);
   border-left: 3px solid var(--primary-color);
   border-radius: 0 8px 8px 0;

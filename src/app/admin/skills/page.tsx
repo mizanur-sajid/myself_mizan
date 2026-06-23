@@ -25,7 +25,7 @@ export default function AdminSkills() {
   const [searchQuery, setSearchQuery] = useState('');
 
   const fetchSkills = () => {
-    fetch('/api/skills')
+    fetch('/api/skills.php')
       .then(res => res.json())
       .then(data => { if (Array.isArray(data)) setSkills(data); })
       .catch(console.error);
@@ -36,10 +36,10 @@ export default function AdminSkills() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (editingId) {
-      await fetch('/api/skills', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: editingId, name, level: parseInt(level), category, icon, description }) });
+      await fetch('/api/skills.php', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: editingId, name, level: parseInt(level), category, icon, description }) });
       setEditingId(null);
     } else {
-      await fetch('/api/skills', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name, level: parseInt(level), category, icon, description }) });
+      await fetch('/api/skills.php', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name, level: parseInt(level), category, icon, description }) });
     }
     setName(''); setLevel(''); setCategory('Technical Skills'); setIcon('code'); setDescription('');
     fetchSkills();
@@ -57,7 +57,7 @@ export default function AdminSkills() {
 
   const handleDelete = async (id: number) => {
     if (!confirm('Are you sure you want to delete this skill?')) return;
-    await fetch('/api/skills', { method: 'DELETE', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id }) });
+    await fetch('/api/skills.php', { method: 'DELETE', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id }) });
     fetchSkills();
   };
 
@@ -69,7 +69,7 @@ export default function AdminSkills() {
   const filteredSkills = skills.filter(s => s.name.toLowerCase().includes(searchQuery.toLowerCase()));
 
   const inputStyles = {
-    padding: '12px 16px', borderRadius: '8px', border: '1px solid var(--glass-border)', background: 'rgba(255,255,255,0.02)', color: 'var(--text-primary)', width: '100%', transition: 'all 0.3s ease'
+    padding: '12px 16px', borderRadius: '8px', border: '1px solid var(--glass-border)', background: 'var(--panel-bg)', color: 'var(--text-primary)', width: '100%', transition: 'all 0.3s ease'
   };
 
   return (
@@ -105,7 +105,7 @@ export default function AdminSkills() {
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem', alignItems: 'flex-end' }}>
                 <div>
                   <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.875rem', color: 'var(--text-secondary)' }}>Category</label>
-                  <select required value={category} onChange={e => setCategory(e.target.value)} style={{ ...inputStyles, appearance: 'none', background: 'rgba(255,255,255,0.05)' }}>
+                  <select required value={category} onChange={e => setCategory(e.target.value)} style={{ ...inputStyles, appearance: 'none', background: 'var(--panel-bg-hover)' }}>
                     <option value="Technical Skills">Technical Skills</option>
                     <option value="Professional Skills">Professional Skills</option>
                     <option value="Programming & Frameworks">Programming & Frameworks</option>
@@ -138,7 +138,7 @@ export default function AdminSkills() {
               placeholder="Search skills by name..." 
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              style={{ width: '100%', padding: '14px 16px 14px 44px', borderRadius: '12px', border: '1px solid var(--glass-border)', background: 'rgba(255,255,255,0.02)', color: 'var(--text-primary)', fontSize: '1rem' }}
+              style={{ width: '100%', padding: '14px 16px 14px 44px', borderRadius: '12px', border: '1px solid var(--glass-border)', background: 'var(--panel-bg)', color: 'var(--text-primary)', fontSize: '1rem' }}
             />
           </div>
 
@@ -155,17 +155,17 @@ export default function AdminSkills() {
                     <h4 style={{ margin: 0, fontSize: '1.1rem' }}>{skill.name}</h4>
                     <span style={{ fontFamily: 'var(--font-space)', color: 'var(--primary-color)', fontSize: '0.875rem', fontWeight: 600 }}>{skill.level}%</span>
                   </div>
-                  <div style={{ width: '100%', background: 'rgba(255,255,255,0.05)', height: '6px', borderRadius: '3px', marginBottom: '1rem', overflow: 'hidden' }}>
+                  <div style={{ width: '100%', background: 'var(--panel-bg-hover)', height: '6px', borderRadius: '3px', marginBottom: '1rem', overflow: 'hidden' }}>
                     <div style={{ width: `${skill.level}%`, background: 'var(--primary-color)', height: '100%', borderRadius: '3px', transition: 'width 1s ease-out' }}></div>
                   </div>
                   {skill.description && (
                     <div style={{ padding: '1rem 0', borderTop: '1px solid var(--glass-border)', fontSize: '0.875rem', color: 'var(--text-secondary)', flex: 1 }} dangerouslySetInnerHTML={{ __html: skill.description }} />
                   )}
                   <div style={{ display: 'flex', gap: '0.75rem', marginTop: 'auto', paddingTop: '1rem', borderTop: skill.description ? 'none' : '1px solid var(--glass-border)' }}>
-                    <button onClick={() => handleEdit(skill)} style={{ background: 'rgba(255,255,255,0.05)', border: 'none', color: 'var(--text-primary)', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.5rem', flex: 1, justifyContent: 'center' }} className="hover:bg-white/10">
+                    <button onClick={() => handleEdit(skill)} style={{ background: 'var(--panel-bg-hover)', border: 'none', color: 'var(--text-primary)', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.5rem', flex: 1, justifyContent: 'center' }} className="hover:bg-white/10">
                       <Edit2 size={14} /> Edit
                     </button>
-                    <button onClick={() => handleDelete(skill.id)} style={{ background: 'rgba(255, 77, 79, 0.1)', border: 'none', color: '#ff4d4f', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.5rem', flex: 1, justifyContent: 'center' }} className="hover:bg-red-500/20">
+                    <button onClick={() => handleDelete(skill.id)} style={{ background: 'var(--danger-alpha-10)', border: 'none', color: '#ff4d4f', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.5rem', flex: 1, justifyContent: 'center' }} className="hover:bg-red-500/20">
                       <Trash2 size={14} /> Delete
                     </button>
                   </div>

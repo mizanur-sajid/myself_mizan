@@ -12,7 +12,7 @@ export default function AdminLogin() {
     e.preventDefault();
     setError('');
 
-    const res = await fetch('/api/auth/login', {
+    const res = await fetch('/api/auth.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username, password })

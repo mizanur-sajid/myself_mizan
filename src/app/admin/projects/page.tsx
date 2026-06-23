@@ -23,7 +23,7 @@ export default function AdminProjects() {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const fetchProjects = () => {
-    fetch('/api/projects').then(r => r.json()).then(data => {
+    fetch('/api/projects.php').then(r => r.json()).then(data => {
       if (Array.isArray(data)) setProjects(data);
     }).catch(console.error);
   };
@@ -56,7 +56,7 @@ export default function AdminProjects() {
     if (file) {
       const formData = new FormData();
       formData.append('file', file);
-      const uploadRes = await fetch('/api/upload', { method: 'POST', body: formData });
+      const uploadRes = await fetch('/api/upload.php', { method: 'POST', body: formData });
       if (uploadRes.ok) {
         const d = await uploadRes.json();
         fileUrl = d.url;
@@ -64,14 +64,14 @@ export default function AdminProjects() {
     }
 
     if (editingId) {
-      await fetch('/api/projects', {
+      await fetch('/api/projects.php', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id: editingId, title, link, year: parseInt(year), description, fileUrl })
       });
       setEditingId(null);
     } else {
-      await fetch('/api/projects', {
+      await fetch('/api/projects.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ title, link, year: parseInt(year), description, fileUrl })
@@ -97,7 +97,7 @@ export default function AdminProjects() {
 
   const handleDelete = async (id: number) => {
     if (!confirm('Are you sure you want to delete this project?')) return;
-    await fetch('/api/projects', {
+    await fetch('/api/projects.php', {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ id })
@@ -112,7 +112,7 @@ export default function AdminProjects() {
   };
 
   const inputStyles = {
-    padding: '12px 16px', borderRadius: '8px', border: '1px solid var(--glass-border)', background: 'rgba(255,255,255,0.02)', color: 'var(--text-primary)', width: '100%', transition: 'all 0.3s ease'
+    padding: '12px 16px', borderRadius: '8px', border: '1px solid var(--glass-border)', background: 'var(--panel-bg)', color: 'var(--text-primary)', width: '100%', transition: 'all 0.3s ease'
   };
 
   return (
@@ -167,7 +167,7 @@ export default function AdminProjects() {
                     onClick={() => setIsFeatured(!isFeatured)}
                     style={{ 
                       display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '12px 16px', borderRadius: '8px', 
-                      background: isFeatured ? 'rgba(0, 240, 255, 0.1)' : 'rgba(255,255,255,0.02)',
+                      background: isFeatured ? 'var(--primary-alpha-10)' : 'var(--panel-bg)',
                       border: isFeatured ? '1px solid var(--primary-color)' : '1px solid var(--glass-border)',
                       color: isFeatured ? 'var(--primary-color)' : 'var(--text-secondary)',
                       cursor: 'pointer', transition: 'all 0.2s', height: '44px'
@@ -192,7 +192,7 @@ export default function AdminProjects() {
                 <div 
                   style={{ 
                     border: '2px dashed var(--glass-border)', borderRadius: '12px', padding: '2rem', textAlign: 'center', 
-                    background: 'rgba(255,255,255,0.02)', position: 'relative', transition: 'all 0.3s ease',
+                    background: 'var(--panel-bg)', position: 'relative', transition: 'all 0.3s ease',
                     cursor: 'pointer'
                   }}
                   onClick={() => fileInputRef.current?.click()}
@@ -257,12 +257,12 @@ export default function AdminProjects() {
               projects.map(project => (
                 <GlassCard key={project.id} style={{ padding: 0, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
                   {project.fileUrl ? (
-                    <div style={{ width: '100%', height: '180px', background: 'rgba(0,0,0,0.2)', position: 'relative' }}>
+                    <div style={{ width: '100%', height: '180px', background: 'var(--panel-border)', position: 'relative' }}>
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img src={project.fileUrl} alt={project.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                     </div>
                   ) : (
-                    <div style={{ width: '100%', height: '180px', background: 'rgba(255,255,255,0.02)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <div style={{ width: '100%', height: '180px', background: 'var(--panel-bg)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                       <ImageIcon size={48} style={{ opacity: 0.1 }} />
                     </div>
                   )}
@@ -288,10 +288,10 @@ export default function AdminProjects() {
                     )}
                     
                     <div style={{ display: 'flex', gap: '0.75rem', marginTop: '1.5rem', paddingTop: '1rem', borderTop: '1px solid var(--glass-border)' }}>
-                      <button onClick={() => handleEdit(project)} style={{ background: 'rgba(255,255,255,0.05)', border: 'none', color: 'var(--text-primary)', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.5rem', flex: 1, justifyContent: 'center' }} className="hover:bg-white/10">
+                      <button onClick={() => handleEdit(project)} style={{ background: 'var(--panel-bg-hover)', border: 'none', color: 'var(--text-primary)', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.5rem', flex: 1, justifyContent: 'center' }} className="hover:bg-white/10">
                         <Edit2 size={14} /> Edit
                       </button>
-                      <button onClick={() => handleDelete(project.id)} style={{ background: 'rgba(255, 77, 79, 0.1)', border: 'none', color: '#ff4d4f', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.5rem', flex: 1, justifyContent: 'center' }} className="hover:bg-red-500/20">
+                      <button onClick={() => handleDelete(project.id)} style={{ background: 'var(--danger-alpha-10)', border: 'none', color: '#ff4d4f', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.5rem', flex: 1, justifyContent: 'center' }} className="hover:bg-red-500/20">
                         <Trash2 size={14} /> Delete
                       </button>
                     </div>

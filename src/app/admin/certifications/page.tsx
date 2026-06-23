@@ -19,7 +19,7 @@ export default function AdminCertifications() {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const fetchCerts = () => {
-    fetch('/api/certifications').then(r => r.json()).then(data => {
+    fetch('/api/certifications.php').then(r => r.json()).then(data => {
       if (Array.isArray(data)) setCerts(data);
     }).catch(console.error);
   };
@@ -52,7 +52,7 @@ export default function AdminCertifications() {
     if (file) {
       const formData = new FormData();
       formData.append('file', file);
-      const uploadRes = await fetch('/api/upload', { method: 'POST', body: formData });
+      const uploadRes = await fetch('/api/upload.php', { method: 'POST', body: formData });
       if (uploadRes.ok) {
         const d = await uploadRes.json();
         fileUrl = d.url;
@@ -60,14 +60,14 @@ export default function AdminCertifications() {
     }
 
     if (editingId) {
-      await fetch('/api/certifications', {
+      await fetch('/api/certifications.php', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id: editingId, name, issuer, year: parseInt(year), description, fileUrl })
       });
       setEditingId(null);
     } else {
-      await fetch('/api/certifications', {
+      await fetch('/api/certifications.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, issuer, year: parseInt(year), description, fileUrl })
@@ -91,7 +91,7 @@ export default function AdminCertifications() {
 
   const handleDelete = async (id: number) => {
     if (!confirm('Are you sure you want to delete this certification?')) return;
-    await fetch('/api/certifications', {
+    await fetch('/api/certifications.php', {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ id })
@@ -105,7 +105,7 @@ export default function AdminCertifications() {
   };
 
   const inputStyles = {
-    padding: '12px 16px', borderRadius: '8px', border: '1px solid var(--glass-border)', background: 'rgba(255,255,255,0.02)', color: 'var(--text-primary)', width: '100%', transition: 'all 0.3s ease'
+    padding: '12px 16px', borderRadius: '8px', border: '1px solid var(--glass-border)', background: 'var(--panel-bg)', color: 'var(--text-primary)', width: '100%', transition: 'all 0.3s ease'
   };
 
   return (
@@ -157,7 +157,7 @@ export default function AdminCertifications() {
                 <div 
                   style={{ 
                     border: '2px dashed var(--glass-border)', borderRadius: '12px', padding: '2rem', textAlign: 'center', 
-                    background: 'rgba(255,255,255,0.02)', position: 'relative', transition: 'all 0.3s ease',
+                    background: 'var(--panel-bg)', position: 'relative', transition: 'all 0.3s ease',
                     cursor: 'pointer'
                   }}
                   onClick={() => fileInputRef.current?.click()}
@@ -222,7 +222,7 @@ export default function AdminCertifications() {
               certs.map(cert => (
                 <GlassCard key={cert.id} style={{ padding: 0, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
                   {cert.fileUrl && (
-                    <div style={{ width: '100%', height: '160px', background: 'rgba(0,0,0,0.2)', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <div style={{ width: '100%', height: '160px', background: 'var(--panel-border)', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                       {cert.fileUrl.endsWith('.pdf') ? (
                         <FileText size={48} color="var(--primary-color)" />
                       ) : (
@@ -238,13 +238,13 @@ export default function AdminCertifications() {
                     </div>
                     
                     <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginBottom: '1rem' }}>
-                      <span style={{ padding: '4px 8px', background: 'rgba(0, 240, 255, 0.1)', color: 'var(--primary-color)', borderRadius: '4px', fontSize: '0.75rem', fontWeight: 600 }}>
+                      <span style={{ padding: '4px 8px', background: 'var(--primary-alpha-10)', color: 'var(--primary-color)', borderRadius: '4px', fontSize: '0.75rem', fontWeight: 600 }}>
                         {cert.issuer}
                       </span>
                     </div>
 
                     <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: '0.5rem', alignItems: 'flex-start' }}>
-                      <span style={{ padding: '4px 8px', background: 'rgba(255, 255, 255, 0.05)', color: 'var(--text-secondary)', borderRadius: '4px', fontSize: '0.75rem', fontFamily: 'var(--font-space)' }}>
+                      <span style={{ padding: '4px 8px', background: 'var(--panel-bg-hover)', color: 'var(--text-secondary)', borderRadius: '4px', fontSize: '0.75rem', fontFamily: 'var(--font-space)' }}>
                         {cert.year}
                       </span>
                       {cert.fileUrl ? (
@@ -259,10 +259,10 @@ export default function AdminCertifications() {
                     )}
                     
                     <div style={{ display: 'flex', gap: '0.75rem', marginTop: '1.5rem', paddingTop: '1rem', borderTop: '1px solid var(--glass-border)' }}>
-                      <button onClick={() => handleEdit(cert)} style={{ background: 'rgba(255,255,255,0.05)', border: 'none', color: 'var(--text-primary)', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.5rem', flex: 1, justifyContent: 'center' }} className="hover:bg-white/10">
+                      <button onClick={() => handleEdit(cert)} style={{ background: 'var(--panel-bg-hover)', border: 'none', color: 'var(--text-primary)', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.5rem', flex: 1, justifyContent: 'center' }} className="hover:bg-white/10">
                         <Edit2 size={14} /> Edit
                       </button>
-                      <button onClick={() => handleDelete(cert.id)} style={{ background: 'rgba(255, 77, 79, 0.1)', border: 'none', color: '#ff4d4f', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.5rem', flex: 1, justifyContent: 'center' }} className="hover:bg-red-500/20">
+                      <button onClick={() => handleDelete(cert.id)} style={{ background: 'var(--danger-alpha-10)', border: 'none', color: '#ff4d4f', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.5rem', flex: 1, justifyContent: 'center' }} className="hover:bg-red-500/20">
                         <Trash2 size={14} /> Delete
                       </button>
                     </div>

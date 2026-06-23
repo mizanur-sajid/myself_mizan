@@ -20,7 +20,7 @@ export default function AdminSocials() {
   const [searchQuery, setSearchQuery] = useState('');
 
   const fetchSocials = () => {
-    fetch('/api/admin/socials')
+    fetch('/api/socials.php')
       .then(res => res.json())
       .then(data => { if (Array.isArray(data)) setSocials(data); })
       .catch(console.error);
@@ -34,7 +34,7 @@ export default function AdminSocials() {
       await fetch(`/api/admin/socials/${editingId}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name, url, icon }) });
       setEditingId(null);
     } else {
-      await fetch('/api/admin/socials', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name, url, icon }) });
+      await fetch('/api/socials.php', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name, url, icon }) });
     }
     setName(''); setUrl(''); setIcon('');
     fetchSocials();
@@ -62,7 +62,7 @@ export default function AdminSocials() {
   const filteredSocials = socials.filter(s => s.name.toLowerCase().includes(searchQuery.toLowerCase()));
 
   const inputStyles = {
-    padding: '12px 16px', borderRadius: '8px', border: '1px solid var(--glass-border)', background: 'rgba(255,255,255,0.02)', color: 'var(--text-primary)', width: '100%', transition: 'all 0.3s ease'
+    padding: '12px 16px', borderRadius: '8px', border: '1px solid var(--glass-border)', background: 'var(--panel-bg)', color: 'var(--text-primary)', width: '100%', transition: 'all 0.3s ease'
   };
 
   return (
@@ -114,7 +114,7 @@ export default function AdminSocials() {
               placeholder="Search socials by name..." 
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              style={{ width: '100%', padding: '14px 16px 14px 44px', borderRadius: '12px', border: '1px solid var(--glass-border)', background: 'rgba(255,255,255,0.02)', color: 'var(--text-primary)', fontSize: '1rem' }}
+              style={{ width: '100%', padding: '14px 16px 14px 44px', borderRadius: '12px', border: '1px solid var(--glass-border)', background: 'var(--panel-bg)', color: 'var(--text-primary)', fontSize: '1rem' }}
             />
           </div>
 
@@ -134,10 +134,10 @@ export default function AdminSocials() {
                   <a href={social.url} target="_blank" rel="noreferrer" style={{ fontSize: '0.9rem', color: 'var(--primary-color)', marginBottom: '1.5rem', wordBreak: 'break-all' }}>{social.url}</a>
                   
                   <div style={{ display: 'flex', gap: '0.75rem', marginTop: 'auto', paddingTop: '1rem', borderTop: '1px solid var(--glass-border)' }}>
-                    <button onClick={() => handleEdit(social)} style={{ background: 'rgba(255,255,255,0.05)', border: 'none', color: 'var(--text-primary)', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.5rem', flex: 1, justifyContent: 'center' }} className="hover:bg-white/10">
+                    <button onClick={() => handleEdit(social)} style={{ background: 'var(--panel-bg-hover)', border: 'none', color: 'var(--text-primary)', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.5rem', flex: 1, justifyContent: 'center' }} className="hover:bg-white/10">
                       <Edit2 size={14} /> Edit
                     </button>
-                    <button onClick={() => handleDelete(social.id)} style={{ background: 'rgba(255, 77, 79, 0.1)', border: 'none', color: '#ff4d4f', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.5rem', flex: 1, justifyContent: 'center' }} className="hover:bg-red-500/20">
+                    <button onClick={() => handleDelete(social.id)} style={{ background: 'var(--danger-alpha-10)', border: 'none', color: '#ff4d4f', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.5rem', flex: 1, justifyContent: 'center' }} className="hover:bg-red-500/20">
                       <Trash2 size={14} /> Delete
                     </button>
                   </div>

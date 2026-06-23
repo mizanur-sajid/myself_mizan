@@ -21,7 +21,7 @@ export default function AdminMessages() {
   const [readIds, setReadIds] = useState<Set<number>>(new Set()); // UI only placeholder
 
   const fetchMessages = () => {
-    fetch('/api/contact')
+    fetch('/api/messages.php')
       .then(res => res.json())
       .then(data => {
         if (Array.isArray(data)) setMessages(data);
@@ -32,19 +32,19 @@ export default function AdminMessages() {
   useEffect(() => fetchMessages(), []);
 
   const handleArchive = async (id: number, currentStatus: boolean) => {
-    await fetch('/api/contact', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id, archived: !currentStatus }) });
+    await fetch('/api/messages.php', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id, archived: !currentStatus }) });
     fetchMessages();
   };
 
   const handleSoftDelete = async (id: number, restore = false) => {
-    await fetch('/api/contact', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id, deleted: !restore }) });
+    await fetch('/api/messages.php', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id, deleted: !restore }) });
     fetchMessages();
     setSelectedIds(prev => { const n = new Set(prev); n.delete(id); return n; });
   };
 
   const handleDelete = async (id: number) => {
     if (!confirm('Permanently delete this message?')) return;
-    await fetch('/api/contact', { method: 'DELETE', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id }) });
+    await fetch('/api/messages.php', { method: 'DELETE', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id }) });
     fetchMessages();
     setSelectedIds(prev => { const n = new Set(prev); n.delete(id); return n; });
   };
@@ -57,13 +57,13 @@ export default function AdminMessages() {
     for (const id of selectedIds) {
       if (action === 'archive') {
         const msg = messages.find(m => m.id === id);
-        if (msg) await fetch('/api/contact', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id, archived: true }) });
+        if (msg) await fetch('/api/messages.php', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id, archived: true }) });
       } else if (action === 'delete') {
-        await fetch('/api/contact', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id, deleted: true }) });
+        await fetch('/api/messages.php', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id, deleted: true }) });
       } else if (action === 'restore') {
-        await fetch('/api/contact', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id, deleted: false }) });
+        await fetch('/api/messages.php', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id, deleted: false }) });
       } else if (action === 'permanent') {
-        await fetch('/api/contact', { method: 'DELETE', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id }) });
+        await fetch('/api/messages.php', { method: 'DELETE', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id }) });
       }
     }
     setSelectedIds(new Set());
@@ -102,9 +102,9 @@ export default function AdminMessages() {
       onClick={() => { setActiveTab(id); setSelectedIds(new Set()); }}
       style={{ 
         display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '10px 20px', borderRadius: '8px', fontWeight: 500, fontSize: '0.95rem',
-        background: activeTab === id ? 'rgba(0, 240, 255, 0.1)' : 'transparent',
+        background: activeTab === id ? 'var(--primary-alpha-10)' : 'transparent',
         color: activeTab === id ? 'var(--primary-color)' : 'var(--text-secondary)',
-        border: activeTab === id ? '1px solid rgba(0, 240, 255, 0.2)' : '1px solid transparent',
+        border: activeTab === id ? '1px solid var(--primary-alpha-20)' : '1px solid transparent',
         transition: 'all 0.2s', cursor: 'pointer'
       }}
     >
@@ -124,7 +124,7 @@ export default function AdminMessages() {
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
         {/* Toolbar */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
-          <div style={{ display: 'flex', gap: '0.5rem', background: 'rgba(255,255,255,0.02)', padding: '0.5rem', borderRadius: '12px', border: '1px solid var(--glass-border)' }}>
+          <div style={{ display: 'flex', gap: '0.5rem', background: 'var(--panel-bg)', padding: '0.5rem', borderRadius: '12px', border: '1px solid var(--glass-border)' }}>
             <TabButton id="inbox" label="Inbox" icon={Inbox} />
             <TabButton id="archived" label="Archived" icon={Archive} />
             <TabButton id="recycle" label="Recycle Bin" icon={Trash2} />
@@ -137,14 +137,14 @@ export default function AdminMessages() {
               placeholder="Search messages..." 
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              style={{ width: '100%', padding: '10px 12px 10px 40px', borderRadius: '8px', border: '1px solid var(--glass-border)', background: 'rgba(255,255,255,0.02)', color: 'var(--text-primary)' }}
+              style={{ width: '100%', padding: '10px 12px 10px 40px', borderRadius: '8px', border: '1px solid var(--glass-border)', background: 'var(--panel-bg)', color: 'var(--text-primary)' }}
             />
           </div>
         </div>
 
         {/* Bulk Actions */}
         {selectedIds.size > 0 && (
-          <div style={{ padding: '1rem', background: 'rgba(0, 240, 255, 0.05)', borderRadius: '8px', border: '1px solid rgba(0, 240, 255, 0.2)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', animation: 'fadeIn 0.2s', flexWrap: 'wrap', gap: '1rem' }}>
+          <div style={{ padding: '1rem', background: 'var(--primary-alpha-10)', borderRadius: '8px', border: '1px solid var(--primary-alpha-20)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', animation: 'fadeIn 0.2s', flexWrap: 'wrap', gap: '1rem' }}>
             <span style={{ fontSize: '0.9rem', color: 'var(--text-primary)' }}>{selectedIds.size} message(s) selected</span>
             <div style={{ display: 'flex', gap: '1rem' }}>
               {activeTab === 'inbox' && <button onClick={() => handleBulkAction('archive')} style={{ background: 'transparent', border: 'none', color: 'var(--primary-color)', cursor: 'pointer', fontSize: '0.9rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}><Archive size={16}/> Archive</button>}
@@ -184,7 +184,7 @@ export default function AdminMessages() {
                   style={{ 
                     padding: '1.5rem', display: 'flex', gap: '1.5rem', alignItems: 'flex-start',
                     border: isSelected ? '1px solid var(--primary-color)' : '1px solid var(--glass-border)',
-                    background: isUnread ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.2)',
+                    background: isUnread ? 'var(--panel-bg-hover)' : 'var(--panel-border)',
                     transition: 'all 0.2s ease', cursor: 'pointer'
                   }}
                   onClick={() => { markAsRead(msg.id); }}
@@ -193,7 +193,7 @@ export default function AdminMessages() {
                     {isSelected ? <CheckSquare size={20} /> : <Square size={20} />}
                   </button>
                   
-                  <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                  <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'var(--panel-border)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                     <User size={20} color="var(--text-secondary)" />
                   </div>
                   
@@ -213,22 +213,22 @@ export default function AdminMessages() {
                     
                     <div style={{ fontSize: '0.95rem', lineHeight: 1.6, color: isUnread ? 'var(--text-primary)' : 'var(--text-secondary)' }} dangerouslySetInnerHTML={{ __html: msg.content }} />
                     
-                    <div style={{ display: 'flex', gap: '0.75rem', marginTop: '1.5rem', borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '1rem' }}>
+                    <div style={{ display: 'flex', gap: '0.75rem', marginTop: '1.5rem', borderTop: '1px solid var(--panel-bg-hover)', paddingTop: '1rem' }}>
                       {activeTab !== 'recycle' ? (
                         <>
-                          <button onClick={(e) => { e.stopPropagation(); handleArchive(msg.id, msg.archived); }} style={{ background: 'rgba(255,255,255,0.05)', border: 'none', color: 'var(--text-primary)', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }} className="hover:bg-white/10">
+                          <button onClick={(e) => { e.stopPropagation(); handleArchive(msg.id, msg.archived); }} style={{ background: 'var(--panel-bg-hover)', border: 'none', color: 'var(--text-primary)', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }} className="hover:bg-white/10">
                             <Archive size={14} /> {msg.archived ? 'Move to Inbox' : 'Archive'}
                           </button>
-                          <button onClick={(e) => { e.stopPropagation(); handleSoftDelete(msg.id); }} style={{ background: 'rgba(255, 77, 79, 0.1)', border: 'none', color: '#ff4d4f', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }} className="hover:bg-red-500/20">
+                          <button onClick={(e) => { e.stopPropagation(); handleSoftDelete(msg.id); }} style={{ background: 'var(--danger-alpha-10)', border: 'none', color: '#ff4d4f', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }} className="hover:bg-red-500/20">
                             <Trash2 size={14} /> Delete
                           </button>
                         </>
                       ) : (
                         <>
-                          <button onClick={(e) => { e.stopPropagation(); handleSoftDelete(msg.id, true); }} style={{ background: 'rgba(0, 240, 255, 0.1)', border: 'none', color: 'var(--primary-color)', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }} className="hover:bg-cyan-500/20">
+                          <button onClick={(e) => { e.stopPropagation(); handleSoftDelete(msg.id, true); }} style={{ background: 'var(--primary-alpha-10)', border: 'none', color: 'var(--primary-color)', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }} className="hover:bg-cyan-500/20">
                             <Inbox size={14} /> Restore
                           </button>
-                          <button onClick={(e) => { e.stopPropagation(); handleDelete(msg.id); }} style={{ background: 'rgba(255, 77, 79, 0.1)', border: 'none', color: '#ff4d4f', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }} className="hover:bg-red-500/20">
+                          <button onClick={(e) => { e.stopPropagation(); handleDelete(msg.id); }} style={{ background: 'var(--danger-alpha-10)', border: 'none', color: '#ff4d4f', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }} className="hover:bg-red-500/20">
                             <Trash2 size={14} /> Permanently Delete
                           </button>
                         </>

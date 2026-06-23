@@ -9,7 +9,7 @@ export function SocialSidebar() {
   const [socials, setSocials] = useState<any[]>([]);
 
   useEffect(() => {
-    fetch('/api/socials')
+    fetch('/api/socials.php')
       .then(res => res.json())
       .then(data => { if (Array.isArray(data)) setSocials(data); })
       .catch(console.error);

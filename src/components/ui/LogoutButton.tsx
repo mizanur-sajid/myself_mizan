@@ -2,7 +2,7 @@
 
 export const LogoutButton = () => {
   const handleLogout = async () => {
-    await fetch('/api/auth/logout', { method: 'POST' });
+    await fetch('/api/auth.php', { method: 'POST' });
     window.location.href = '/login';
   };
 
@@ -10,9 +10,9 @@ export const LogoutButton = () => {
     <button 
       onClick={handleLogout}
       style={{ 
-        background: 'rgba(255, 77, 79, 0.1)', 
+        background: 'var(--danger-alpha-10)', 
         color: '#ff4d4f', 
-        border: '1px solid rgba(255, 77, 79, 0.2)', 
+        border: '1px solid var(--danger-alpha-20)', 
         padding: '0.5rem 1rem', 
         borderRadius: '6px', 
         cursor: 'pointer',
