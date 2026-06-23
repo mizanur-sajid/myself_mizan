@@ -7,20 +7,13 @@ import { ContactForm } from '../components/ui/ContactForm';
 import { StickyNav } from '../components/ui/StickyNav';
 import { SkillIcon } from '../components/ui/SkillIcon';
 import { SirenText } from '../components/ui/SirenText';
-import {
-  fallbackCertifications,
-  fallbackProjects,
-  fallbackPublications,
-  fallbackSkills,
-  sortSkillsForDisplay,
-} from '../lib/portfolioFallback';
 
 export default function Home() {
-  const [skills, setSkills] = useState(fallbackSkills);
-  const [publications, setPublications] = useState(fallbackPublications);
-  const [certifications, setCertifications] = useState(fallbackCertifications);
-  const [projects, setProjects] = useState(fallbackProjects);
-  const [loading, setLoading] = useState(false);
+  const [skills, setSkills] = useState<any[]>([]);
+  const [publications, setPublications] = useState<any[]>([]);
+  const [certifications, setCertifications] = useState<any[]>([]);
+  const [projects, setProjects] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -39,45 +32,22 @@ export default function Home() {
 
         if (skillsRes.ok) {
           const rawSkills = await skillsRes.json();
-          if (Array.isArray(rawSkills) && rawSkills.length > 0) {
-            setSkills(sortSkillsForDisplay(rawSkills));
-          }
-        } else {
-          setSkills(fallbackSkills);
+          setSkills(rawSkills.sort((a: any, b: any) => {
+            if (a.name.toLowerCase() === 'python') return -1;
+            if (b.name.toLowerCase() === 'python') return 1;
+            if (a.name.toLowerCase() === 'it support') return 1;
+            if (b.name.toLowerCase() === 'it support') return -1;
+            return a.id - b.id;
+          }));
         }
         
-        if (pubsRes.ok) {
-          const rawPublications = await pubsRes.json();
-          if (Array.isArray(rawPublications) && rawPublications.length > 0) {
-            setPublications(rawPublications);
-          }
-        } else {
-          setPublications(fallbackPublications);
-        }
+        if (pubsRes.ok) setPublications(await pubsRes.json());
 
-        if (certsRes.ok) {
-          const rawCertifications = await certsRes.json();
-          if (Array.isArray(rawCertifications) && rawCertifications.length > 0) {
-            setCertifications(rawCertifications);
-          }
-        } else {
-          setCertifications(fallbackCertifications);
-        }
+        if (certsRes.ok) setCertifications(await certsRes.json());
 
-        if (projsRes.ok) {
-          const rawProjects = await projsRes.json();
-          if (Array.isArray(rawProjects) && rawProjects.length > 0) {
-            setProjects(rawProjects);
-          }
-        } else {
-          setProjects(fallbackProjects);
-        }
+        if (projsRes.ok) setProjects(await projsRes.json());
       } catch (err) {
         console.error("Failed to load data", err);
-        setSkills(fallbackSkills);
-        setPublications(fallbackPublications);
-        setCertifications(fallbackCertifications);
-        setProjects(fallbackProjects);
       } finally {
         setLoading(false);
       }
@@ -128,17 +98,16 @@ export default function Home() {
         </div>
         
         <div>
-          {skills.length > 0 ? (
+          {loading ? (
+             <p style={{ opacity: 0.5 }}>Loading skills...</p>
+          ) : skills.length > 0 ? (
             Object.entries(skills.reduce((acc, skill) => {
               const cat = skill.category === 'Technical Skills' ? 'Technical Skills' : 'Additional Skills';
               if (!acc[cat]) acc[cat] = [];
               acc[cat].push(skill);
               return acc;
             }, { 'Technical Skills': [], 'Additional Skills': [] } as Record<string, typeof skills>))
-            .filter((entry): entry is [string, any[]] => {
-              const [_, catSkills] = entry;
-              return Array.isArray(catSkills) && catSkills.length > 0;
-            })
+            .filter(([_, catSkills]) => catSkills.length > 0)
             .map(([category, catSkills]) => (
               <div key={category} style={{ marginBottom: '4rem' }}>
                 {category === 'Additional Skills' && (
@@ -162,9 +131,7 @@ export default function Home() {
         </div>
         
         <style dangerouslySetInnerHTML={{__html: `
-          ) : loading ? (
-            <p style={{ opacity: 0.5 }}>Loading skills...</p>
-          ) : (
+          .skill-icon-wrapper:hover .skill-svg-container {
             color: var(--primary-color) !important;
             transform: translateY(-8px) scale(1.15);
           }
@@ -182,7 +149,9 @@ export default function Home() {
           </div>
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-          {publications.length > 0 ? publications.map(pub => (
+          {loading ? (
+             <p style={{ opacity: 0.5 }}>Loading publications...</p>
+          ) : publications.length > 0 ? publications.map(pub => (
             <GlassCard key={pub.id} style={{ padding: '2rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                 <div>
@@ -195,9 +164,7 @@ export default function Home() {
               {pub.fileUrl && <a href={pub.fileUrl} target="_blank" rel="noreferrer" style={{ color: 'var(--primary-color)', fontSize: '0.875rem', display: 'block', margin: '0.5rem 0' }}>View Uploaded Document</a>}
               {pub.description && <div style={{ marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid var(--glass-border)', fontSize: '0.9rem' }} dangerouslySetInnerHTML={{ __html: pub.description }} />}
             </GlassCard>
-          )) : loading ? (
-            <p style={{ opacity: 0.5 }}>Loading publications...</p>
-          ) : (
+          )) : (
             <p style={{ opacity: 0.5 }}>System awaiting publications...</p>
           )}
         </div>
@@ -211,7 +178,9 @@ export default function Home() {
           </div>
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))', gap: '2rem' }}>
-          {certifications.length > 0 ? certifications.map(cert => (
+          {loading ? (
+             <p style={{ opacity: 0.5 }}>Loading certifications...</p>
+          ) : certifications.length > 0 ? certifications.map(cert => (
             <GlassCard key={cert.id} style={{ padding: '2rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
               <div>
                 <h3 style={{ fontSize: '1.25rem', margin: 0 }}>{cert.name}</h3>
@@ -227,9 +196,7 @@ export default function Home() {
               </div>
               {cert.description && <div style={{ marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid var(--glass-border)', fontSize: '0.9rem' }} dangerouslySetInnerHTML={{ __html: cert.description }} />}
             </GlassCard>
-          )) : loading ? (
-            <p style={{ opacity: 0.5 }}>Loading certifications...</p>
-          ) : (
+          )) : (
             <p style={{ opacity: 0.5 }}>System awaiting certifications...</p>
           )}
         </div>
@@ -243,7 +210,9 @@ export default function Home() {
           </div>
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))', gap: '2rem' }}>
-          {projects.length > 0 ? projects.map(project => (
+          {loading ? (
+             <p style={{ opacity: 0.5 }}>Loading projects...</p>
+          ) : projects.length > 0 ? projects.map(project => (
             <GlassCard key={project.id} style={{ padding: '2rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                 <h3 style={{ fontSize: '1.25rem', margin: 0 }}>{project.title}</h3>
@@ -253,9 +222,7 @@ export default function Home() {
               {project.fileUrl && <a href={project.fileUrl} target="_blank" rel="noreferrer" style={{ color: 'var(--primary-color)', fontSize: '0.875rem', display: 'block', margin: '0.5rem 0' }}>View Image</a>}
               {project.description && <div style={{ marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid var(--glass-border)', fontSize: '0.9rem' }} dangerouslySetInnerHTML={{ __html: project.description }} />}
             </GlassCard>
-          )) : loading ? (
-            <p style={{ opacity: 0.5 }}>Loading projects...</p>
-          ) : (
+          )) : (
             <p style={{ opacity: 0.5 }}>System awaiting projects...</p>
           )}
         </div>

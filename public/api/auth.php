@@ -23,40 +23,42 @@ function checkAuth() {
     $_SESSION['last_activity'] = time();
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $data = getJsonPayload();
-    if (isset($data['username']) && isset($data['password'])) {
-        if ($data['username'] === $ADMIN_USERNAME && $data['password'] === $ADMIN_PASSWORD) {
-            $_SESSION['is_admin'] = true;
-            $_SESSION['last_activity'] = time();
-            sendJson(['success' => true]);
+if (realpath($_SERVER['SCRIPT_FILENAME']) === __FILE__) {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $data = getJsonPayload();
+        if (isset($data['username']) && isset($data['password'])) {
+            if ($data['username'] === $ADMIN_USERNAME && $data['password'] === $ADMIN_PASSWORD) {
+                $_SESSION['is_admin'] = true;
+                $_SESSION['last_activity'] = time();
+                sendJson(['success' => true]);
+            } else {
+                sendJson(['error' => 'Invalid credentials'], 401);
+            }
         } else {
-            sendJson(['error' => 'Invalid credentials'], 401);
+            sendJson(['error' => 'Username and password required'], 400);
         }
-    } else {
-        sendJson(['error' => 'Username and password required'], 400);
     }
-}
 
-if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
-    session_destroy();
-    sendJson(['success' => true]);
-}
+    if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
+        session_destroy();
+        sendJson(['success' => true]);
+    }
 
-if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    global $TIMEOUT_SECONDS;
-    if (isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true) {
-        // Enforce timeout on page reload check as well
-        if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > $TIMEOUT_SECONDS)) {
-            session_unset();
-            session_destroy();
-            sendJson(['authenticated' => false], 401);
+    if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+        global $TIMEOUT_SECONDS;
+        if (isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true) {
+            // Enforce timeout on page reload check as well
+            if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > $TIMEOUT_SECONDS)) {
+                session_unset();
+                session_destroy();
+                sendJson(['authenticated' => false], 401);
+            } else {
+                $_SESSION['last_activity'] = time();
+                sendJson(['authenticated' => true]);
+            }
         } else {
-            $_SESSION['last_activity'] = time();
-            sendJson(['authenticated' => true]);
+            sendJson(['authenticated' => false], 401);
         }
-    } else {
-        sendJson(['authenticated' => false], 401);
     }
 }
 ?>
