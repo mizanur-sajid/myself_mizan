@@ -6,9 +6,14 @@ export async function POST(req: Request) {
   try {
     const { username, password } = await req.json();
 
-    // Use environment variables or fallback hardcoded credentials
-    const adminUser = process.env.ADMIN_USER || 'admin';
-    const adminPass = process.env.ADMIN_PASS || 'password123';
+    // Securely retrieve credentials from environment variables
+    const adminUser = process.env.ADMIN_USER;
+    const adminPass = process.env.ADMIN_PASS;
+
+    if (!adminUser || !adminPass) {
+      console.error('CRITICAL: Admin credentials are not configured in environment variables.');
+      return NextResponse.json({ error: 'Server misconfiguration' }, { status: 500 });
+    }
 
     if (username === adminUser && password === adminPass) {
       const token = await signToken({ user: username });

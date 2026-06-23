@@ -78,14 +78,17 @@ export default async function Home() {
               acc[cat].push(skill);
               return acc;
             }, { 'Technical Skills': [], 'Additional Skills': [] } as Record<string, typeof skills>))
-            .filter(([_, catSkills]) => catSkills.length > 0)
+            .filter((entry): entry is [string, any[]] => {
+              const [_, catSkills] = entry;
+              return Array.isArray(catSkills) && catSkills.length > 0;
+            })
             .map(([category, catSkills]) => (
               <div key={category} style={{ marginBottom: '4rem' }}>
                 {category === 'Additional Skills' && (
                   <h3 style={{ fontSize: '2rem', marginBottom: '2rem', color: 'var(--text-primary)', fontWeight: 600 }}>Additional Skills</h3>
                 )}
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '2.5rem', alignItems: 'center' }}>
-                  {catSkills.map(skill => (
+                  {catSkills.map((skill: any) => (
                     <div key={skill.id} className="skill-icon-wrapper" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.75rem', cursor: 'pointer' }}>
                       <span className="skill-svg-container" style={{ color: 'var(--text-primary)', transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)' }}>
                         <SkillIcon name={skill.icon || 'code'} size={48} />
@@ -119,7 +122,7 @@ export default async function Home() {
             <h2 className="section-title" style={{ fontSize: '3rem' }}>Publications</h2>
           </div>
         </div>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))', gap: '2rem' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
           {publications.length > 0 ? publications.map(pub => (
             <GlassCard key={pub.id} style={{ padding: '2rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>

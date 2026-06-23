@@ -57,3 +57,10 @@ model Project {
   description String? // Rich text
   fileUrl     String? // Uploaded file
 }
+
+model Social {
+  id        Int     @id @default(autoincrement())
+  name      String
+  url       String
+  icon      String
+}
