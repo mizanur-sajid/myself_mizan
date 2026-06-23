@@ -21,10 +21,16 @@ export default function AdminMessages() {
   const [readIds, setReadIds] = useState<Set<number>>(new Set()); // UI only placeholder
 
   const fetchMessages = () => {
-    fetch('/api/messages.php')
+    fetch(`/api/messages.php?t=${Date.now()}`)
       .then(res => res.json())
       .then(data => {
-        if (Array.isArray(data)) setMessages(data);
+        if (Array.isArray(data)) {
+          setMessages(data.map(m => ({
+            ...m,
+            archived: Boolean(Number(m.archived)),
+            deleted: Boolean(Number(m.deleted))
+          })));
+        }
       })
       .catch(console.error);
   };
@@ -92,8 +98,13 @@ export default function AdminMessages() {
   };
 
   const filteredMessages = messages.filter(m => {
-    const matchesTab = activeTab === 'recycle' ? m.deleted : (activeTab === 'archived' ? m.archived && !m.deleted : !m.archived && !m.deleted);
-    const matchesSearch = m.name.toLowerCase().includes(searchQuery.toLowerCase()) || m.email.toLowerCase().includes(searchQuery.toLowerCase()) || m.content.toLowerCase().includes(searchQuery.toLowerCase());
+    const isDeleted = Boolean(Number(m.deleted));
+    const isArchived = Boolean(Number(m.archived));
+    
+    const matchesTab = activeTab === 'recycle' ? isDeleted : (activeTab === 'archived' ? isArchived && !isDeleted : !isArchived && !isDeleted);
+    const matchesSearch = (m.name || '').toLowerCase().includes(searchQuery.toLowerCase()) || 
+                          (m.email || '').toLowerCase().includes(searchQuery.toLowerCase()) || 
+                          (m.content || '').toLowerCase().includes(searchQuery.toLowerCase());
     return matchesTab && matchesSearch;
   });
 

@@ -19,6 +19,7 @@ export default function AdminLogin() {
     });
 
     if (res.ok) {
+      sessionStorage.setItem('isAdminAuth', 'true');
       window.location.href = '/admin';
     } else {
       setError('Invalid credentials');

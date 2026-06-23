@@ -20,11 +20,17 @@ export const ContactForm = () => {
         body: JSON.stringify(formData)
       });
       
-      if (res.ok) {
-        setStatus('Message sent successfully! I will get back to you soon.');
-        setFormData({ name: '', email: '', content: '' }); // Reset form
+      const contentType = res.headers.get('content-type');
+      if (res.ok && contentType && contentType.includes('application/json')) {
+        const data = await res.json();
+        if (data.success) {
+          setStatus('Message sent successfully! I will get back to you soon.');
+          setFormData({ name: '', email: '', content: '' }); // Reset form
+        } else {
+          setStatus(data.error || 'Failed to send message. Please try again.');
+        }
       } else {
-        setStatus('Failed to send message. Please try again.');
+        setStatus('Failed to send message. Please ensure the backend is running.');
       }
     } catch (err) {
       console.error(err);

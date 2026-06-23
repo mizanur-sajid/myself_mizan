@@ -18,11 +18,11 @@ export default function AdminDashboard() {
     fetch('/api/stats.php').then(r => r.json()).then(d => setViews(d.views || 0)).catch(() => {});
     
     // Fetch counts by getting arrays and measuring length
-    fetch('/api/messages.php').then(r => r.json()).then(d => setMessagesCount(Array.isArray(d) ? d.length : 0)).catch(() => {});
-    fetch('/api/skills.php').then(r => r.json()).then(d => setSkillsCount(Array.isArray(d) ? d.length : 0)).catch(() => {});
-    fetch('/api/publications.php').then(r => r.json()).then(d => setPubsCount(Array.isArray(d) ? d.length : 0)).catch(() => {});
-    fetch('/api/projects.php').then(r => r.json()).then(d => setProjectsCount(Array.isArray(d) ? d.length : 0)).catch(() => {});
-    fetch('/api/certifications.php').then(r => r.json()).then(d => setCertsCount(Array.isArray(d) ? d.length : 0)).catch(() => {});
+    fetch(`/api/messages.php?t=${Date.now()}`).then(r => r.json()).then(d => setMessagesCount(Array.isArray(d) ? d.length : 0)).catch(() => {});
+    fetch(`/api/skills.php?t=${Date.now()}`).then(r => r.json()).then(d => setSkillsCount(Array.isArray(d) ? d.length : 0)).catch(() => {});
+    fetch(`/api/publications.php?t=${Date.now()}`).then(r => r.json()).then(d => setPubsCount(Array.isArray(d) ? d.length : 0)).catch(() => {});
+    fetch(`/api/projects.php?t=${Date.now()}`).then(r => r.json()).then(d => setProjectsCount(Array.isArray(d) ? d.length : 0)).catch(() => {});
+    fetch(`/api/certifications.php?t=${Date.now()}`).then(r => r.json()).then(d => setCertsCount(Array.isArray(d) ? d.length : 0)).catch(() => {});
   }, []);
   
   // Mock data for advanced stats

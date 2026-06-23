@@ -2,7 +2,8 @@
 
 export const LogoutButton = () => {
   const handleLogout = async () => {
-    await fetch('/api/auth.php', { method: 'POST' });
+    await fetch('/api/auth.php', { method: 'DELETE' });
+    sessionStorage.removeItem('isAdminAuth');
     window.location.href = '/login';
   };
 
