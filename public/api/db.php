@@ -9,10 +9,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit();
 }
 
-$host = 'localhost'; // Change this to InfinityFree MySQL hostname (e.g., sql123.epizy.com)
-$db   = 'database_name'; // Change to InfinityFree Database Name
-$user = 'database_user'; // Change to InfinityFree Username
-$pass = 'database_password'; // Change to InfinityFree Password
+$host = 'sql105.infinityfree.com'; // Change this to InfinityFree MySQL hostname (e.g., sql123.epizy.com)
+$db   = 'if0_42242407_portfolio'; // Change to InfinityFree Database Name
+$user = 'if0_42242407'; // Change to InfinityFree Username
+$pass = 'YXJeZPtdpfbyI7p'; // Change to InfinityFree Password
 $charset = 'utf8mb4';
 
 $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
