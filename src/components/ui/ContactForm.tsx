@@ -11,21 +11,25 @@ export const ContactForm = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Since InfinityFree is static, we must use a mailto link instead of a backend API
-    const subject = encodeURIComponent(`Contact from ${formData.name}`);
+    setStatus('Sending message...');
     
-    // Use window to strip HTML tags from rich editor content for the email body
-    let cleanContent = formData.content;
-    if (typeof window !== 'undefined') {
-       const temp = document.createElement('div');
-       temp.innerHTML = formData.content;
-       cleanContent = temp.textContent || temp.innerText || '';
+    try {
+      const res = await fetch('/api/contact.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      });
+      
+      if (res.ok) {
+        setStatus('Message sent successfully! I will get back to you soon.');
+        setFormData({ name: '', email: '', content: '' }); // Reset form
+      } else {
+        setStatus('Failed to send message. Please try again.');
+      }
+    } catch (err) {
+      console.error(err);
+      setStatus('An error occurred. Please try again.');
     }
-    
-    const body = encodeURIComponent(`${cleanContent}\n\n---\nSender Email: ${formData.email}\nSender Name: ${formData.name}`);
-    
-    window.location.href = `mailto:mizanursajid@gmail.com?subject=${subject}&body=${body}`;
-    setStatus('Opened your email client. Please send the email from there!');
   };
 
   const inputStyles = {
