@@ -22,9 +22,9 @@ export function SocialSidebar() {
 
       if (skillsSection && projectsSection) {
         // Trigger when scrolling into skills
-        const startY = skillsSection.offsetTop - window.innerHeight / 2;
+        const startY = Math.max(0, skillsSection.offsetTop - window.innerHeight * 0.75);
         // Hide when scrolling past projects
-        const endY = projectsSection.offsetTop + projectsSection.offsetHeight - window.innerHeight / 2;
+        const endY = projectsSection.offsetTop + projectsSection.offsetHeight - window.innerHeight * 0.25;
         
         if (window.scrollY >= startY && window.scrollY <= endY) {
           setIsVisible(true);
@@ -61,7 +61,7 @@ export function SocialSidebar() {
             transition={{ type: 'spring', stiffness: 120, damping: 20 }}
             style={{
               position: 'fixed',
-              right: '24px',
+              left: '24px',
               top: '50%',
               display: 'flex',
               flexDirection: 'column',
@@ -82,6 +82,7 @@ export function SocialSidebar() {
                 {getIcon(social.icon)}
               </a>
             ))}
+            <span style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)', letterSpacing: '0.18em', textTransform: 'uppercase', fontSize: '0.7rem', color: 'var(--text-secondary)', marginTop: '0.25rem' }}>Socials</span>
           </motion.div>
         )}
       </AnimatePresence>
@@ -97,7 +98,7 @@ export function SocialSidebar() {
         }
         .social-tooltip {
           position: absolute;
-          right: 100%;
+          left: 100%;
           top: 50%;
           transform: translateY(-50%) translateX(-10px);
           background: var(--bg-color);
@@ -110,7 +111,7 @@ export function SocialSidebar() {
           visibility: hidden;
           transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
           white-space: nowrap;
-          margin-right: 15px;
+          margin-left: 15px;
           color: var(--text-primary);
           box-shadow: var(--card-shadow);
         }
@@ -118,6 +119,9 @@ export function SocialSidebar() {
           opacity: 1;
           visibility: visible;
           transform: translateY(-50%) translateX(0);
+        }
+        .social-sidebar:hover {
+          transform: translateX(0) translateY(-50%) !important;
         }
         .social-link.github:hover {
           color: var(--text-primary);
@@ -131,7 +135,7 @@ export function SocialSidebar() {
           color: #ea4335;
           transform: translateY(-4px) scale(1.1);
         }
-        @media (max-width: 1024px) {
+        @media (max-width: 768px) {
           .social-sidebar {
             display: none !important;
           }

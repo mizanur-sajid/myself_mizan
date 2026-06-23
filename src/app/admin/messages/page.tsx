@@ -13,6 +13,20 @@ interface Message {
   deleted: boolean;
 }
 
+function formatBangladeshDateTime(value: string) {
+  const date = new Date(value.replace(' ', 'T'));
+  return new Intl.DateTimeFormat('en-GB', {
+    timeZone: 'Asia/Dhaka',
+    weekday: 'short',
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: true,
+  }).format(date).replace(',', '');
+}
+
 export default function AdminMessages() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [activeTab, setActiveTab] = useState<'inbox' | 'archived' | 'recycle'>('inbox');
@@ -125,6 +139,23 @@ export default function AdminMessages() {
 
   return (
     <div style={{ animation: 'fadeIn 0.5s ease-out' }}>
+      <style dangerouslySetInnerHTML={{ __html: `
+        .message-content,
+        .message-content * {
+          max-width: 100%;
+        }
+
+        .message-content img,
+        .message-content video,
+        .message-content iframe,
+        .message-content table,
+        .message-content pre,
+        .message-content code {
+          max-width: 100%;
+          overflow-wrap: anywhere;
+          word-break: break-word;
+        }
+      ` }} />
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '2rem' }}>
         <div>
           <p className="accent-text" style={{ marginBottom: '0.5rem' }}>Communication</p>
@@ -196,7 +227,7 @@ export default function AdminMessages() {
                     padding: '1.5rem', display: 'flex', gap: '1.5rem', alignItems: 'flex-start',
                     border: isSelected ? '1px solid var(--primary-color)' : '1px solid var(--glass-border)',
                     background: isUnread ? 'var(--panel-bg-hover)' : 'var(--panel-border)',
-                    transition: 'all 0.2s ease', cursor: 'pointer'
+                    transition: 'all 0.2s ease', cursor: 'pointer', overflow: 'hidden'
                   }}
                   onClick={() => { markAsRead(msg.id); }}
                 >
@@ -209,20 +240,23 @@ export default function AdminMessages() {
                   </div>
                   
                   <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.5rem' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.5rem', gap: '1rem' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                         <h4 style={{ fontSize: '1.1rem', margin: 0, color: isUnread ? '#fff' : 'var(--text-primary)', fontWeight: isUnread ? 600 : 400 }}>{msg.name}</h4>
                         {isUnread && <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'var(--primary-color)' }} />}
                       </div>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-secondary)', fontSize: '0.85rem' }}>
-                        <Clock size={14} />
-                        {new Date(msg.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '0.25rem', color: 'var(--text-secondary)', fontSize: '0.85rem', textAlign: 'right', flexShrink: 0 }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                          <Clock size={14} />
+                          <span>{formatBangladeshDateTime(msg.createdAt)}</span>
+                        </div>
+                        <span style={{ fontSize: '0.75rem', letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--primary-color)' }}>BST / Dhaka</span>
                       </div>
                     </div>
                     
-                    <a href={`mailto:${msg.email}`} style={{ fontSize: '0.875rem', color: 'var(--primary-color)', display: 'inline-block', marginBottom: '1rem' }} onClick={e => e.stopPropagation()}>{msg.email}</a>
+                    <a href={`mailto:${msg.email}`} style={{ fontSize: '0.875rem', color: 'var(--primary-color)', display: 'inline-block', marginBottom: '1rem', wordBreak: 'break-word' }} onClick={e => e.stopPropagation()}>{msg.email}</a>
                     
-                    <div style={{ fontSize: '0.95rem', lineHeight: 1.6, color: isUnread ? 'var(--text-primary)' : 'var(--text-secondary)' }} dangerouslySetInnerHTML={{ __html: msg.content }} />
+                    <div className="message-content" style={{ fontSize: '0.95rem', lineHeight: 1.6, color: isUnread ? 'var(--text-primary)' : 'var(--text-secondary)', overflowWrap: 'anywhere', wordBreak: 'break-word', maxWidth: '100%' }} dangerouslySetInnerHTML={{ __html: msg.content }} />
                     
                     <div style={{ display: 'flex', gap: '0.75rem', marginTop: '1.5rem', borderTop: '1px solid var(--panel-bg-hover)', paddingTop: '1rem' }}>
                       {activeTab !== 'recycle' ? (
