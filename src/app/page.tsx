@@ -522,13 +522,9 @@ export default function Home() {
                       </div>
 
                       {/* View Credential Link */}
-                      {fileUrl ? (
-                        <a href={fileUrl} target="_blank" rel="noreferrer" style={{ color: 'var(--text-primary)', fontSize: '0.85rem', fontWeight: 600, padding: '8px 16px', background: 'rgba(255,255,255,0.03)', borderRadius: '8px', border: '1px solid var(--glass-border)', transition: 'all 0.2s', display: 'flex', alignItems: 'center', gap: '6px' }} className="hover-glow-white">
-                          View Credentials ↗
-                        </a>
-                      ) : (
-                        <span style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', opacity: 0.5, cursor: 'not-allowed', padding: '8px 16px' }}>Credentials Unavailable</span>
-                      )}
+                      <a href={fileUrl || "#"} target={fileUrl ? "_blank" : undefined} rel={fileUrl ? "noreferrer" : undefined} style={{ color: 'var(--text-primary)', fontSize: '0.85rem', fontWeight: 600, padding: '8px 16px', background: 'rgba(255,255,255,0.03)', borderRadius: '8px', border: '1px solid var(--glass-border)', transition: 'all 0.2s', display: 'flex', alignItems: 'center', gap: '6px' }} className="hover-glow-white">
+                        View Credentials ↗
+                      </a>
                     </div>
                   </GlassCard>
                 );

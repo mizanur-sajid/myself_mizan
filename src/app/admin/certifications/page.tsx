@@ -247,11 +247,7 @@ export default function AdminCertifications() {
                       <span style={{ padding: '4px 8px', background: 'var(--panel-bg-hover)', color: 'var(--text-secondary)', borderRadius: '4px', fontSize: '0.75rem', fontFamily: 'var(--font-space)' }}>
                         {cert.year}
                       </span>
-                      {cert.fileUrl ? (
-                        <a href={cert.fileUrl} target="_blank" rel="noreferrer" style={{ color: 'var(--text-primary)', fontSize: '0.9rem', textDecoration: 'underline', opacity: 0.8 }} className="hover:text-primary transition-colors">View Credentials ↗</a>
-                      ) : (
-                        <span style={{ color: 'var(--text-primary)', fontSize: '0.9rem', opacity: 0.5, cursor: 'not-allowed' }}>Credentials Unavailable</span>
-                      )}
+                      <a href={cert.fileUrl || "#"} target={cert.fileUrl ? "_blank" : undefined} rel={cert.fileUrl ? "noreferrer" : undefined} style={{ color: 'var(--text-primary)', fontSize: '0.9rem', textDecoration: 'underline', opacity: 0.8 }} className="hover:text-primary transition-colors">View Credentials ↗</a>
                     </div>
 
                     {cert.description && (
