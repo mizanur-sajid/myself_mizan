@@ -1,12 +1,12 @@
 .btn {
   cursor: pointer;
   border: none;
-  border-radius: 12px;
+  border-radius: 100px;
   padding: 14px 28px;
-  font-family: var(--font-space), sans-serif;
+  font-family: "SF Pro Display", "Inter", sans-serif;
   font-weight: 600;
   font-size: 0.95rem;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.01em;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   display: inline-flex;
   align-items: center;
@@ -18,25 +18,25 @@
 
 /* Premium Primary Button */
 .primary {
-  background: var(--text-primary);
-  color: var(--bg-color);
-  box-shadow: 0 8px 20px -6px rgba(0,0,0,0.3);
+  background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+  color: #ffffff;
+  box-shadow: 0 4px 15px -3px var(--primary-alpha-20);
 }
 
 [data-theme='dark'] .primary {
-  background: #fff;
-  color: #000;
-  box-shadow: 0 8px 25px -6px rgba(255,255,255,0.2);
+  background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+  color: #ffffff;
+  box-shadow: 0 4px 20px -5px var(--primary-alpha-20);
 }
 
 .primary:hover {
   transform: translateY(-2px) scale(1.02);
-  box-shadow: 0 12px 25px -8px rgba(255,255,255,0.4);
+  box-shadow: 0 8px 25px -5px var(--primary-alpha-20);
 }
 
 /* Sophisticated Outline Button */
 .outline {
-  background: transparent;
+  background: rgba(255, 255, 255, 0.05);
   color: var(--text-primary);
   border: 1px solid var(--glass-border);
   backdrop-filter: blur(10px);
@@ -49,16 +49,16 @@
 
 /* High-end Neon/Accent Button */
 .neon {
-  background: rgba(0, 240, 255, 0.1);
+  background: var(--primary-alpha-10);
   color: var(--primary-color);
-  border: 1px solid rgba(0, 240, 255, 0.3);
-  box-shadow: 0 0 20px -5px rgba(0, 240, 255, 0.2);
+  border: 1px solid var(--primary-alpha-20);
+  box-shadow: 0 0 15px -5px var(--primary-alpha-10);
 }
 
 .neon:hover {
-  background: rgba(0, 240, 255, 0.15);
+  background: var(--primary-alpha-20);
   border-color: var(--primary-color);
-  box-shadow: 0 0 30px -5px rgba(0, 240, 255, 0.4);
+  box-shadow: 0 0 25px -5px var(--primary-alpha-20);
   transform: translateY(-2px);
 }
 

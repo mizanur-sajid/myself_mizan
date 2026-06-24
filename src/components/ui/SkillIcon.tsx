@@ -1,7 +1,7 @@
 import React from 'react';
 import { 
   Code, Wrench, Network, FileText, Monitor, Search, BarChart, 
-  Lightbulb, MessageSquare, BookOpen, Users, Brain, Cpu, Headset, Laptop 
+  Lightbulb, MessageSquare, BookOpen, Users, Brain, Cpu, Headset, Laptop, Database 
 } from 'lucide-react';
 
 export function SkillIcon({ name, size = 24 }: { name: string, size?: number }) {
@@ -17,6 +17,18 @@ export function SkillIcon({ name, size = 24 }: { name: string, size?: number }) 
   }
   if (name.toLowerCase() === 'git') {
     return <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="currentColor"><path d="M23.546 10.93L13.067.452c-.604-.603-1.582-.603-2.188 0L8.708 2.627l2.76 2.76c.645-.215 1.379-.07 1.889.441.516.515.658 1.258.438 1.9l2.738 2.739c.642-.22 1.386-.077 1.902.439.816.815.816 2.137 0 2.953-.816.816-2.138.816-2.954 0-.528-.528-.675-1.285-.445-1.942l-2.718-2.718v5.823c.22.657.076 1.413-.45 1.94-.816.817-2.138.817-2.955 0-.815-.815-.815-2.136 0-2.952.526-.526 1.28-.671 1.936-.448V9.324c-.655-.224-.803-.976-.277-1.503l-2.77-2.77-5.617 5.617c-.603.605-.603 1.584 0 2.189l10.48 10.478c.605.604 1.584.604 2.189 0l10.478-10.478c.604-.605.604-1.584 0-2.189z"/></svg>;
+  }
+  if (name.toLowerCase() === 'react') {
+    return <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="-11.5 -10.23174 23 20.46348" fill="none"><circle cx="0" cy="0" r="2.05" fill="currentColor"/><g stroke="currentColor" strokeWidth="1" fill="none"><ellipse rx="11" ry="4.2"/><ellipse rx="11" ry="4.2" transform="rotate(60)"/><ellipse rx="11" ry="4.2" transform="rotate(120)"/></g></svg>;
+  }
+  if (name.toLowerCase() === 'next.js' || name.toLowerCase() === 'nextjs') {
+    return <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 180 180"><path fill="currentColor" fillRule="evenodd" d="M90 180C40.294 180 0 139.706 0 90S40.294 0 90 0s90 40.294 90 90-40.294 90-90 90Zm34.965-49.923L62.775 49.33H48v81.34h13.111V68.532l51.56 67.587A76.671 76.671 0 0 0 124.965 130.077ZM132 49.33H119.5v81.34H132V49.33Z"/></svg>;
+  }
+  if (name.toLowerCase() === 'php') {
+    return <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 128 128"><path fill="currentColor" d="M128 50.812c0 14.17-18.066 25.688-40.36 25.688-2.652 0-5.223-.195-7.668-.562l-2.094 10.976h-14.77l2.848-14.808c-4.633.914-9.617 1.41-14.782 1.41-2.906 0-5.746-.172-8.496-.512L40.75 83.004H25.98l2.953-15.48c-16.71-3.23-28.933-11.454-28.933-21.286 0-14.172 18.066-25.688 40.355-25.688 22.286 0 40.36 11.516 40.36 25.688zm-51.106 5.86c0-6.196-10.05-11.235-22.457-11.235-5.918 0-11.265 1.137-15.3 2.946L37.1 37.777c4.61-2.062 10.457-3.328 16.89-3.328 15.657 0 28.344 6.363 28.344 14.238 0 6.2-10.05 11.235-22.46 11.235-5.69 0-10.87-1.03-14.86-2.71l2.067-10.835c4.62 1.94 10.375 3.124 16.64 3.124 15.66 0 28.348-6.363 28.348-14.238z"/></svg>;
+  }
+  if (name.toLowerCase() === 'mysql') {
+    return <Database size={size} />;
   }
   
   // Lucide mappings
@@ -34,8 +46,10 @@ export function SkillIcon({ name, size = 24 }: { name: string, size?: number }) 
     messagesquare: <MessageSquare size={size} />,
     bookopen: <BookOpen size={size} />,
     users: <Users size={size} />,
-    brain: <Brain size={size} />,
-    cpu: <Cpu size={size} />
+    problemsolving: <Brain size={size} />,
+    troubleshooting: <Wrench size={size} />,
+    itsupport: <Headset size={size} />,
+    networking: <Network size={size} />
   };
 
   const key = name.toLowerCase().replace(/[^a-z]/g, '');

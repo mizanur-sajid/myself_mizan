@@ -9,9 +9,6 @@ const spaceGrotesk = Space_Grotesk({ subsets: ['latin'], variable: '--font-space
 export const metadata: Metadata = {
   title: 'Mizan | Portfolio',
   description: 'Premium futuristic portfolio',
-  icons: {
-    icon: '/mizan-profile.jpg',
-  },
 };
 
 import { ConstructionNotice } from '@/components/ui/ConstructionNotice';

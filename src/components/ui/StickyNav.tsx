@@ -61,17 +61,19 @@ export const StickyNav = () => {
       display: 'flex', 
       justifyContent: 'space-between', 
       alignItems: 'center', 
-      padding: '0.6rem 2rem', 
+      padding: '0.6rem 1.5rem', 
       border: '1px solid var(--glass-border)',
       position: 'sticky', 
       top: '1.5rem', 
       zIndex: 1000,
       background: 'var(--glass-bg)',
-      backdropFilter: 'blur(30px)',
-      WebkitBackdropFilter: 'blur(30px)',
-      margin: '0 0 4rem 0',
+      backdropFilter: 'blur(40px)',
+      WebkitBackdropFilter: 'blur(40px)',
+      margin: '0 auto 4rem auto',
+      maxWidth: '900px',
       borderRadius: '100px',
-      boxShadow: '0 20px 40px -10px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.05)'
+      boxShadow: '0 8px 32px -8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.05)',
+      transition: 'all 0.4s ease'
     }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
         <a 
@@ -110,9 +112,10 @@ export const StickyNav = () => {
               {activeSection === link.id && (
                 <span style={{
                   position: 'absolute',
-                  bottom: '-4px', left: 0, width: '100%', height: '2px',
+                  bottom: '-4px', left: '10%', width: '80%', height: '3px',
                   background: 'var(--primary-color)',
-                  borderRadius: '2px',
+                  borderRadius: '100px',
+                  boxShadow: '0 2px 10px var(--primary-alpha-20)'
                 }} />
               )}
             </a>

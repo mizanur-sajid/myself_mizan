@@ -61,7 +61,7 @@ export function SocialSidebar() {
             transition={{ type: 'spring', stiffness: 120, damping: 20 }}
             style={{
               position: 'fixed',
-              left: '24px',
+              right: '24px',
               top: '50%',
               display: 'flex',
               flexDirection: 'column',
@@ -82,7 +82,6 @@ export function SocialSidebar() {
                 {getIcon(social.icon)}
               </a>
             ))}
-            <span style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)', letterSpacing: '0.18em', textTransform: 'uppercase', fontSize: '0.7rem', color: 'var(--text-secondary)', marginTop: '0.25rem' }}>Socials</span>
           </motion.div>
         )}
       </AnimatePresence>
@@ -98,9 +97,9 @@ export function SocialSidebar() {
         }
         .social-tooltip {
           position: absolute;
-          left: 100%;
+          right: 100%;
           top: 50%;
-          transform: translateY(-50%) translateX(-10px);
+          transform: translateY(-50%) translateX(10px);
           background: var(--bg-color);
           padding: 6px 12px;
           border-radius: 6px;
@@ -111,7 +110,7 @@ export function SocialSidebar() {
           visibility: hidden;
           transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
           white-space: nowrap;
-          margin-left: 15px;
+          margin-right: 15px;
           color: var(--text-primary);
           box-shadow: var(--card-shadow);
         }
