@@ -331,6 +331,16 @@ input:focus, textarea:focus {
   gap: 1.5rem;
 }
 
+/* Responsive Breakpoints */
+@media (max-width: 1280px) {
+  .admin-page-container {
+    padding: 2rem;
+  }
+  .hero-section {
+    gap: 3rem !important;
+  }
+}
+
 @media (max-width: 1024px) {
   .admin-page-container {
     padding: 1.5rem;
@@ -346,7 +356,7 @@ input:focus, textarea:focus {
   }
   /* Global mobile typography and layout fixes */
   .section-title {
-    font-size: clamp(2rem, 8vw, 3.5rem) !important;
+    font-size: clamp(2.2rem, 8vw, 3.5rem) !important;
   }
   main {
     padding: 0 1rem !important;
@@ -359,5 +369,35 @@ input:focus, textarea:focus {
   }
   .contact-flex {
     flex-direction: column !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .section-title {
+    font-size: clamp(1.8rem, 8vw, 2.8rem) !important;
+  }
+  main {
+    padding: 0 0.8rem !important;
+  }
+  .glass-panel {
+    padding: 1.25rem !important;
+  }
+  .hero-section {
+    gap: 1.5rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .section-title {
+    font-size: clamp(1.5rem, 8vw, 2.2rem) !important;
+  }
+  main {
+    padding: 0 0.5rem !important;
+  }
+  .glass-panel {
+    padding: 1rem !important;
+  }
+  body {
+    font-size: 0.95rem;
   }
 }

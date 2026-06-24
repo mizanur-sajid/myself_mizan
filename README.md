@@ -1,101 +1,61 @@
-<div align="center">
-  <h1>Personal Portfolio & CMS</h1>
-  <p>A modern, full-stack personal portfolio and Content Management System (CMS) built with Next.js, React, and Prisma.</p>
-  
-  [![Next.js](https://img.shields.io/badge/Next.js-black?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org/)
-  [![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactjs.org/)
-  [![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-  [![Prisma](https://img.shields.io/badge/Prisma-3982CE?style=for-the-badge&logo=Prisma&logoColor=white)](https://www.prisma.io/)
-  [![Framer Motion](https://img.shields.io/badge/Framer_Motion-black?style=for-the-badge&logo=framer&logoColor=blue)](https://www.framer.com/motion/)
-</div>
+# Mizanur Rahman - Professional Portfolio
 
-This project features a highly polished public-facing portfolio and a secure, deeply integrated administrative dashboard for managing content on the fly.
+![Portfolio Preview](./public/profile.png)
 
-## 📋 Table of Contents
+Welcome to the open-source repository for my professional portfolio website. This is a highly interactive, extremely responsive Single Page Application (SPA) designed to showcase my skills, publications, certifications, and projects as a Computer Science and IT Engineer.
 
-- [Key Features](#-key-features)
-  - [Public Portfolio](#public-portfolio)
-  - [Admin Command Center (`/admin`)](#admin-command-center-admin)
-- [Tech Stack](#-tech-stack)
-- [Getting Started](#-getting-started)
-  - [Prerequisites](#prerequisites)
-  - [Installation](#installation)
-- [Architecture Highlights](#-architecture-highlights)
-- [License](#-license)
+Built with an emphasis on **Glassmorphism**, **Fluid Typography**, and **Micro-Animations**, this portfolio provides a premium, modern user experience on any device.
 
-## ✨ Key Features
+## Features
 
-### Public Portfolio
-* **Modern UI/UX**: Built with a sleek "glassmorphism" design system, smooth scroll tracking, and an iOS-style dynamic island navigation bar.
-* **Responsive Layout**: Fully responsive design that adapts flawlessly to desktop, tablet, and mobile displays.
-* **Dark/Light Mode**: Integrated theme toggling for user preference.
-* **Live Contact Form**: Visitors can send messages directly through the platform, which are securely stored and readable via the admin panel.
-* **Dynamic Sections**: Features dynamic displays for Expertise (Skills), Publications, and Certifications.
+- **Modern Glassmorphism UI:** Frosted glass panels with varying depths and dynamic blur filters.
+- **Framer Motion Animations:** Smooth page transitions, sticky navigation scrolling, and element reveals.
+- **100% Fluid & Responsive:** Uses modern CSS features like `clamp()` and comprehensive media queries to flawlessly scale from 4K widescreen monitors down to 480px smartphones.
+- **Dark/Light Mode Support:** Dynamically adjusts glass opacity, glows, and gradients based on user preference.
+- **Built-in Admin Dashboard:** A sleek, dedicated UI for managing portfolio content securely.
 
-### Admin Command Center (`/admin`)
-* **Secure Authentication**: Protected routes ensure only authorized access to the command center.
-* **Live Analytics dashboard**: Tracks and displays lifetime portfolio views and aggregate data (total skills, messages, etc.).
-* **Full CRUD CMS**: Create, Read, Update, and Delete capabilities for:
-  * **Skills**: Manage technical proficiencies and matrices.
-  * **Publications**: Showcase research, articles, and whitepapers with Rich Text descriptions.
-  * **Certifications**: Upload and display professional certificates and badges.
-* **Message Inbox**: Read and delete incoming communications from the public contact form.
-* **Advanced Profile Management**: Includes a custom-built image cropper (using `react-easy-crop`) to allow precise editing and management of the administrator's profile picture.
+## Tech Stack
 
-## 💻 Tech Stack
+- **Framework:** [Next.js](https://nextjs.org/) (App Router)
+- **Library:** [React](https://reactjs.org/)
+- **Styling:** Vanilla CSS (CSS Modules & Global Variables) for maximum control and performance.
+- **Animations:** [Framer Motion](https://www.framer.com/motion/)
+- **Icons:** [Lucide React](https://lucide.dev/)
 
-* **Framework**: [Next.js](https://nextjs.org/) (App Router)
-* **UI/Components**: React, native CSS (for granular glassmorphism control), [Framer Motion](https://www.framer.com/motion/)
-* **Database & ORM**: [Prisma ORM](https://www.prisma.io/)
-* **Icons**: `lucide-react`
-* **Image Processing**: `react-easy-crop`
-* **Charts**: `recharts`
+## Getting Started
 
-## 🚀 Getting Started
+First, clone the repository and install the dependencies:
 
-### Prerequisites
-* Node.js (v18 or higher recommended)
-* npm or yarn
+```bash
+git clone https://github.com/yourusername/myself_mizan.git
+cd myself_mizan
+npm install
+```
 
-### Installation
+Then, run the development server:
 
-1. **Clone the repository**
-   ```bash
-   git clone <your-repo-url>
-   cd myself_mizan
-   ```
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
+```
 
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-3. **Database Setup**
-   Push the Prisma schema to your database to create the required tables:
-   ```bash
-   npx prisma db push
-   npx prisma generate
-   ```
+## Project Structure
 
-4. **Environment Variables**
-   Ensure you have a `.env` file configured with your database connection string and any required authentication secrets.
-   ```env
-   DATABASE_URL="file:./dev.db" # Example for SQLite
-   ADMIN_PASSWORD="your-secure-password" # Set your admin password
-   ```
+- `src/app/`: Next.js App Router core pages and global CSS.
+- `src/components/ui/`: Modular, reusable React components (GlassCards, StickyNav, etc.).
+- `public/`: Static assets such as profile pictures, logos, and resumes.
 
-5. **Start the Development Server**
-   ```bash
-   npm run dev
-   ```
+## Design Philosophy
 
-6. Open [http://localhost:3000](http://localhost:3000) to view the public site.
-7. Open [http://localhost:3000/admin](http://localhost:3000/admin) to log into the CMS.
+This project was built to step away from traditional, flat layouts. By utilizing layered background glows, floating sticky navigation, and translucent glass-like cards, the interface feels dynamic and "alive" as you scroll and interact with it.
 
-## 🏗 Architecture Highlights
+---
 
-* **Server & Client Components**: Strategically separates Next.js Server Components for secure database fetching (Prisma) and Client Components for rich interactivity (Image cropping, ScrollSpy nav).
-* **API Routes**: Utilizes Next.js Route Handlers (`/api/*`) for handling client-side mutations (PUT, DELETE, POST) seamlessly.
-
-## 📄 License
-MIT
+*Made by Mizanur Rahman.*

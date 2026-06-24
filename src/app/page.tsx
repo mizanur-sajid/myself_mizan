@@ -7,7 +7,7 @@ import { Button } from '../components/ui/Button';
 import { ContactForm } from '../components/ui/ContactForm';
 import { StickyNav } from '../components/ui/StickyNav';
 import { SkillIcon } from '../components/ui/SkillIcon';
-import { SirenText } from '../components/ui/SirenText';
+import { AvailabilityBadge } from '../components/ui/AvailabilityBadge';
 import { Database, Brain, Eye, LineChart, Activity, Headset, Globe, Code2, CheckCircle2, Award, Building2, Layers, GitBranch, ExternalLink, ArrowRight, Monitor, Network, Sparkles, LayoutTemplate, LifeBuoy, MessageSquareText } from 'lucide-react';
 
 export default function Home() {
@@ -70,12 +70,12 @@ export default function Home() {
         transition={{ duration: 0.8, ease: "easeOut" }}
         style={{ minHeight: '70vh', display: 'flex', alignItems: 'center', justifyContent: 'space-between', position: 'relative', gap: '4rem', flexWrap: 'wrap-reverse' }}>
         <div style={{ maxWidth: '600px', zIndex: 10, flex: '1 1 400px' }}>
-          <SirenText />
+          <AvailabilityBadge />
           <h2 className="section-title" style={{ fontSize: 'clamp(3rem, 8vw, 5.5rem)', marginBottom: '1.5rem', lineHeight: 1.05 }}>
             Mizanur <br />
             <span className="gradient-text">Rahman</span>.
           </h2>
-          <p style={{ fontSize: '1.25rem', marginBottom: '3rem', opacity: 0.7, maxWidth: '600px', lineHeight: 1.6 }}>
+          <p style={{ fontSize: '1rem', marginBottom: '3rem', opacity: 0.7, maxWidth: '600px', lineHeight: 1.6 }}>
             Computer Science and IT Engineer with strong problem-solving skills and a passion for building practical technology solutions. Ready to contribute to impactful projects while continuously expanding professional expertise.
           </p>
           <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
@@ -811,13 +811,13 @@ export default function Home() {
         transition={{ duration: 0.6, type: "spring", bounce: 0.3 }}
         style={{ 
           textAlign: 'center', 
-          padding: '2rem', 
+          padding: '1rem 2rem', 
           border: '1px solid var(--glass-border)', 
           background: 'var(--glass-bg)', 
           backdropFilter: 'blur(40px)', 
           WebkitBackdropFilter: 'blur(40px)',
           margin: '0 auto 2rem auto',
-          maxWidth: '500px',
+          width: '100%',
           borderRadius: '24px',
           boxShadow: '0 8px 32px -8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.05)'
         }}
