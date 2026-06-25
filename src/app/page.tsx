@@ -87,12 +87,12 @@ export default function Home() {
             {config?.heroTitle ? (
                <>
                  {config.heroTitle.split(' ').slice(0, Math.ceil(config.heroTitle.split(' ').length / 2)).join(' ')} <br />
-                 <span className="gradient-text">{config.heroTitle.split(' ').slice(Math.ceil(config.heroTitle.split(' ').length / 2)).join(' ')}</span>.
+                 <span>{config.heroTitle.split(' ').slice(Math.ceil(config.heroTitle.split(' ').length / 2)).join(' ')}</span>.
                </>
             ) : (
                <>
                  Mizanur <br />
-                 <span className="gradient-text">Rahman</span>.
+                 <span>Rahman</span>.
                </>
             )}
           </h2>
