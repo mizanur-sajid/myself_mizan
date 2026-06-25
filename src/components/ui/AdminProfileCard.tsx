@@ -48,7 +48,7 @@ export const AdminProfileCard = () => {
     formData.append('file', croppedBlob, 'avatar.png');
 
     try {
-      const res = await fetch('/api/avatar.php', { method: 'POST', body: formData });
+      const res = await fetch('/api/avatar.php', { method: 'POST', headers: { 'X-CSRF-Token': sessionStorage.getItem('csrf_token') || '' }, body: formData });
       if (res.ok) {
         setTimestamp(Date.now());
       }
@@ -64,7 +64,7 @@ export const AdminProfileCard = () => {
     setUploading(true);
     setShowMenu(false);
     try {
-      await fetch('/api/avatar.php', { method: 'DELETE' });
+      await fetch('/api/avatar.php', { method: 'DELETE', headers: { 'X-CSRF-Token': sessionStorage.getItem('csrf_token') || '' } });
       setTimestamp(Date.now());
     } catch (err) {
       console.error(err);
@@ -81,7 +81,7 @@ export const AdminProfileCard = () => {
     try {
       await fetch('/api/settings.php', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'X-CSRF-Token': sessionStorage.getItem('csrf_token') || '', 'Content-Type': 'application/json' },
         body: JSON.stringify({ name: tempName })
       });
     } catch (err) {

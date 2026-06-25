@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { Search, Trash2, Archive, Inbox, User, Clock, CheckSquare, Square, Mail } from 'lucide-react';
+import { sanitizeHtml } from '@/lib/sanitize';
 
 interface Message {
   id: number;
@@ -52,19 +53,19 @@ export default function AdminMessages() {
   useEffect(() => fetchMessages(), []);
 
   const handleArchive = async (id: number, currentStatus: boolean) => {
-    await fetch('/api/messages.php', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id, archived: !currentStatus }) });
+    await fetch('/api/messages.php', { method: 'PUT', headers: { 'X-CSRF-Token': sessionStorage.getItem('csrf_token') || '', 'Content-Type': 'application/json' }, body: JSON.stringify({ id, archived: !currentStatus }) });
     fetchMessages();
   };
 
   const handleSoftDelete = async (id: number, restore = false) => {
-    await fetch('/api/messages.php', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id, deleted: !restore }) });
+    await fetch('/api/messages.php', { method: 'PUT', headers: { 'X-CSRF-Token': sessionStorage.getItem('csrf_token') || '', 'Content-Type': 'application/json' }, body: JSON.stringify({ id, deleted: !restore }) });
     fetchMessages();
     setSelectedIds(prev => { const n = new Set(prev); n.delete(id); return n; });
   };
 
   const handleDelete = async (id: number) => {
     if (!confirm('Permanently delete this message?')) return;
-    await fetch('/api/messages.php', { method: 'DELETE', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id }) });
+    await fetch('/api/messages.php', { method: 'DELETE', headers: { 'X-CSRF-Token': sessionStorage.getItem('csrf_token') || '', 'Content-Type': 'application/json' }, body: JSON.stringify({ id }) });
     fetchMessages();
     setSelectedIds(prev => { const n = new Set(prev); n.delete(id); return n; });
   };
@@ -77,13 +78,13 @@ export default function AdminMessages() {
     for (const id of selectedIds) {
       if (action === 'archive') {
         const msg = messages.find(m => m.id === id);
-        if (msg) await fetch('/api/messages.php', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id, archived: true }) });
+        if (msg) await fetch('/api/messages.php', { method: 'PUT', headers: { 'X-CSRF-Token': sessionStorage.getItem('csrf_token') || '', 'Content-Type': 'application/json' }, body: JSON.stringify({ id, archived: true }) });
       } else if (action === 'delete') {
-        await fetch('/api/messages.php', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id, deleted: true }) });
+        await fetch('/api/messages.php', { method: 'PUT', headers: { 'X-CSRF-Token': sessionStorage.getItem('csrf_token') || '', 'Content-Type': 'application/json' }, body: JSON.stringify({ id, deleted: true }) });
       } else if (action === 'restore') {
-        await fetch('/api/messages.php', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id, deleted: false }) });
+        await fetch('/api/messages.php', { method: 'PUT', headers: { 'X-CSRF-Token': sessionStorage.getItem('csrf_token') || '', 'Content-Type': 'application/json' }, body: JSON.stringify({ id, deleted: false }) });
       } else if (action === 'permanent') {
-        await fetch('/api/messages.php', { method: 'DELETE', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id }) });
+        await fetch('/api/messages.php', { method: 'DELETE', headers: { 'X-CSRF-Token': sessionStorage.getItem('csrf_token') || '', 'Content-Type': 'application/json' }, body: JSON.stringify({ id }) });
       }
     }
     setSelectedIds(new Set());
@@ -256,7 +257,7 @@ export default function AdminMessages() {
                     
                     <a href={`mailto:${msg.email}`} style={{ fontSize: '0.875rem', color: 'var(--primary-color)', display: 'inline-block', marginBottom: '1rem', wordBreak: 'break-word' }} onClick={e => e.stopPropagation()}>{msg.email}</a>
                     
-                    <div className="message-content" style={{ fontSize: '0.95rem', lineHeight: 1.6, color: isUnread ? 'var(--text-primary)' : 'var(--text-secondary)', overflowWrap: 'anywhere', wordBreak: 'break-word', maxWidth: '100%' }} dangerouslySetInnerHTML={{ __html: msg.content }} />
+                    <div className="message-content" style={{ fontSize: '0.95rem', lineHeight: 1.6, color: isUnread ? 'var(--text-primary)' : 'var(--text-secondary)', overflowWrap: 'anywhere', wordBreak: 'break-word', maxWidth: '100%' }} dangerouslySetInnerHTML={{ __html: sanitizeHtml() }} />
                     
                     <div style={{ display: 'flex', gap: '0.75rem', marginTop: '1.5rem', borderTop: '1px solid var(--panel-bg-hover)', paddingTop: '1rem' }}>
                       {activeTab !== 'recycle' ? (

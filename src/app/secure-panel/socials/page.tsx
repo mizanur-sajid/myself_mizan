@@ -31,10 +31,10 @@ export default function AdminSocials() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (editingId) {
-      await fetch('/api/socials.php', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: editingId, name, url, icon }) });
+      await fetch('/api/socials.php', { method: 'PUT', headers: { 'X-CSRF-Token': sessionStorage.getItem('csrf_token') || '', 'Content-Type': 'application/json' }, body: JSON.stringify({ id: editingId, name, url, icon }) });
       setEditingId(null);
     } else {
-      await fetch('/api/socials.php', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name, url, icon }) });
+      await fetch('/api/socials.php', { method: 'POST', headers: { 'X-CSRF-Token': sessionStorage.getItem('csrf_token') || '', 'Content-Type': 'application/json' }, body: JSON.stringify({ name, url, icon }) });
     }
     setName(''); setUrl(''); setIcon('');
     fetchSocials();
@@ -50,7 +50,7 @@ export default function AdminSocials() {
 
   const handleDelete = async (id: number) => {
     if (!confirm('Are you sure you want to delete this social link?')) return;
-    await fetch('/api/socials.php', { method: 'DELETE', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id }) });
+    await fetch('/api/socials.php', { method: 'DELETE', headers: { 'X-CSRF-Token': sessionStorage.getItem('csrf_token') || '', 'Content-Type': 'application/json' }, body: JSON.stringify({ id }) });
     fetchSocials();
   };
 

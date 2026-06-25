@@ -19,6 +19,11 @@ async function deploy() {
         console.log("✅ Connected successfully!");
         
         const sourceDir = path.join(process.cwd(), "out");
+        const fs = require("fs");
+        const notFoundDir = path.join(sourceDir, "_not-found");
+        if (fs.existsSync(notFoundDir)) {
+            fs.rmSync(notFoundDir, { recursive: true, force: true });
+        }
         const remoteDir = "/htdocs";
         
         console.log(`📤 Uploading files from local 'out' folder to '${remoteDir}'...`);

@@ -3,10 +3,11 @@ import { useEffect, useState, useRef } from 'react';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { Button } from '@/components/ui/Button';
 import { RichEditor } from '@/components/ui/RichEditor';
-import { UploadCloud, CheckCircle, PlusCircle, Edit2, Trash2, Briefcase, Star, StarOff, Image as ImageIcon, Link as LinkIcon, Calendar } from 'lucide-react';
+import { UploadCloud, CheckCircle, PlusCircle, Edit2, Trash2, BookOpen, FileText, Link as LinkIcon, Calendar } from 'lucide-react';
+import { sanitizeHtml } from '@/lib/sanitize';
 
-export default function AdminProjects() {
-  const [projects, setProjects] = useState<any[]>([]);
+export default function AdminPublications() {
+  const [pubs, setPubs] = useState<any[]>([]);
   const [title, setTitle] = useState('');
   const [link, setLink] = useState('');
   const [year, setYear] = useState('');
@@ -15,20 +16,16 @@ export default function AdminProjects() {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
-  
-  // UI ONLY PLACEHOLDERS
-  const [isFeatured, setIsFeatured] = useState(false);
-  const [techTags, setTechTags] = useState('');
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const fetchProjects = () => {
-    fetch('/api/projects.php').then(r => r.json()).then(data => {
-      if (Array.isArray(data)) setProjects(data);
+  const fetchPubs = () => {
+    fetch('/api/publications.php').then(r => r.json()).then(data => {
+      if (Array.isArray(data)) setPubs(data);
     }).catch(console.error);
   };
 
-  useEffect(() => fetchProjects(), []);
+  useEffect(() => fetchPubs(), []);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -52,11 +49,11 @@ export default function AdminProjects() {
     e.preventDefault();
     setUploading(true);
 
-    let fileUrl = projects.find(p => p.id === editingId)?.fileUrl || '';
+    let fileUrl = pubs.find(p => p.id === editingId)?.fileUrl || '';
     if (file) {
       const formData = new FormData();
       formData.append('file', file);
-      const uploadRes = await fetch('/api/upload.php', { method: 'POST', body: formData });
+      const uploadRes = await fetch('/api/upload.php', { method: 'POST', headers: { 'X-CSRF-Token': sessionStorage.getItem('csrf_token') || '' }, body: formData });
       if (uploadRes.ok) {
         const d = await uploadRes.json();
         fileUrl = d.url;
@@ -64,51 +61,54 @@ export default function AdminProjects() {
     }
 
     if (editingId) {
-      await fetch('/api/projects.php', {
+      await fetch('/api/publications.php', {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'X-CSRF-Token': sessionStorage.getItem('csrf_token') || '', 'Content-Type': 'application/json' },
         body: JSON.stringify({ id: editingId, title, link, year: parseInt(year), description, fileUrl })
       });
       setEditingId(null);
     } else {
-      await fetch('/api/projects.php', {
+      await fetch('/api/publications.php', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'X-CSRF-Token': sessionStorage.getItem('csrf_token') || '', 'Content-Type': 'application/json' },
         body: JSON.stringify({ title, link, year: parseInt(year), description, fileUrl })
       });
     }
 
     setTitle(''); setLink(''); setYear(''); setDescription(''); clearFile();
-    setIsFeatured(false); setTechTags('');
     setUploading(false);
-    fetchProjects();
+    fetchPubs();
   };
 
-  const handleEdit = (project: any) => {
-    setEditingId(project.id);
-    setTitle(project.title);
-    setLink(project.link || '');
-    setYear(project.year.toString());
-    setDescription(project.description || '');
-    setIsFeatured(false); setTechTags(''); // Mock reset
+  const handleEdit = (pub: any) => {
+    setEditingId(pub.id);
+    setTitle(pub.title);
+    setLink(pub.link);
+    setYear(pub.year.toString());
+    setDescription(pub.description || '');
     clearFile();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleDelete = async (id: number) => {
-    if (!confirm('Are you sure you want to delete this project?')) return;
-    await fetch('/api/projects.php', {
+    if (!confirm('Are you sure you want to delete this publication?')) return;
+    await fetch('/api/publications.php', {
       method: 'DELETE',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'X-CSRF-Token': sessionStorage.getItem('csrf_token') || '', 'Content-Type': 'application/json' },
       body: JSON.stringify({ id })
     });
-    fetchProjects();
+    fetchPubs();
   };
 
   const cancelEdit = () => {
     setEditingId(null);
     setTitle(''); setLink(''); setYear(''); setDescription(''); clearFile();
-    setIsFeatured(false); setTechTags('');
+  };
+
+  const handleAddNew = () => {
+    setEditingId(null);
+    setTitle(''); setLink(''); setYear(''); setDescription(''); clearFile();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const inputStyles = {
@@ -117,11 +117,13 @@ export default function AdminProjects() {
 
   return (
     <div style={{ animation: 'fadeIn 0.5s ease-out' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '3rem' }}>
-        <div>
-          <p className="accent-text" style={{ marginBottom: '0.5rem' }}>Portfolio Management</p>
-          <h2 style={{ fontSize: '3rem', margin: 0 }}>Projects</h2>
-        </div>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+        <h1 style={{ margin: 0, fontSize: '2rem', display: 'flex', alignItems: 'center', gap: '1rem' }}>
+          <BookOpen className="accent-text" /> Publications
+        </h1>
+        <Button onClick={handleAddNew} variant="primary">
+          <PlusCircle size={18} style={{ marginRight: '0.5rem' }} /> Add New Publication
+        </Button>
       </div>
       
       <div style={{ display: 'flex', gap: '3rem', flexWrap: 'wrap', alignItems: 'flex-start' }}>
@@ -131,14 +133,14 @@ export default function AdminProjects() {
           <GlassCard style={{ border: editingId ? '1px solid var(--primary-color)' : '' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem' }}>
               {editingId ? <CheckCircle className="text-primary" size={24} color="var(--primary-color)" /> : <PlusCircle className="text-accent" size={24} color="var(--accent-color)" />}
-              <h3 style={{ fontSize: '1.25rem', margin: 0 }}>{editingId ? 'Edit Project' : 'Add New Project'}</h3>
+              <h3 style={{ fontSize: '1.25rem', margin: 0 }}>{editingId ? 'Edit Publication' : 'Publish New Publication'}</h3>
             </div>
             
             <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
               <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '1.5rem', alignItems: 'flex-end' }}>
                 <div>
-                  <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.875rem', color: 'var(--text-secondary)' }}>Project Title</label>
-                  <input required value={title} onChange={e => setTitle(e.target.value)} style={inputStyles} placeholder="E-commerce Platform" />
+                  <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.875rem', color: 'var(--text-secondary)' }}>Publication Title</label>
+                  <input required value={title} onChange={e => setTitle(e.target.value)} style={inputStyles} placeholder="Publication Title" />
                 </div>
                 <div>
                   <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.875rem', color: 'var(--text-secondary)' }}>Year</label>
@@ -147,35 +149,10 @@ export default function AdminProjects() {
               </div>
 
               <div>
-                <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.875rem', color: 'var(--text-secondary)' }}>Project URL (Optional)</label>
+                <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.875rem', color: 'var(--text-secondary)' }}>External Link (URL)</label>
                 <div style={{ position: 'relative' }}>
                   <LinkIcon size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-secondary)' }} />
-                  <input value={link} onChange={e => setLink(e.target.value)} style={{ ...inputStyles, paddingLeft: '40px' }} placeholder="https://example.com" />
-                </div>
-              </div>
-
-              <div style={{ display: 'flex', gap: '1.5rem' }}>
-                <div style={{ flex: 1 }}>
-                  <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.875rem', color: 'var(--text-secondary)' }}>Tech Stack (UI Demo)</label>
-                  <input value={techTags} onChange={e => setTechTags(e.target.value)} style={inputStyles} placeholder="React, Node.js" />
-                  <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '0.5rem' }}>*Comma separated. (UI mock only)</p>
-                </div>
-                <div>
-                  <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.875rem', color: 'var(--text-secondary)' }}>Featured (UI Demo)</label>
-                  <button 
-                    type="button"
-                    onClick={() => setIsFeatured(!isFeatured)}
-                    style={{ 
-                      display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '12px 16px', borderRadius: '8px', 
-                      background: isFeatured ? 'var(--primary-alpha-10)' : 'var(--panel-bg)',
-                      border: isFeatured ? '1px solid var(--primary-color)' : '1px solid var(--glass-border)',
-                      color: isFeatured ? 'var(--primary-color)' : 'var(--text-secondary)',
-                      cursor: 'pointer', transition: 'all 0.2s', height: '44px'
-                    }}
-                  >
-                    {isFeatured ? <Star size={16} /> : <StarOff size={16} />}
-                    {isFeatured ? 'Featured' : 'Standard'}
-                  </button>
+                  <input required value={link} onChange={e => setLink(e.target.value)} style={{ ...inputStyles, paddingLeft: '40px' }} placeholder="https://doi.org/..." />
                 </div>
               </div>
               
@@ -187,7 +164,7 @@ export default function AdminProjects() {
               {/* Drag and drop styled upload */}
               <div>
                 <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.875rem', color: 'var(--text-secondary)' }}>
-                  {editingId ? 'Upload New Thumbnail (Optional)' : 'Upload Thumbnail (Image)'}
+                  {editingId ? 'Upload New Document (Optional)' : 'Upload Document/Image'}
                 </label>
                 <div 
                   style={{ 
@@ -203,7 +180,7 @@ export default function AdminProjects() {
                     ref={fileInputRef}
                     onChange={handleFileChange} 
                     style={{ display: 'none' }} 
-                    accept="image/*"
+                    accept="image/*,application/pdf"
                   />
                   
                   {previewUrl ? (
@@ -217,14 +194,14 @@ export default function AdminProjects() {
                     </div>
                   ) : file ? (
                     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
-                      <ImageIcon size={48} style={{ opacity: 0.5, marginBottom: '0.5rem' }} />
+                      <FileText size={48} style={{ opacity: 0.5, marginBottom: '0.5rem' }} />
                       <span style={{ fontSize: '0.9rem', color: 'var(--text-primary)' }}>{file.name} selected</span>
                     </div>
                   ) : (
                     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem', opacity: 0.6 }}>
                       <UploadCloud size={48} style={{ marginBottom: '0.5rem' }} />
-                      <p style={{ margin: 0, fontSize: '0.95rem' }}>Click or drag image to upload</p>
-                      <p style={{ margin: 0, fontSize: '0.75rem' }}>SVG, PNG, or JPG</p>
+                      <p style={{ margin: 0, fontSize: '0.95rem' }}>Click or drag file to upload</p>
+                      <p style={{ margin: 0, fontSize: '0.75rem' }}>SVG, PNG, JPG or PDF</p>
                     </div>
                   )}
                 </div>
@@ -238,7 +215,7 @@ export default function AdminProjects() {
               <div style={{ display: 'flex', gap: '1rem', alignSelf: 'flex-end', marginTop: '1rem' }}>
                 {editingId && <Button type="button" variant="outline" onClick={cancelEdit}>Cancel</Button>}
                 <Button type="submit" variant="primary">
-                  {uploading ? 'Processing...' : (editingId ? 'Save Changes' : 'Add Project')}
+                  {uploading ? 'Processing...' : (editingId ? 'Save Changes' : 'Publish Entry')}
                 </Button>
               </div>
             </form>
@@ -248,50 +225,53 @@ export default function AdminProjects() {
         {/* Right Column: List */}
         <div style={{ flex: '2 1 500px' }}>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '1.5rem' }}>
-            {projects.length === 0 ? (
+            {pubs.length === 0 ? (
               <div style={{ gridColumn: '1 / -1', padding: '3rem', textAlign: 'center', opacity: 0.5 }}>
-                <Briefcase size={48} style={{ margin: '0 auto 1rem auto', opacity: 0.2, display: 'block' }} />
-                <p>No projects found.</p>
+                <BookOpen size={48} style={{ margin: '0 auto 1rem auto', opacity: 0.2, display: 'block' }} />
+                <p>No publications found.</p>
               </div>
             ) : (
-              projects.map(project => (
-                <GlassCard key={project.id} style={{ padding: 0, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
-                  {project.fileUrl ? (
-                    <div style={{ width: '100%', height: '180px', background: 'var(--panel-border)', position: 'relative' }}>
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={project.fileUrl} alt={project.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                    </div>
-                  ) : (
-                    <div style={{ width: '100%', height: '180px', background: 'var(--panel-bg)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      <ImageIcon size={48} style={{ opacity: 0.1 }} />
+              pubs.map(pub => (
+                <GlassCard key={pub.id} style={{ padding: 0, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+                  {pub.fileUrl && (
+                    <div style={{ width: '100%', height: '160px', background: 'var(--panel-border)', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      {pub.fileUrl.endsWith('.pdf') ? (
+                        <FileText size={48} color="var(--primary-color)" />
+                      ) : (
+                        /* eslint-disable-next-line @next/next/no-img-element */
+                        <img src={pub.fileUrl} alt={pub.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                      )}
                     </div>
                   )}
                   
                   <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', flex: 1 }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }}>
-                      <h4 style={{ margin: 0, fontSize: '1.25rem', lineHeight: 1.3 }}>{project.title}</h4>
+                      <div>
+                        <h4 style={{ margin: 0, fontSize: '1.1rem', lineHeight: 1.3 }}>{pub.title}</h4>
+                        <p style={{ margin: '0.25rem 0 0 0', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>University Of Global Village</p>
+                      </div>
                     </div>
                     
-                    <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', marginBottom: '1.5rem', color: 'var(--text-secondary)', fontSize: '0.85rem' }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                        <Calendar size={14} /> {project.year}
+                    <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', marginBottom: '1.5rem', color: 'var(--text-secondary)', fontSize: '0.85rem', flexWrap: 'wrap' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', background: 'var(--panel-bg-hover)', padding: '4px 8px', borderRadius: '4px' }}>
+                        <Calendar size={14} /> {pub.year}
                       </div>
-                      {project.link && (
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                          <LinkIcon size={14} /> <a href={project.link} target="_blank" rel="noreferrer" style={{ color: 'var(--primary-color)' }}>Live Demo</a>
+                      {pub.link && (
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', background: 'var(--primary-alpha-10)', padding: '4px 8px', borderRadius: '4px' }}>
+                          <LinkIcon size={14} color="var(--primary-color)" /> <a href={pub.link} target="_blank" rel="noreferrer" style={{ color: 'var(--primary-color)', fontWeight: 500 }}>Read Publication</a>
                         </div>
                       )}
                     </div>
 
-                    {project.description && (
-                      <div style={{ paddingTop: '1rem', borderTop: '1px solid var(--glass-border)', fontSize: '0.875rem', color: 'var(--text-secondary)', flex: 1 }} dangerouslySetInnerHTML={{ __html: project.description }} />
+                    {pub.description && (
+                      <div style={{ paddingTop: '1rem', borderTop: '1px solid var(--glass-border)', fontSize: '0.875rem', color: 'var(--text-secondary)', flex: 1 }} dangerouslySetInnerHTML={{ __html: sanitizeHtml() }} />
                     )}
                     
                     <div style={{ display: 'flex', gap: '0.75rem', marginTop: '1.5rem', paddingTop: '1rem', borderTop: '1px solid var(--glass-border)' }}>
-                      <button onClick={() => handleEdit(project)} style={{ background: 'var(--panel-bg-hover)', border: 'none', color: 'var(--text-primary)', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.5rem', flex: 1, justifyContent: 'center' }} className="hover:bg-white/10">
+                      <button onClick={() => handleEdit(pub)} style={{ background: 'var(--panel-bg-hover)', border: 'none', color: 'var(--text-primary)', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.5rem', flex: 1, justifyContent: 'center' }} className="hover:bg-white/10">
                         <Edit2 size={14} /> Edit
                       </button>
-                      <button onClick={() => handleDelete(project.id)} style={{ background: 'var(--danger-alpha-10)', border: 'none', color: '#ff4d4f', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.5rem', flex: 1, justifyContent: 'center' }} className="hover:bg-red-500/20">
+                      <button onClick={() => handleDelete(pub.id)} style={{ background: 'var(--danger-alpha-10)', border: 'none', color: '#ff4d4f', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.5rem', flex: 1, justifyContent: 'center' }} className="hover:bg-red-500/20">
                         <Trash2 size={14} /> Delete
                       </button>
                     </div>

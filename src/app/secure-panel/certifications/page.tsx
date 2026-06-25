@@ -4,6 +4,7 @@ import { GlassCard } from '@/components/ui/GlassCard';
 import { Button } from '@/components/ui/Button';
 import { RichEditor } from '@/components/ui/RichEditor';
 import { UploadCloud, FileText, CheckCircle, PlusCircle, Edit2, Trash2, Award } from 'lucide-react';
+import { sanitizeHtml } from '@/lib/sanitize';
 
 export default function AdminCertifications() {
   const [certs, setCerts] = useState<any[]>([]);
@@ -52,7 +53,7 @@ export default function AdminCertifications() {
     if (file) {
       const formData = new FormData();
       formData.append('file', file);
-      const uploadRes = await fetch('/api/upload.php', { method: 'POST', body: formData });
+      const uploadRes = await fetch('/api/upload.php', { method: 'POST', headers: { 'X-CSRF-Token': sessionStorage.getItem('csrf_token') || '' }, body: formData });
       if (uploadRes.ok) {
         const d = await uploadRes.json();
         fileUrl = d.url;
@@ -62,14 +63,14 @@ export default function AdminCertifications() {
     if (editingId) {
       await fetch('/api/certifications.php', {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'X-CSRF-Token': sessionStorage.getItem('csrf_token') || '', 'Content-Type': 'application/json' },
         body: JSON.stringify({ id: editingId, name, issuer, year: parseInt(year), description, fileUrl })
       });
       setEditingId(null);
     } else {
       await fetch('/api/certifications.php', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'X-CSRF-Token': sessionStorage.getItem('csrf_token') || '', 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, issuer, year: parseInt(year), description, fileUrl })
       });
     }
@@ -93,7 +94,7 @@ export default function AdminCertifications() {
     if (!confirm('Are you sure you want to delete this certification?')) return;
     await fetch('/api/certifications.php', {
       method: 'DELETE',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'X-CSRF-Token': sessionStorage.getItem('csrf_token') || '', 'Content-Type': 'application/json' },
       body: JSON.stringify({ id })
     });
     fetchCerts();
@@ -251,7 +252,7 @@ export default function AdminCertifications() {
                     </div>
 
                     {cert.description && (
-                      <div style={{ paddingTop: '1rem', marginTop: '1rem', borderTop: '1px solid var(--glass-border)', fontSize: '0.875rem', color: 'var(--text-secondary)', flex: 1 }} dangerouslySetInnerHTML={{ __html: cert.description }} />
+                      <div style={{ paddingTop: '1rem', marginTop: '1rem', borderTop: '1px solid var(--glass-border)', fontSize: '0.875rem', color: 'var(--text-secondary)', flex: 1 }} dangerouslySetInnerHTML={{ __html: sanitizeHtml() }} />
                     )}
                     
                     <div style={{ display: 'flex', gap: '0.75rem', marginTop: '1.5rem', paddingTop: '1rem', borderTop: '1px solid var(--glass-border)' }}>

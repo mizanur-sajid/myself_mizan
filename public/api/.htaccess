@@ -1,0 +1,9 @@
+# Protect logs, JSON data, and SQLite databases
+<FilesMatch "\.(log|json|db|sqlite)$">
+    Require all denied
+</FilesMatch>
+
+# Block direct access to internal configuration
+<FilesMatch "^(db)\.php$">
+    Require all denied
+</FilesMatch>

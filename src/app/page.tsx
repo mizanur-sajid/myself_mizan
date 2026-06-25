@@ -9,6 +9,7 @@ import { StickyNav } from '../components/ui/StickyNav';
 import { SkillIcon } from '../components/ui/SkillIcon';
 import { AvailabilityBadge } from '../components/ui/AvailabilityBadge';
 import { Database, Brain, Eye, LineChart, Activity, Headset, Globe, Code2, CheckCircle2, Award, Building2, Layers, GitBranch, ExternalLink, ArrowRight, Monitor, Network, Sparkles, LayoutTemplate, LifeBuoy, MessageSquareText } from 'lucide-react';
+import { sanitizeHtml } from '@/lib/sanitize';
 
 export default function Home() {
   const [skills, setSkills] = useState<any[]>([]);

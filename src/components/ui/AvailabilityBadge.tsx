@@ -52,7 +52,7 @@ export function AvailabilityBadge() {
         </div>
         <span 
           style={{ 
-            color: '#4ade80', 
+            color: 'var(--text-primary)', 
             fontSize: '0.9rem', 
             fontWeight: 600,
             letterSpacing: '0.02em'

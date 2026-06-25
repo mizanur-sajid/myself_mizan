@@ -19,10 +19,13 @@ export default function AdminLogin() {
     });
 
     if (res.ok) {
+      const data = await res.json();
       sessionStorage.setItem('isAdminAuth', 'true');
-      window.location.href = '/admin';
+      if (data.csrf_token) sessionStorage.setItem('csrf_token', data.csrf_token);
+      window.location.href = '/secure-panel';
     } else {
-      setError('Invalid credentials');
+      const data = await res.json();
+      setError(data.error || 'Invalid credentials');
     }
   };
 

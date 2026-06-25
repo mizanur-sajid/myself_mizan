@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { AdminProfileCard } from '@/components/ui/AdminProfileCard';
-import { LayoutDashboard, Mail, Code, BookOpen, Award, Briefcase, Menu, X, Share2 } from 'lucide-react';
+import { LayoutDashboard, Mail, Code, BookOpen, Award, Briefcase, Menu, X, Share2, Shield } from 'lucide-react';
 
 export const AdminSidebar = () => {
   const pathname = usePathname();
@@ -19,13 +19,14 @@ export const AdminSidebar = () => {
   }, []);
 
   const navItems = [
-    { name: 'Overview', path: '/admin', icon: <LayoutDashboard size={20} /> },
-    { name: 'Messages', path: '/admin/messages', icon: <Mail size={20} /> },
-    { name: 'Skills', path: '/admin/skills', icon: <Code size={20} /> },
-    { name: 'Publications', path: '/admin/publications', icon: <BookOpen size={20} /> },
-    { name: 'Certifications', path: '/admin/certifications', icon: <Award size={20} /> },
-    { name: 'Projects', path: '/admin/projects', icon: <Briefcase size={20} /> },
-    { name: 'Socials', path: '/admin/socials', icon: <Share2 size={20} /> },
+    { name: 'Overview', path: '/secure-panel', icon: <LayoutDashboard size={20} /> },
+    { name: 'Messages', path: '/secure-panel/messages', icon: <Mail size={20} /> },
+    { name: 'Skills', path: '/secure-panel/skills', icon: <Code size={20} /> },
+    { name: 'Publications', path: '/secure-panel/publications', icon: <BookOpen size={20} /> },
+    { name: 'Certifications', path: '/secure-panel/certifications', icon: <Award size={20} /> },
+    { name: 'Projects', path: '/secure-panel/projects', icon: <Briefcase size={20} /> },
+    { name: 'Socials', path: '/secure-panel/socials', icon: <Share2 size={20} /> },
+    { name: 'Security', path: '/secure-panel/security', icon: <Shield size={20} /> },
   ];
 
   return (

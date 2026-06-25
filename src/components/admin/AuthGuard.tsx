@@ -10,7 +10,7 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
     // Check sessionStorage first to enforce strictly asking for password on new browser sessions
     const sessionAuth = sessionStorage.getItem('isAdminAuth');
     if (!sessionAuth) {
-      window.location.href = '/login';
+      window.location.href = '/secure-login';
       return;
     }
 
@@ -19,14 +19,15 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
       .then(res => res.json())
       .then(data => {
         if (data.authenticated) {
+          if (data.csrf_token) sessionStorage.setItem('csrf_token', data.csrf_token);
           setIsAuthenticated(true);
         } else {
           sessionStorage.removeItem('isAdminAuth');
-          window.location.href = '/login';
+          window.location.href = '/secure-login';
         }
       })
       .catch(() => {
-        window.location.href = '/login';
+        window.location.href = '/secure-login';
       });
   }, []);
 

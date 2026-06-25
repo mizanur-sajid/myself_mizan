@@ -2,9 +2,11 @@
 
 export const LogoutButton = () => {
   const handleLogout = async () => {
-    await fetch('/api/auth.php', { method: 'DELETE' });
+    const csrfToken = sessionStorage.getItem('csrf_token') || '';
+    await fetch('/api/auth.php', { method: 'DELETE', headers: { 'X-CSRF-Token': csrfToken } });
     sessionStorage.removeItem('isAdminAuth');
-    window.location.href = '/login';
+    sessionStorage.removeItem('csrf_token');
+    window.location.href = '/secure-login';
   };
 
   return (

@@ -4,6 +4,7 @@ import { GlassCard } from '@/components/ui/GlassCard';
 import { Button } from '@/components/ui/Button';
 import { RichEditor } from '@/components/ui/RichEditor';
 import { Search, Edit2, Trash2, PlusCircle, CheckCircle, Code } from 'lucide-react';
+import { sanitizeHtml } from '@/lib/sanitize';
 
 interface Skill {
   id: number;
@@ -36,10 +37,10 @@ export default function AdminSkills() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (editingId) {
-      await fetch('/api/skills.php', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: editingId, name, level: parseInt(level), category, icon, description }) });
+      await fetch('/api/skills.php', { method: 'PUT', headers: { 'X-CSRF-Token': sessionStorage.getItem('csrf_token') || '', 'Content-Type': 'application/json' }, body: JSON.stringify({ id: editingId, name, level: parseInt(level), category, icon, description }) });
       setEditingId(null);
     } else {
-      await fetch('/api/skills.php', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name, level: parseInt(level), category, icon, description }) });
+      await fetch('/api/skills.php', { method: 'POST', headers: { 'X-CSRF-Token': sessionStorage.getItem('csrf_token') || '', 'Content-Type': 'application/json' }, body: JSON.stringify({ name, level: parseInt(level), category, icon, description }) });
     }
     setName(''); setLevel(''); setCategory('Technical Skills'); setIcon('code'); setDescription('');
     fetchSkills();
@@ -57,7 +58,7 @@ export default function AdminSkills() {
 
   const handleDelete = async (id: number) => {
     if (!confirm('Are you sure you want to delete this skill?')) return;
-    await fetch('/api/skills.php', { method: 'DELETE', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id }) });
+    await fetch('/api/skills.php', { method: 'DELETE', headers: { 'X-CSRF-Token': sessionStorage.getItem('csrf_token') || '', 'Content-Type': 'application/json' }, body: JSON.stringify({ id }) });
     fetchSkills();
   };
 
@@ -159,7 +160,7 @@ export default function AdminSkills() {
                     <div style={{ width: `${skill.level}%`, background: 'var(--primary-color)', height: '100%', borderRadius: '3px', transition: 'width 1s ease-out' }}></div>
                   </div>
                   {skill.description && (
-                    <div style={{ padding: '1rem 0', borderTop: '1px solid var(--glass-border)', fontSize: '0.875rem', color: 'var(--text-secondary)', flex: 1 }} dangerouslySetInnerHTML={{ __html: skill.description }} />
+                    <div style={{ padding: '1rem 0', borderTop: '1px solid var(--glass-border)', fontSize: '0.875rem', color: 'var(--text-secondary)', flex: 1 }} dangerouslySetInnerHTML={{ __html: sanitizeHtml() }} />
                   )}
                   <div style={{ display: 'flex', gap: '0.75rem', marginTop: 'auto', paddingTop: '1rem', borderTop: skill.description ? 'none' : '1px solid var(--glass-border)' }}>
                     <button onClick={() => handleEdit(skill)} style={{ background: 'var(--panel-bg-hover)', border: 'none', color: 'var(--text-primary)', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.5rem', flex: 1, justifyContent: 'center' }} className="hover:bg-white/10">

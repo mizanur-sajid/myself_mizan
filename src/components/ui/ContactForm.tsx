@@ -39,7 +39,7 @@ export const ContactForm = () => {
     try {
       const res = await fetch('/api/contact.php', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'X-CSRF-Token': sessionStorage.getItem('csrf_token') || '', 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)
       });
       
@@ -200,7 +200,7 @@ export const ContactForm = () => {
                 ) : (
                   <div style={{ display: 'flex', gap: '1.5rem', opacity: 0.6 }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.85rem' }}>
-                      <Clock3 size={14} /> <span>Typical response: 24–48 hours</span>
+                      <Clock3 size={14} /> <span>Typical response: 12–24 hours</span>
                     </div>
                   </div>
                 )}
