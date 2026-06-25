@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import { GlassCard } from '../components/ui/GlassCard';
 import { Button } from '../components/ui/Button';
@@ -8,7 +8,7 @@ import { ContactForm } from '../components/ui/ContactForm';
 import { StickyNav } from '../components/ui/StickyNav';
 import { SkillIcon } from '../components/ui/SkillIcon';
 import { AvailabilityBadge } from '../components/ui/AvailabilityBadge';
-import { Database, Brain, Eye, LineChart, Activity, Headset, Globe, Code2, CheckCircle2, Award, Building2, Layers, GitBranch, ExternalLink, ArrowRight, Monitor, Network, Sparkles, LayoutTemplate, LifeBuoy, MessageSquareText } from 'lucide-react';
+import { Database, Brain, Eye, LineChart, Activity, Headset, Globe, Code2, CheckCircle2, Award, Building2, Layers, GitBranch, ExternalLink, ArrowRight, Monitor, Network, Sparkles, LayoutTemplate, LifeBuoy, MessageSquareText, ChevronUp } from 'lucide-react';
 import { sanitizeHtml } from '@/lib/sanitize';
 
 export default function Home() {
@@ -17,6 +17,13 @@ export default function Home() {
   const [certifications, setCertifications] = useState<any[]>([]);
   const [projects, setProjects] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showScrollTop, setShowScrollTop] = useState(false);
+
+  useEffect(() => {
+    const handleScrollTop = () => setShowScrollTop(window.scrollY > 400);
+    window.addEventListener('scroll', handleScrollTop, { passive: true });
+    return () => window.removeEventListener('scroll', handleScrollTop);
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -89,7 +96,7 @@ export default function Home() {
           </div>
         </div>
         <div style={{ flex: '1 1 300px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-          <div style={{ position: 'relative', width: 'clamp(250px, 30vw, 400px)', height: 'clamp(250px, 30vw, 400px)', borderRadius: '50%', padding: '10px', background: 'linear-gradient(135deg, var(--primary-color), var(--accent-color))', boxShadow: '0 20px 50px -10px rgba(0,240,255,0.3)' }}>
+          <div className="profile-float" style={{ position: 'relative', width: 'clamp(250px, 30vw, 400px)', height: 'clamp(250px, 30vw, 400px)', borderRadius: '50%', padding: '10px', background: 'linear-gradient(135deg, var(--primary-color), var(--accent-color))', boxShadow: '0 20px 50px -10px var(--primary-alpha-20)' }}>
             <div style={{ position: 'relative', width: '100%', height: '100%', borderRadius: '50%', overflow: 'hidden', background: 'var(--bg-color)' }}>
               <Image src="/profile.png" alt="Mizan Profile" fill style={{ objectFit: 'cover' }} priority />
             </div>
@@ -113,7 +120,9 @@ export default function Home() {
         
         <div>
           {loading ? (
-             <p style={{ opacity: 0.5 }}>Loading skills...</p>
+             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '1.5rem' }}>
+               {[...Array(6)].map((_, i) => <div key={i} className="skeleton" style={{ height: '140px', borderRadius: '24px' }} />)}
+             </div>
           ) : skills.length > 0 ? (
             Object.entries(skills.reduce((acc, skill) => {
               const cat = skill.category === 'Technical Skills' ? 'Technical Skills' : 'Additional Skills';
@@ -275,16 +284,16 @@ export default function Home() {
           }
           .ai-research-card:hover {
             transform: translateY(-2px);
-            box-shadow: 0 12px 40px 0 rgba(0, 240, 255, 0.1) !important;
-            border-color: rgba(0, 240, 255, 0.3) !important;
+            box-shadow: 0 12px 40px 0 var(--primary-alpha-10) !important;
+            border-color: var(--primary-alpha-20) !important;
           }
           .highlight-card:hover {
-            background: rgba(255,255,255,0.03) !important;
+            background: var(--glass-bg) !important;
             transform: translateY(-2px) !important;
           }
           .hover-glow:hover {
-            background: rgba(0, 240, 255, 0.2) !important;
-            box-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
+            background: var(--primary-alpha-20) !important;
+            box-shadow: 0 0 15px var(--primary-alpha-10);
           }
           .hover-glow-white:hover {
             background: rgba(255, 255, 255, 0.1) !important;
@@ -298,12 +307,14 @@ export default function Home() {
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
           {loading ? (
-             <p style={{ opacity: 0.5 }}>Loading publications...</p>
+             <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+               {[...Array(1)].map((_, i) => <div key={i} className="skeleton" style={{ height: '320px', borderRadius: '24px' }} />)}
+             </div>
           ) : publications.length > 0 ? publications.map(pub => (
-            <GlassCard key={pub.id} className="ai-research-card" style={{ padding: '2.5rem', display: 'flex', flexDirection: 'column', gap: '1.5rem', position: 'relative', overflow: 'hidden', boxShadow: '0 8px 32px 0 rgba(0, 240, 255, 0.05)' }}>
+            <GlassCard key={pub.id} className="ai-research-card" style={{ padding: '2.5rem', display: 'flex', flexDirection: 'column', gap: '1.5rem', position: 'relative', overflow: 'hidden', boxShadow: '0 8px 32px 0 var(--primary-alpha-10)' }}>
               
               {/* Background Glows & Particles */}
-              <div style={{ position: 'absolute', top: '-50%', left: '-50%', width: '200%', height: '200%', background: 'radial-gradient(circle at 50% 50%, rgba(0, 240, 255, 0.03) 0%, transparent 50%)', zIndex: 0, pointerEvents: 'none' }} />
+              <div style={{ position: 'absolute', top: '-50%', left: '-50%', width: '200%', height: '200%', background: 'radial-gradient(circle at 50% 50%, var(--primary-alpha-10) 0%, transparent 50%)', zIndex: 0, pointerEvents: 'none' }} />
               <div style={{ position: 'absolute', top: '10%', right: '5%', width: '150px', height: '150px', background: 'radial-gradient(circle, var(--accent-color) 0%, transparent 70%)', opacity: 0.1, filter: 'blur(20px)', zIndex: 0 }} />
 
               <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
@@ -311,7 +322,7 @@ export default function Home() {
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem' }}>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                     <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center', flexWrap: 'wrap' }}>
-                      <span style={{ padding: '4px 10px', borderRadius: '20px', background: 'rgba(0, 240, 255, 0.1)', color: 'var(--primary-color)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.05em', textTransform: 'uppercase', display: 'flex', alignItems: 'center', gap: '6px', border: '1px solid rgba(0, 240, 255, 0.2)' }}>
+                      <span style={{ padding: '4px 10px', borderRadius: '20px', background: 'var(--primary-alpha-10)', color: 'var(--primary-color)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.05em', textTransform: 'uppercase', display: 'flex', alignItems: 'center', gap: '6px', border: '1px solid var(--primary-alpha-20)' }}>
                         <Activity size={12} /> Research Thesis
                       </span>
                       <span style={{ padding: '4px 10px', borderRadius: '20px', background: 'var(--glass-bg)', color: 'var(--text-primary)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.05em', textTransform: 'uppercase', border: '1px solid var(--glass-border)' }}>
@@ -323,7 +334,7 @@ export default function Home() {
                       B.Sc. Final Year Thesis <span style={{ color: 'rgba(255,255,255,0.2)' }}>•</span> University of Global Village
                     </p>
                   </div>
-                  <span style={{ fontSize: '1rem', color: 'var(--primary-color)', fontFamily: 'var(--font-space)', fontWeight: 600, background: 'rgba(0, 240, 255, 0.05)', padding: '6px 12px', borderRadius: '8px', border: '1px solid rgba(0, 240, 255, 0.1)' }}>2026</span>
+                  <span style={{ fontSize: '1rem', color: 'var(--primary-color)', fontFamily: 'var(--font-space)', fontWeight: 600, background: 'var(--primary-alpha-10)', padding: '6px 12px', borderRadius: '8px', border: '1px solid var(--primary-alpha-20)' }}>2026</span>
                 </div>
 
                 {/* Abstract */}
@@ -339,8 +350,8 @@ export default function Home() {
                     { icon: <Eye size={18} color="var(--primary-color)" />, title: 'Explainability', desc: 'Grad-CAM visualization for interpretable predictions.' },
                     { icon: <LineChart size={18} color="var(--accent-color)" />, title: 'Performance', desc: 'High classification accuracy across multiple skin diseases.' }
                   ].map((highlight, idx) => (
-                    <div key={idx} style={{ display: 'flex', gap: '12px', padding: '1rem', borderRadius: '12px', background: 'rgba(255,255,255,0.015)', border: '1px solid var(--glass-border)', transition: 'transform 0.2s ease', cursor: 'default' }} className="highlight-card">
-                      <div style={{ padding: '8px', borderRadius: '8px', background: 'rgba(0,0,0,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', height: 'fit-content' }}>
+                    <div key={idx} style={{ display: 'flex', gap: '12px', padding: '1rem', borderRadius: '12px', background: 'var(--glass-bg)', border: '1px solid var(--glass-border)', transition: 'transform 0.2s ease', cursor: 'default' }} className="highlight-card">
+                      <div style={{ padding: '8px', borderRadius: '8px', background: 'var(--icon-bg)', border: '1px solid var(--icon-border)', display: 'flex', alignItems: 'center', justifyContent: 'center', height: 'fit-content' }}>
                         {highlight.icon}
                       </div>
                       <div>
@@ -361,7 +372,7 @@ export default function Home() {
                 {/* Actions (Dynamic Links) */}
                 <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
                   {pub.link && (
-                    <a href={pub.link} target="_blank" rel="noreferrer" style={{ padding: '10px 20px', borderRadius: '8px', background: 'rgba(0, 240, 255, 0.1)', color: 'var(--primary-color)', fontSize: '0.9rem', fontWeight: 600, textDecoration: 'none', border: '1px solid rgba(0, 240, 255, 0.2)', transition: 'all 0.2s', display: 'flex', alignItems: 'center', gap: '8px' }} className="hover-glow">
+                    <a href={pub.link} target="_blank" rel="noreferrer" style={{ padding: '10px 20px', borderRadius: '8px', background: 'var(--primary-alpha-10)', color: 'var(--primary-color)', fontSize: '0.9rem', fontWeight: 600, textDecoration: 'none', border: '1px solid var(--primary-alpha-20)', transition: 'all 0.2s', display: 'flex', alignItems: 'center', gap: '8px' }} className="hover-glow">
                       Read Publication ↗
                     </a>
                   )}
@@ -393,12 +404,12 @@ export default function Home() {
           }
           .cert-card:hover {
             transform: translateY(-4px);
-            box-shadow: 0 15px 35px -5px rgba(0, 240, 255, 0.15) !important;
-            border-color: rgba(0, 240, 255, 0.4) !important;
+            box-shadow: 0 15px 35px -5px var(--primary-alpha-10) !important;
+            border-color: var(--primary-alpha-20) !important;
           }
           .cert-card:hover .cert-icon-container {
             transform: scale(1.1);
-            box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+            box-shadow: 0 0 15px var(--primary-alpha-10);
           }
           .cert-icon-container {
             transition: all 0.3s ease;
@@ -426,7 +437,9 @@ export default function Home() {
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))', gap: '2rem' }}>
           {loading ? (
-             <p style={{ opacity: 0.5 }}>Loading certifications...</p>
+             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))', gap: '2rem' }}>
+               {[...Array(3)].map((_, i) => <div key={i} className="skeleton" style={{ height: '280px', borderRadius: '24px' }} />)}
+             </div>
           ) : (
             (() => {
               const enhancedCerts = [
@@ -494,7 +507,7 @@ export default function Home() {
                       </div>
                     </div>
 
-                    <div style={{ position: 'absolute', top: '2.5rem', right: '2.5rem', display: 'flex', alignItems: 'center', gap: '4px', background: 'rgba(0, 240, 255, 0.1)', border: '1px solid rgba(0, 240, 255, 0.2)', padding: '4px 10px', borderRadius: '20px', color: 'var(--primary-color)', fontSize: '0.7rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                    <div style={{ position: 'absolute', top: '2.5rem', right: '2.5rem', display: 'flex', alignItems: 'center', gap: '4px', background: 'var(--primary-alpha-10)', border: '1px solid var(--primary-alpha-20)', padding: '4px 10px', borderRadius: '20px', color: 'var(--primary-color)', fontSize: '0.7rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                       <CheckCircle2 size={12} /> {hc.status}
                     </div>
 
@@ -553,8 +566,8 @@ export default function Home() {
           }
           .proj-card:hover {
             transform: translateY(-6px);
-            box-shadow: 0 20px 40px -10px rgba(0, 240, 255, 0.15) !important;
-            border-color: rgba(0, 240, 255, 0.4) !important;
+            box-shadow: 0 20px 40px -10px var(--primary-alpha-10) !important;
+            border-color: var(--primary-alpha-20) !important;
           }
           .proj-card:hover .proj-img-overlay {
             opacity: 1 !important;
@@ -619,7 +632,9 @@ export default function Home() {
 
         <div style={{ position: 'relative', zIndex: 1, display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '2.5rem' }}>
           {loading ? (
-             <p style={{ opacity: 0.5 }}>Loading projects...</p>
+             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '2.5rem' }}>
+               {[...Array(3)].map((_, i) => <div key={i} className="skeleton" style={{ height: '400px', borderRadius: '24px' }} />)}
+             </div>
           ) : (
             (() => {
               const enhancedProjects = [
@@ -690,7 +705,7 @@ export default function Home() {
                 return (
                   <GlassCard key={dynamicProj.id || idx} className={`proj-card ${hc.isFeatured ? 'proj-featured' : ''}`} style={{ display: 'flex', flexDirection: 'column', gap: '0', overflow: 'hidden', padding: 0, border: '1px solid var(--glass-border)' }}>
                     {/* Thumbnail / Image Area */}
-                    <div className="proj-img-wrapper" style={{ background: hc.isFeatured ? 'linear-gradient(135deg, rgba(0, 240, 255, 0.05), rgba(179, 102, 255, 0.05))' : 'var(--glass-bg)', position: 'relative', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <div className="proj-img-wrapper" style={{ background: hc.isFeatured ? 'linear-gradient(135deg, var(--primary-alpha-10), var(--accent-alpha-10))' : 'var(--glass-bg)', position: 'relative', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                       {hc.isFeatured && (
                          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, opacity: 0.1, backgroundImage: 'radial-gradient(circle at 20% 50%, var(--primary-color) 0%, transparent 50%), radial-gradient(circle at 80% 80%, var(--accent-color) 0%, transparent 50%)', filter: 'blur(30px)' }} />
                       )}
@@ -698,7 +713,7 @@ export default function Home() {
                         {hc.isFeatured ? <Network size={80} color="var(--primary-color)" /> : hc.title.includes("CMS") ? <LayoutTemplate size={60} color="var(--accent-color)" /> : <LifeBuoy size={60} color="var(--primary-color)" />}
                       </div>
                       {hc.isFeatured && (
-                        <div style={{ position: 'absolute', top: '1.5rem', left: '1.5rem', display: 'flex', alignItems: 'center', gap: '6px', background: 'rgba(0, 240, 255, 0.15)', border: '1px solid rgba(0, 240, 255, 0.3)', padding: '6px 12px', borderRadius: '100px', color: 'var(--primary-color)', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', boxShadow: '0 0 20px rgba(0, 240, 255, 0.2)' }}>
+                        <div style={{ position: 'absolute', top: '1.5rem', left: '1.5rem', display: 'flex', alignItems: 'center', gap: '6px', background: 'var(--primary-alpha-10)', border: '1px solid var(--primary-alpha-20)', padding: '6px 12px', borderRadius: '100px', color: 'var(--primary-color)', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', boxShadow: '0 0 20px var(--primary-alpha-10)' }}>
                           <Sparkles size={14} /> Featured Project
                         </div>
                       )}
@@ -715,11 +730,11 @@ export default function Home() {
                           <h3 style={{ fontSize: hc.isFeatured ? '2rem' : '1.5rem', margin: '0 0 0.5rem 0', fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1.2 }}>{hc.title}</h3>
                           <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
                             {hc.badges.map((b, i) => (
-                              <span key={i} style={{ fontSize: '0.75rem', color: i === 0 ? 'var(--primary-color)' : 'var(--text-secondary)', background: i === 0 ? 'rgba(0, 240, 255, 0.05)' : 'var(--glass-bg)', padding: '4px 10px', borderRadius: '100px', border: i === 0 ? '1px solid rgba(0, 240, 255, 0.15)' : '1px solid var(--glass-border)', fontWeight: 500 }}>{b}</span>
+                              <span key={i} style={{ fontSize: '0.75rem', color: i === 0 ? 'var(--primary-color)' : 'var(--text-secondary)', background: i === 0 ? 'var(--primary-alpha-10)' : 'var(--glass-bg)', padding: '4px 10px', borderRadius: '100px', border: i === 0 ? '1px solid var(--primary-alpha-20)' : '1px solid var(--glass-border)', fontWeight: 500 }}>{b}</span>
                             ))}
                           </div>
                         </div>
-                        <span style={{ fontSize: '0.9rem', color: 'var(--primary-color)', fontFamily: 'var(--font-space)', fontWeight: 600, padding: '4px 10px', borderRadius: '6px', background: 'rgba(0, 240, 255, 0.05)', border: '1px solid rgba(0, 240, 255, 0.1)' }}>{hc.year}</span>
+                        <span style={{ fontSize: '0.9rem', color: 'var(--primary-color)', fontFamily: 'var(--font-space)', fontWeight: 600, padding: '4px 10px', borderRadius: '6px', background: 'var(--primary-alpha-10)', border: '1px solid var(--primary-alpha-20)' }}>{hc.year}</span>
                       </div>
 
                       {/* Description */}
@@ -759,7 +774,7 @@ export default function Home() {
                         {hc.buttons.map((btn, i) => {
                           const href = (i === 0 ? link : fileUrl) || '#';
                           return (
-                            <a key={i} href={href} target={href !== '#' ? "_blank" : "_self"} rel="noreferrer" className="proj-btn" style={{ flex: 1, minWidth: '120px', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px', padding: '10px 20px', borderRadius: '8px', fontSize: '0.9rem', fontWeight: 600, textDecoration: 'none', background: btn.type === 'primary' ? 'rgba(0, 240, 255, 0.1)' : 'var(--glass-bg)', color: btn.type === 'primary' ? 'var(--primary-color)' : 'var(--text-primary)', border: btn.type === 'primary' ? '1px solid rgba(0, 240, 255, 0.2)' : '1px solid var(--glass-border)', boxShadow: btn.type === 'primary' ? '0 0 15px rgba(0, 240, 255, 0.05)' : 'none', textAlign: 'center' }}>
+                            <a key={i} href={href} target={href !== '#' ? "_blank" : "_self"} rel="noreferrer" className="proj-btn" style={{ flex: 1, minWidth: '120px', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px', padding: '10px 20px', borderRadius: '8px', fontSize: '0.9rem', fontWeight: 600, textDecoration: 'none', background: btn.type === 'primary' ? 'var(--primary-alpha-10)' : 'var(--glass-bg)', color: btn.type === 'primary' ? 'var(--primary-color)' : 'var(--text-primary)', border: btn.type === 'primary' ? '1px solid var(--primary-alpha-20)' : '1px solid var(--glass-border)', boxShadow: btn.type === 'primary' ? '0 0 15px var(--primary-alpha-10)' : 'none', textAlign: 'center' }}>
                               {btn.icon} {btn.text}
                             </a>
                           )
@@ -789,7 +804,7 @@ export default function Home() {
         style={{ padding: '6rem 0 4rem 0' }}>
         <div style={{ textAlign: 'center', marginBottom: '4rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '16px', justifyContent: 'center', marginBottom: '1rem' }}>
-            <div style={{ padding: '12px', background: 'rgba(0, 240, 255, 0.1)', borderRadius: '14px', border: '1px solid rgba(0, 240, 255, 0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 0 30px rgba(0, 240, 255, 0.15)' }}>
+            <div style={{ padding: '12px', background: 'var(--primary-alpha-10)', borderRadius: '14px', border: '1px solid var(--primary-alpha-20)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 0 30px var(--primary-alpha-10)' }}>
               <MessageSquareText size={28} color="var(--primary-color)" />
             </div>
             <h2 className="section-title" style={{ fontSize: '3.5rem', margin: 0 }}>Get In Touch</h2>
@@ -819,16 +834,60 @@ export default function Home() {
           boxShadow: '0 8px 32px -8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.05)'
         }}
       >
-        <p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--text-secondary)' }}>
-          Made with ❤️ and passion by
+        <a
+          href="#"
+          onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+          style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '0.85rem', color: 'var(--primary-color)', fontWeight: 500, marginBottom: '0.75rem', textDecoration: 'none', transition: 'opacity 0.2s' }}
+        >
+          <ChevronUp size={14} /> Back to top
+        </a>
+        <p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
+          Made with <span style={{ color: '#ef4444', animation: 'skeleton-pulse 2s ease-in-out infinite' }}>❤️</span> and passion by
         </p>
         <div style={{ display: 'flex', justifyContent: 'center', margin: '0.25rem 0' }}>
           <Image src="/logo.png" alt="Signature Logo" width={120} height={35} className="logo-invert" style={{ objectFit: 'contain', opacity: 0.8 }} />
         </div>
         <p style={{ margin: 0, fontSize: '0.85rem', color: 'var(--text-secondary)', fontFamily: 'var(--font-space)' }}>
-          &copy; 2026 All Rights Reserved.
+          &copy; {new Date().getFullYear()} All Rights Reserved.
         </p>
       </motion.footer>
+
+      {/* Scroll to Top Button */}
+      <AnimatePresence>
+        {showScrollTop && (
+          <motion.button
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.5 }}
+            transition={{ duration: 0.3 }}
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            style={{
+              position: 'fixed',
+              bottom: '2rem',
+              right: '2rem',
+              width: '48px',
+              height: '48px',
+              borderRadius: '50%',
+              background: 'var(--glass-bg)',
+              backdropFilter: 'blur(20px)',
+              WebkitBackdropFilter: 'blur(20px)',
+              border: '1px solid var(--glass-border)',
+              boxShadow: 'var(--card-shadow)',
+              color: 'var(--primary-color)',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              zIndex: 999,
+              transition: 'all 0.3s ease'
+            }}
+            whileHover={{ scale: 1.1, boxShadow: '0 8px 25px -5px var(--primary-alpha-20)' }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <ChevronUp size={22} />
+          </motion.button>
+        )}
+      </AnimatePresence>
       </div>
     </main>
   );
