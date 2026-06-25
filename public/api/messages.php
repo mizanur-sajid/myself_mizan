@@ -6,7 +6,7 @@ checkAuth();
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if (!isset($pdo)) sendJson([]);
-    $stmt = $pdo->query('SELECT * FROM Message WHERE deleted=0 ORDER BY createdAt DESC');
+    $stmt = $pdo->query('SELECT * FROM Message ORDER BY createdAt DESC');
     sendJson($stmt->fetchAll());
 }
 

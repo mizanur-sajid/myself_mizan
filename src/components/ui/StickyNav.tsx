@@ -57,7 +57,7 @@ export const StickyNav = () => {
   ];
 
   return (
-    <header style={{ 
+    <header className="sticky-nav" style={{ 
       display: 'flex', 
       justifyContent: 'space-between', 
       alignItems: 'center', 

@@ -16,6 +16,7 @@ export default function Home() {
   const [publications, setPublications] = useState<any[]>([]);
   const [certifications, setCertifications] = useState<any[]>([]);
   const [projects, setProjects] = useState<any[]>([]);
+  const [config, setConfig] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [showScrollTop, setShowScrollTop] = useState(false);
 
@@ -33,11 +34,12 @@ export default function Home() {
           fetch('/api/stats.php', { method: 'POST' }).catch(() => {});
         }
 
-        const [skillsRes, pubsRes, certsRes, projsRes] = await Promise.all([
+        const [skillsRes, pubsRes, certsRes, projsRes, configRes] = await Promise.all([
           fetch('/api/skills.php'),
           fetch('/api/publications.php'),
           fetch('/api/certifications.php'),
-          fetch('/api/projects.php')
+          fetch('/api/projects.php'),
+          fetch('/api/config.php')
         ]);
 
         if (skillsRes.ok) {
@@ -56,6 +58,8 @@ export default function Home() {
         if (certsRes.ok) setCertifications(await certsRes.json());
 
         if (projsRes.ok) setProjects(await projsRes.json());
+        
+        if (configRes.ok) setConfig(await configRes.json());
       } catch (err) {
         console.error("Failed to load data", err);
       } finally {
@@ -67,26 +71,35 @@ export default function Home() {
   }, []);
 
   return (
-    <main style={{ padding: '0 2rem', maxWidth: '1200px', margin: '0 auto' }}>
+    <main className="portfolio-main" style={{ padding: '0 2rem', maxWidth: '1200px', margin: '0 auto' }}>
       <StickyNav />
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '8rem' }}>
+      <div className="section-container" style={{ display: 'flex', flexDirection: 'column', gap: '8rem' }}>
       <motion.section 
         className="hero-section" 
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
         style={{ minHeight: '70vh', display: 'flex', alignItems: 'center', justifyContent: 'space-between', position: 'relative', gap: '4rem', flexWrap: 'wrap-reverse' }}>
-        <div style={{ maxWidth: '600px', zIndex: 10, flex: '1 1 400px' }}>
+        <div className="hero-text" style={{ maxWidth: '600px', zIndex: 10, flex: '1 1 400px' }}>
           <AvailabilityBadge />
           <h2 className="section-title" style={{ fontSize: 'clamp(3rem, 8vw, 5.5rem)', marginBottom: '1.5rem', lineHeight: 1.05 }}>
-            Mizanur <br />
-            <span className="gradient-text">Rahman</span>.
+            {config?.heroTitle ? (
+               <>
+                 {config.heroTitle.split(' ').slice(0, Math.ceil(config.heroTitle.split(' ').length / 2)).join(' ')} <br />
+                 <span className="gradient-text">{config.heroTitle.split(' ').slice(Math.ceil(config.heroTitle.split(' ').length / 2)).join(' ')}</span>.
+               </>
+            ) : (
+               <>
+                 Mizanur <br />
+                 <span className="gradient-text">Rahman</span>.
+               </>
+            )}
           </h2>
           <p style={{ fontSize: '1rem', marginBottom: '3rem', opacity: 0.7, maxWidth: '600px', lineHeight: 1.6 }}>
-            Computer Science and IT Engineer with strong problem-solving skills and a passion for building practical technology solutions. Ready to contribute to impactful projects while continuously expanding professional expertise.
+            {config?.aboutText || config?.heroSubtitle || "Computer Science and IT Engineer with strong problem-solving skills and a passion for building practical technology solutions. Ready to contribute to impactful projects while continuously expanding professional expertise."}
           </p>
-          <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+          <div className="hero-cta-row" style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
             <a href="#contact">
               <Button variant="primary">Start a Project</Button>
             </a>
@@ -95,8 +108,8 @@ export default function Home() {
             </a>
           </div>
         </div>
-        <div style={{ flex: '1 1 300px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-          <div className="profile-float" style={{ position: 'relative', width: 'clamp(250px, 30vw, 400px)', height: 'clamp(250px, 30vw, 400px)', borderRadius: '50%', padding: '10px', background: 'linear-gradient(135deg, var(--primary-color), var(--accent-color))', boxShadow: '0 20px 50px -10px var(--primary-alpha-20)' }}>
+        <div className="hero-image" style={{ flex: '1 1 300px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <div className="profile-float profile-image-container" style={{ position: 'relative', width: 'clamp(250px, 30vw, 400px)', height: 'clamp(250px, 30vw, 400px)', borderRadius: '50%', padding: '10px', background: 'linear-gradient(135deg, var(--primary-color), var(--accent-color))', boxShadow: '0 20px 50px -10px var(--primary-alpha-20)' }}>
             <div style={{ position: 'relative', width: '100%', height: '100%', borderRadius: '50%', overflow: 'hidden', background: 'var(--bg-color)' }}>
               <Image src="/profile.png" alt="Mizan Profile" fill style={{ objectFit: 'cover' }} priority />
             </div>
@@ -114,7 +127,7 @@ export default function Home() {
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '2rem', marginBottom: '4rem' }}>
           <div>
             <p className="accent-text" style={{ marginBottom: '0.5rem' }}>CORE COMPETENCIES</p>
-            <h2 className="section-title" style={{ fontSize: '3.5rem', margin: '0 0 1rem 0' }}>Technical Skills</h2>
+            <h2 className="section-title section-title-skills" style={{ fontSize: '3.5rem', margin: '0 0 1rem 0' }}>Technical Skills</h2>
           </div>
         </div>
         
@@ -135,7 +148,7 @@ export default function Home() {
               <div key={category} style={{ marginBottom: category === 'Technical Skills' ? '5rem' : '0' }}>
                 {category === 'Additional Skills' && (
                   <div style={{ marginBottom: '3rem' }}>
-                    <h3 style={{ fontSize: '2.5rem', margin: '0 0 0.5rem 0', color: 'var(--text-primary)', fontWeight: 700, letterSpacing: '-0.02em' }}>Additional Skills</h3>
+                    <h3 className="additional-skills-title" style={{ fontSize: '2.5rem', margin: '0 0 0.5rem 0', color: 'var(--text-primary)', fontWeight: 700, letterSpacing: '-0.02em' }}>Additional Skills</h3>
 
                   </div>
                 )}
@@ -149,6 +162,7 @@ export default function Home() {
                       visible: { transition: { staggerChildren: 0.1 } },
                       hidden: {}
                     }}
+                    className="skills-grid"
                     style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '1.5rem' }}
                   >
                     {catSkills.map((skill: any) => (
@@ -188,6 +202,7 @@ export default function Home() {
                       visible: { transition: { staggerChildren: 0.1 } },
                       hidden: {}
                     }}
+                    className="additional-skills-grid"
                     style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem' }}
                   >
                     {catSkills.map((skill: any) => {
@@ -311,7 +326,7 @@ export default function Home() {
                {[...Array(1)].map((_, i) => <div key={i} className="skeleton" style={{ height: '320px', borderRadius: '24px' }} />)}
              </div>
           ) : publications.length > 0 ? publications.map(pub => (
-            <GlassCard key={pub.id} className="ai-research-card" style={{ padding: '2.5rem', display: 'flex', flexDirection: 'column', gap: '1.5rem', position: 'relative', overflow: 'hidden', boxShadow: '0 8px 32px 0 var(--primary-alpha-10)' }}>
+            <GlassCard key={pub.id} className="ai-research-card pub-card-content" style={{ padding: '2.5rem', display: 'flex', flexDirection: 'column', gap: '1.5rem', position: 'relative', overflow: 'hidden', boxShadow: '0 8px 32px 0 var(--primary-alpha-10)' }}>
               
               {/* Background Glows & Particles */}
               <div style={{ position: 'absolute', top: '-50%', left: '-50%', width: '200%', height: '200%', background: 'radial-gradient(circle at 50% 50%, var(--primary-alpha-10) 0%, transparent 50%)', zIndex: 0, pointerEvents: 'none' }} />
@@ -343,7 +358,7 @@ export default function Home() {
                 </div>
 
                 {/* Research Highlights Grid */}
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1rem', marginTop: '0.5rem' }}>
+                <div className="pub-highlights-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1rem', marginTop: '0.5rem' }}>
                   {[
                     { icon: <Database size={18} color="var(--primary-color)" />, title: 'Dataset', desc: 'Multi-class dermatological image dataset.' },
                     { icon: <Brain size={18} color="var(--accent-color)" />, title: 'Model Architecture', desc: 'EfficientNetV2 with transfer learning.' },
@@ -435,7 +450,7 @@ export default function Home() {
           ))}
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))', gap: '2rem' }}>
+        <div className="cert-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))', gap: '2rem' }}>
           {loading ? (
              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))', gap: '2rem' }}>
                {[...Array(3)].map((_, i) => <div key={i} className="skeleton" style={{ height: '280px', borderRadius: '24px' }} />)}
@@ -492,7 +507,7 @@ export default function Home() {
                 const dynamicCert = certifications[idx] || {};
                 const fileUrl = dynamicCert.fileUrl;
                 return (
-                  <GlassCard key={dynamicCert.id || idx} className="cert-card" style={{ padding: '2.5rem', display: 'flex', flexDirection: 'column', gap: '1.25rem', border: '1px solid var(--glass-border)', position: 'relative', overflow: 'hidden' }}>
+                  <GlassCard key={dynamicCert.id || idx} className="cert-card cert-card-inner" style={{ padding: '2.5rem', display: 'flex', flexDirection: 'column', gap: '1.25rem', border: '1px solid var(--glass-border)', position: 'relative', overflow: 'hidden' }}>
                     
                     {/* Header: Icon, Title, Issuer, Verified Badge */}
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '1rem' }}>
@@ -500,14 +515,14 @@ export default function Home() {
                         <div className="cert-icon-container" style={{ width: '48px', height: '48px', borderRadius: '12px', background: hc.glowBg, border: `1px solid ${hc.glowBorder}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, boxShadow: `0 0 15px ${hc.glowShadow}` }}>
                           {hc.icon}
                         </div>
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem', paddingRight: '4rem' }}>
+                        <div className="cert-title-wrap" style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem', paddingRight: '4rem' }}>
                           <h3 style={{ fontSize: '1.15rem', margin: 0, fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1.3 }}>{hc.title}</h3>
                           <p style={{ opacity: 0.8, fontSize: '0.85rem', margin: 0, color: 'var(--text-secondary)' }}>{hc.issuer}</p>
                         </div>
                       </div>
                     </div>
 
-                    <div style={{ position: 'absolute', top: '2.5rem', right: '2.5rem', display: 'flex', alignItems: 'center', gap: '4px', background: 'var(--primary-alpha-10)', border: '1px solid var(--primary-alpha-20)', padding: '4px 10px', borderRadius: '20px', color: 'var(--primary-color)', fontSize: '0.7rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                    <div className="cert-verified-badge" style={{ position: 'absolute', top: '2.5rem', right: '2.5rem', display: 'flex', alignItems: 'center', gap: '4px', background: 'var(--primary-alpha-10)', border: '1px solid var(--primary-alpha-20)', padding: '4px 10px', borderRadius: '20px', color: 'var(--primary-color)', fontSize: '0.7rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                       <CheckCircle2 size={12} /> {hc.status}
                     </div>
 
@@ -630,7 +645,7 @@ export default function Home() {
 
         </div>
 
-        <div style={{ position: 'relative', zIndex: 1, display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '2.5rem' }}>
+        <div className="proj-grid" style={{ position: 'relative', zIndex: 1, display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '2.5rem' }}>
           {loading ? (
              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '2.5rem' }}>
                {[...Array(3)].map((_, i) => <div key={i} className="skeleton" style={{ height: '400px', borderRadius: '24px' }} />)}
@@ -742,7 +757,7 @@ export default function Home() {
 
                       {/* Stats (Featured Only) */}
                       {hc.isFeatured && hc.stats && (
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '1rem', marginTop: '0.5rem' }}>
+                        <div className="proj-stats-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '1rem', marginTop: '0.5rem' }}>
                           {hc.stats.map((stat, i) => (
                             <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '12px 16px', background: 'var(--glass-bg)', border: '1px solid var(--glass-border)', borderRadius: '8px', color: 'var(--text-primary)', fontSize: '0.9rem', fontWeight: 500 }}>
                               <CheckCircle2 size={16} color="var(--primary-color)" /> {stat}
@@ -807,7 +822,7 @@ export default function Home() {
             <div style={{ padding: '12px', background: 'var(--primary-alpha-10)', borderRadius: '14px', border: '1px solid var(--primary-alpha-20)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 0 30px var(--primary-alpha-10)' }}>
               <MessageSquareText size={28} color="var(--primary-color)" />
             </div>
-            <h2 className="section-title" style={{ fontSize: '3.5rem', margin: 0 }}>Get In Touch</h2>
+            <h2 className="section-title contact-title" style={{ fontSize: '3.5rem', margin: 0 }}>Get In Touch</h2>
           </div>
           <p style={{ color: 'var(--text-secondary)', fontSize: '1.1rem', maxWidth: '600px', lineHeight: 1.6 }}>
             Interested in collaboration, research discussions, or professional opportunities? I'd love to hear from you.
@@ -817,6 +832,7 @@ export default function Home() {
       </motion.section>
 
       <motion.footer 
+        className="footer-glass"
         initial={{ opacity: 0, y: 80 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "0px" }}
@@ -848,7 +864,7 @@ export default function Home() {
           <Image src="/logo.png" alt="Signature Logo" width={120} height={35} className="logo-invert" style={{ objectFit: 'contain', opacity: 0.8 }} />
         </div>
         <p style={{ margin: 0, fontSize: '0.85rem', color: 'var(--text-secondary)', fontFamily: 'var(--font-space)' }}>
-          &copy; {new Date().getFullYear()} All Rights Reserved.
+          {config?.footerText || `© ${new Date().getFullYear()} All Rights Reserved.`}
         </p>
       </motion.footer>
 

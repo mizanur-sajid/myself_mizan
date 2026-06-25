@@ -89,7 +89,7 @@ export const ContactForm = () => {
       <div style={{ position: 'absolute', top: '-10%', left: '-5%', width: '150px', height: '150px', background: 'radial-gradient(circle, var(--primary-color) 0%, transparent 70%)', opacity: 0.15, filter: 'blur(40px)', zIndex: 0, pointerEvents: 'none' }} />
       <div style={{ position: 'absolute', bottom: '-10%', right: '-5%', width: '200px', height: '200px', background: 'radial-gradient(circle, var(--accent-color) 0%, transparent 70%)', opacity: 0.15, filter: 'blur(50px)', zIndex: 0, pointerEvents: 'none' }} />
 
-      <GlassCard style={{ padding: '3rem', position: 'relative', zIndex: 1, overflow: 'hidden' }}>
+      <GlassCard className="contact-card" style={{ padding: '3rem', position: 'relative', zIndex: 1, overflow: 'hidden' }}>
         
         {/* Topic Chips */}
         <div style={{ marginBottom: '2.5rem' }}>

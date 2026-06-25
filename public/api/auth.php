@@ -10,12 +10,24 @@ session_set_cookie_params([
 session_start();
 require_once 'db.php';
 
-$ADMIN_USERNAME = 'mizan';
-// In a production environment, generate the hash once and store it as a string.
-$ADMIN_PASSWORD_HASH = password_hash('%(6LJM10x6£2', PASSWORD_BCRYPT);
 $TIMEOUT_SECONDS = 300; // 5 minutes (300 seconds)
 $MAX_ATTEMPTS = 5;
 $LOCKOUT_TIME = 900; // 15 minutes
+
+$CREDENTIALS_FILE = __DIR__ . '/admin-credentials.json';
+if (file_exists($CREDENTIALS_FILE)) {
+    $creds = json_decode(file_get_contents($CREDENTIALS_FILE), true);
+    $ADMIN_USERNAME = $creds['username'] ?? 'mizan';
+    $ADMIN_PASSWORD_HASH = $creds['password_hash'] ?? password_hash('%(6LJM10x6£2', PASSWORD_BCRYPT);
+} else {
+    $ADMIN_USERNAME = 'mizan';
+    $ADMIN_PASSWORD_HASH = password_hash('%(6LJM10x6£2', PASSWORD_BCRYPT);
+    file_put_contents($CREDENTIALS_FILE, json_encode([
+        'username' => $ADMIN_USERNAME,
+        'password_hash' => $ADMIN_PASSWORD_HASH
+    ]));
+}
+
 
 function getClientIp() {
     return $_SERVER['REMOTE_ADDR'] ?? '127.0.0.1';

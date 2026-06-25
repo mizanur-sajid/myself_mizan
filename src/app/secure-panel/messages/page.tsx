@@ -34,6 +34,7 @@ export default function AdminMessages() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedIds, setSelectedIds] = useState<Set<number>>(new Set());
   const [readIds, setReadIds] = useState<Set<number>>(new Set()); // UI only placeholder
+  const [expandedMsgId, setExpandedMsgId] = useState<number | null>(null);
 
   const fetchMessages = () => {
     fetch(`/api/messages.php?t=${Date.now()}`)
@@ -257,9 +258,18 @@ export default function AdminMessages() {
                     
                     <a href={`mailto:${msg.email}`} style={{ fontSize: '0.875rem', color: 'var(--primary-color)', display: 'inline-block', marginBottom: '1rem', wordBreak: 'break-word' }} onClick={e => e.stopPropagation()}>{msg.email}</a>
                     
-                    <div className="message-content" style={{ fontSize: '0.95rem', lineHeight: 1.6, color: isUnread ? 'var(--text-primary)' : 'var(--text-secondary)', overflowWrap: 'anywhere', wordBreak: 'break-word', maxWidth: '100%' }} dangerouslySetInnerHTML={{ __html: sanitizeHtml() }} />
+                    <div className="message-content" style={{ fontSize: '0.95rem', lineHeight: 1.6, color: isUnread ? 'var(--text-primary)' : 'var(--text-secondary)', overflowWrap: 'anywhere', wordBreak: 'break-word', maxWidth: '100%', ...(expandedMsgId !== msg.id ? { display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' } : {}) }} dangerouslySetInnerHTML={{ __html: sanitizeHtml(msg.content) }} />
                     
-                    <div style={{ display: 'flex', gap: '0.75rem', marginTop: '1.5rem', borderTop: '1px solid var(--panel-bg-hover)', paddingTop: '1rem' }}>
+                    {msg.content && msg.content.length > 150 && (
+                      <button onClick={(e) => { e.stopPropagation(); setExpandedMsgId(expandedMsgId === msg.id ? null : msg.id); }} style={{ background: 'none', border: 'none', color: 'var(--primary-color)', padding: '0', marginTop: '0.5rem', cursor: 'pointer', fontSize: '0.85rem' }}>
+                        {expandedMsgId === msg.id ? 'Show Less' : 'Read Full Message'}
+                      </button>
+                    )}
+                    
+                    <div style={{ display: 'flex', gap: '0.75rem', marginTop: '1.5rem', borderTop: '1px solid var(--panel-bg-hover)', paddingTop: '1rem', flexWrap: 'wrap' }}>
+                      <a href={`mailto:${msg.email}`} onClick={e => e.stopPropagation()} style={{ background: 'var(--primary-alpha-10)', border: '1px solid var(--primary-alpha-20)', color: 'var(--primary-color)', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.5rem', textDecoration: 'none' }}>
+                        <Mail size={14} /> Reply
+                      </a>
                       {activeTab !== 'recycle' ? (
                         <>
                           <button onClick={(e) => { e.stopPropagation(); handleArchive(msg.id, msg.archived); }} style={{ background: 'var(--panel-bg-hover)', border: 'none', color: 'var(--text-primary)', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }} className="hover:bg-white/10">

@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { AdminProfileCard } from '@/components/ui/AdminProfileCard';
-import { LayoutDashboard, Mail, Code, BookOpen, Award, Briefcase, Menu, X, Share2, Shield } from 'lucide-react';
+import { LayoutDashboard, Mail, Code, BookOpen, Award, Briefcase, Menu, X, Share2, Shield, Settings } from 'lucide-react';
 
 export const AdminSidebar = () => {
   const pathname = usePathname();
@@ -26,6 +26,7 @@ export const AdminSidebar = () => {
     { name: 'Certifications', path: '/secure-panel/certifications', icon: <Award size={20} /> },
     { name: 'Projects', path: '/secure-panel/projects', icon: <Briefcase size={20} /> },
     { name: 'Socials', path: '/secure-panel/socials', icon: <Share2 size={20} /> },
+    { name: 'Settings', path: '/secure-panel/settings', icon: <Settings size={20} /> },
     { name: 'Security', path: '/secure-panel/security', icon: <Shield size={20} /> },
   ];
 
