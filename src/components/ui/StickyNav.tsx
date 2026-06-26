@@ -132,7 +132,7 @@ export const StickyNav = () => {
           left: 0,
           right: 0,
           marginTop: '1rem',
-          background: 'var(--glass-bg-hover)',
+          background: 'color-mix(in srgb, var(--bg-color) 95%, transparent)',
           backdropFilter: 'blur(80px) saturate(200%)',
           WebkitBackdropFilter: 'blur(80px) saturate(200%)',
           border: '1px solid var(--glass-border)',

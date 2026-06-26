@@ -84,20 +84,11 @@ export default function Home() {
         <div className="hero-text" style={{ maxWidth: '600px', zIndex: 10, flex: '1 1 400px' }}>
           <AvailabilityBadge />
           <h2 className="section-title" style={{ fontSize: 'clamp(3rem, 8vw, 5.5rem)', marginBottom: '1.5rem', lineHeight: 1.05 }}>
-            {config?.heroTitle ? (
-               <>
-                 {config.heroTitle.split(' ').slice(0, Math.ceil(config.heroTitle.split(' ').length / 2)).join(' ')} <br />
-                 <span>{config.heroTitle.split(' ').slice(Math.ceil(config.heroTitle.split(' ').length / 2)).join(' ')}</span>.
-               </>
-            ) : (
-               <>
-                 Mizanur <br />
-                 <span>Rahman</span>.
-               </>
-            )}
+               <span className="hero-name-first">Mizanur</span> <br />
+               <span>Rahman</span>.
           </h2>
           <p style={{ fontSize: '1rem', marginBottom: '3rem', opacity: 0.7, maxWidth: '600px', lineHeight: 1.6 }}>
-            {config?.aboutText || config?.heroSubtitle || "Computer Science and IT Engineer with strong problem-solving skills and a passion for building practical technology solutions. Ready to contribute to impactful projects while continuously expanding professional expertise."}
+            Computer Science and IT Engineer with strong problem-solving skills and a passion for building practical technology solutions. Ready to contribute to impactful projects while continuously expanding professional expertise.
           </p>
           <div className="hero-cta-row" style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
             <a href="#contact">
@@ -850,20 +841,14 @@ export default function Home() {
           boxShadow: '0 8px 32px -8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.05)'
         }}
       >
-        <a
-          href="#"
-          onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-          style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '0.85rem', color: 'var(--primary-color)', fontWeight: 500, marginBottom: '0.75rem', textDecoration: 'none', transition: 'opacity 0.2s' }}
-        >
-          <ChevronUp size={14} /> Back to top
-        </a>
-        <p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
+
+        <p style={{ margin: 0, fontSize: '0.75rem', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
           Made with <span style={{ color: '#ef4444', animation: 'skeleton-pulse 2s ease-in-out infinite' }}>❤️</span> and passion by
         </p>
         <div style={{ display: 'flex', justifyContent: 'center', margin: '0.25rem 0' }}>
-          <Image src="/logo.png" alt="Signature Logo" width={120} height={35} className="logo-invert" style={{ objectFit: 'contain', opacity: 0.8 }} />
+          <Image src="/logo.png" alt="Signature Logo" width={160} height={48} className="logo-invert" style={{ objectFit: 'contain', opacity: 0.8 }} />
         </div>
-        <p style={{ margin: 0, fontSize: '0.85rem', color: 'var(--text-secondary)', fontFamily: 'var(--font-space)' }}>
+        <p style={{ margin: 0, fontSize: '0.7rem', color: 'var(--text-secondary)', fontFamily: 'var(--font-space)' }}>
           {config?.footerText || `© ${new Date().getFullYear()} All Rights Reserved.`}
         </p>
       </motion.footer>
@@ -871,16 +856,16 @@ export default function Home() {
       {/* Scroll to Top Button */}
       <AnimatePresence>
         {showScrollTop && (
+          <div className="scroll-top-wrapper">
           <motion.button
+            aria-label="Back to top"
             initial={{ opacity: 0, scale: 0.5 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.5 }}
             transition={{ duration: 0.3 }}
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             style={{
-              position: 'fixed',
-              bottom: '2rem',
-              right: '2rem',
+              position: 'relative',
               width: '48px',
               height: '48px',
               borderRadius: '50%',
@@ -894,7 +879,6 @@ export default function Home() {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              zIndex: 999,
               transition: 'all 0.3s ease'
             }}
             whileHover={{ scale: 1.1, boxShadow: '0 8px 25px -5px var(--primary-alpha-20)' }}
@@ -902,6 +886,8 @@ export default function Home() {
           >
             <ChevronUp size={22} />
           </motion.button>
+          <span className="scroll-top-tooltip">Back to top</span>
+          </div>
         )}
       </AnimatePresence>
       </div>

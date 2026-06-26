@@ -127,8 +127,8 @@ export const ContactForm = () => {
 
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
           <div className="contact-flex" style={{ display: 'flex', gap: '1.5rem', flexWrap: 'wrap' }}>
-            <div style={{ flex: '1 1 300px', position: 'relative' }}>
-              <div style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none', color: focusedField === 'name' ? 'var(--primary-color)' : 'var(--text-secondary)', transition: 'color 0.3s' }}>
+            <div style={{ flex: '1 1 300px', position: 'relative', height: 'fit-content' }}>
+              <div style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none', color: focusedField === 'name' ? 'var(--primary-color)' : 'var(--text-secondary)', transition: 'color 0.3s', zIndex: 1 }}>
                 <UserRound size={18} />
               </div>
               <input
@@ -141,8 +141,8 @@ export const ContactForm = () => {
                 style={getInputStyle('name')}
               />
             </div>
-            <div style={{ flex: '1 1 300px', position: 'relative' }}>
-              <div style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none', color: focusedField === 'email' ? 'var(--primary-color)' : 'var(--text-secondary)', transition: 'color 0.3s' }}>
+            <div style={{ flex: '1 1 300px', position: 'relative', height: 'fit-content' }}>
+              <div style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none', color: focusedField === 'email' ? 'var(--primary-color)' : 'var(--text-secondary)', transition: 'color 0.3s', zIndex: 1 }}>
                 <Mail size={18} />
               </div>
               <input

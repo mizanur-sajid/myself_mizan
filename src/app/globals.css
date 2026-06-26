@@ -277,6 +277,24 @@ input:focus, textarea:focus {
   transform: translateY(-2px);
 }
 
+.hero-name-first {
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Light mode: "Mizanur" hover turns black */
+.section-title:hover .hero-name-first {
+  background: none;
+  -webkit-background-clip: initial;
+  -webkit-text-fill-color: #000000;
+}
+
+/* Dark mode: "Mizanur" hover turns white */
+[data-theme='dark'] .section-title:hover .hero-name-first {
+  background: none;
+  -webkit-background-clip: initial;
+  -webkit-text-fill-color: #FFFFFF;
+}
+
 .visit-site-btn {
   display: inline-block;
   padding: 8px 16px;
@@ -513,9 +531,7 @@ input:focus, textarea:focus {
     width: clamp(200px, 50vw, 280px) !important;
     height: clamp(200px, 50vw, 280px) !important;
   }
-  .contact-flex {
-    flex-direction: column !important;
-  }
+
   .skills-grid {
     grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)) !important;
     gap: 1rem !important;
@@ -1013,3 +1029,53 @@ img {
   height: auto;
 }
 
+/* Scroll to Top - Custom Tooltip */
+.scroll-top-wrapper {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+
+.scroll-top-tooltip {
+  position: absolute;
+  right: calc(100% + 12px);
+  white-space: nowrap;
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--text-primary);
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: 10px;
+  padding: 6px 14px;
+  box-shadow: 0 4px 20px -4px rgba(0, 0, 0, 0.15);
+  opacity: 0;
+  transform: translateX(8px);
+  pointer-events: none;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+/* Small arrow pointing right toward the button */
+.scroll-top-tooltip::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: -5px;
+  transform: translateY(-50%) rotate(45deg);
+  width: 8px;
+  height: 8px;
+  background: var(--glass-bg);
+  border-right: 1px solid var(--glass-border);
+  border-top: 1px solid var(--glass-border);
+}
+
+.scroll-top-wrapper:hover .scroll-top-tooltip {
+  opacity: 1;
+  transform: translateX(0);
+}
