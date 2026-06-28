@@ -18,6 +18,10 @@ export function SkillIcon({ name, size = 24 }: { name: string, size?: number }) 
   if (name.toLowerCase() === 'git') {
     return <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="currentColor"><path d="M23.546 10.93L13.067.452c-.604-.603-1.582-.603-2.188 0L8.708 2.627l2.76 2.76c.645-.215 1.379-.07 1.889.441.516.515.658 1.258.438 1.9l2.738 2.739c.642-.22 1.386-.077 1.902.439.816.815.816 2.137 0 2.953-.816.816-2.138.816-2.954 0-.528-.528-.675-1.285-.445-1.942l-2.718-2.718v5.823c.22.657.076 1.413-.45 1.94-.816.817-2.138.817-2.955 0-.815-.815-.815-2.136 0-2.952.526-.526 1.28-.671 1.936-.448V9.324c-.655-.224-.803-.976-.277-1.503l-2.77-2.77-5.617 5.617c-.603.605-.603 1.584 0 2.189l10.48 10.478c.605.604 1.584.604 2.189 0l10.478-10.478c.604-.605.604-1.584 0-2.189z"/></svg>;
   }
+  if (name.toLowerCase() === 'machine learning') {
+    // Standard AI / ML network node SVG
+    return <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2v2"/><path d="M12 20v2"/><path d="M2 12h2"/><path d="M20 12h2"/><circle cx="12" cy="12" r="2"/><circle cx="5" cy="5" r="2"/><circle cx="19" cy="5" r="2"/><circle cx="5" cy="19" r="2"/><circle cx="19" cy="19" r="2"/><path d="M6.5 6.5l4 4"/><path d="M17.5 6.5l-4 4"/><path d="M6.5 17.5l4-4"/><path d="M17.5 17.5l-4-4"/></svg>;
+  }
   if (name.toLowerCase() === 'react') {
     return <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="-11.5 -10.23174 23 20.46348" fill="none"><circle cx="0" cy="0" r="2.05" fill="currentColor"/><g stroke="currentColor" strokeWidth="1" fill="none"><ellipse rx="11" ry="4.2"/><ellipse rx="11" ry="4.2" transform="rotate(60)"/><ellipse rx="11" ry="4.2" transform="rotate(120)"/></g></svg>;
   }
@@ -49,7 +53,8 @@ export function SkillIcon({ name, size = 24 }: { name: string, size?: number }) 
     problemsolving: <Brain size={size} />,
     troubleshooting: <Wrench size={size} />,
     itsupport: <Headset size={size} />,
-    networking: <Network size={size} />
+    networking: <Network size={size} />,
+    dataanalysis: <BarChart size={size} />
   };
 
   const key = name.toLowerCase().replace(/[^a-z]/g, '');

@@ -5,6 +5,23 @@ require_once 'auth.php';
 // Public GET request
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if (!isset($pdo)) sendJson([]);
+    
+    // Auto-initialize new skills if they don't exist
+    try {
+        $checkStmt = $pdo->query("SELECT count(*) FROM Skill WHERE name IN ('Machine Learning', 'Git')");
+        if ($checkStmt->fetchColumn() < 2) {
+            $pdo->exec("INSERT IGNORE INTO Skill (name, level, category, icon, description) VALUES ('Machine Learning', 85, 'Technical Skills', 'brain', 'Developing predictive models and artificial intelligence solutions.')");
+            $pdo->exec("INSERT IGNORE INTO Skill (name, level, category, icon, description) VALUES ('Git', 90, 'Technical Skills', 'git', 'Version control and source code management.')");
+        }
+        
+        $checkDaStmt = $pdo->query("SELECT count(*) FROM Skill WHERE name = 'Data Analysis'");
+        if ($checkDaStmt->fetchColumn() == 0) {
+            $pdo->exec("INSERT IGNORE INTO Skill (name, level, category, icon, description) VALUES ('Data Analysis', 80, 'Additional Skills', 'dataanalysis', 'Extracting actionable insights and patterns from complex datasets.')");
+        }
+    } catch (\Exception $e) {
+        // Ignore initialization errors
+    }
+
     $stmt = $pdo->query('SELECT * FROM Skill ORDER BY category DESC, name ASC');
     sendJson($stmt->fetchAll());
 }

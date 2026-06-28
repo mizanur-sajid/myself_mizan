@@ -179,7 +179,7 @@ export default function Home() {
                         <span style={{ color: 'var(--text-primary)', transition: 'all 0.3s ease' }} className="skill-icon-svg">
                           <SkillIcon name={skill.name} size={54} />
                         </span>
-                        <span style={{ fontSize: '1.05rem', color: 'var(--text-primary)', fontWeight: 600, letterSpacing: '0.01em' }}>{skill.name}</span>
+                        <span style={{ fontSize: '1.05rem', color: 'var(--text-primary)', fontWeight: 600, letterSpacing: '0.01em', textAlign: 'center' }}>{skill.name}</span>
                         <div className="skill-glow-dot" style={{ position: 'absolute', bottom: '-10px', width: '30px', height: '30px', background: 'var(--primary-color)', filter: 'blur(20px)', opacity: 0.5, borderRadius: '50%', transition: 'all 0.3s ease' }} />
                       </motion.div>
                     ))}
@@ -203,6 +203,7 @@ export default function Home() {
                         if (n === 'networking') return "Network configuration, monitoring, and infrastructure management.";
                         if (n === 'problemsolving') return "Analytical thinking and structured solution development.";
                         if (n === 'itsupport') return "Providing technical support and maintaining system reliability.";
+                        if (n === 'dataanalysis') return "Extracting actionable insights and patterns from complex datasets.";
                         return "Complementary professional skill.";
                       };
                       
@@ -241,9 +242,7 @@ export default function Home() {
                 )}
               </div>
             ))
-          ) : (
-            <p style={{ opacity: 0.5 }}>System awaiting skill initialization...</p>
-          )}
+          ) : null}
         </div>
         
         <style dangerouslySetInnerHTML={{__html: `
@@ -390,9 +389,7 @@ export default function Home() {
                 </div>
               </div>
             </GlassCard>
-          )) : (
-            <p style={{ opacity: 0.5 }}>System awaiting publications...</p>
-          )}
+          )) : null}
         </div>
       </motion.section>
 
