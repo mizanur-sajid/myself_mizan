@@ -655,8 +655,8 @@ export default function Home() {
                   ],
                   tech: ["Python", "TensorFlow", "EfficientNetV2", "OpenCV", "Grad-CAM", "Deep Learning"],
                   buttons: [
-                    { text: "Research Details", type: "primary", icon: <ExternalLink size={16} /> },
-                    { text: "GitHub Repository", type: "secondary", icon: <GitBranch size={16} /> }
+                    { text: "Research Details", type: "primary", icon: <ExternalLink size={16} />, href:"" },
+                    { text: "GitHub Repository", type: "secondary", icon: <GitBranch size={16} />, href:"https://github.com/mizanur-sajid/AI-Skin-Disease-Detection-System" }
                   ],
                   isFeatured: true
                 },
@@ -674,27 +674,27 @@ export default function Home() {
                   ],
                   tech: ["Next.js", "React", "Node.js", "MySQL"],
                   buttons: [
-                    { text: "Live Demo", type: "primary", icon: <ExternalLink size={16} /> },
-                    { text: "Source Code", type: "secondary", icon: <Code2 size={16} /> }
+                    { text: "Live Demo", type: "primary", icon: <ExternalLink size={16} />, href:"https://mizanurrahman.site.je/" },
+                    { text: "Source Code", type: "secondary", icon: <Code2 size={16} />, href:"https://github.com/mizanur-sajid/myself_mizan" }
                   ],
                   isFeatured: false
                 },
                 {
-                  title: "IT System Dashboard",
-                  year: "2025",
-                  description: "Centralized dashboard for managing tickets, troubleshooting workflows, and system maintenance requests.",
-                  badges: ["Web App", "Dashboard"],
+                  title: "InspireInk- AI based Prompt Assistant",
+                  year: "2024",
+                  description: "A modern, intuitive writing prompt generator and daily journaling app built with React Native and Expo. Ignite your creativity and keep track of your thoughts!",
+                  badges: ["Mobile App", "React Native"],
                   stats: [],
                   features: [
-                    "Ticket management",
-                    "Status tracking",
-                    "User support workflow",
-                    "Dashboard analytics"
+                    "Random Writing Prompts",
+                    "Daily Journaling Space",
+                    "Save & History",
+                    "Search Functionality"
                   ],
-                  tech: ["React", "PHP", "MySQL", "Chart.js"],
+                  tech: ["React Native", "Expo", "AsyncStorage"],
                   buttons: [
-                    { text: "Live Demo", type: "primary", icon: <ExternalLink size={16} /> },
-                    { text: "Source Code", type: "secondary", icon: <Code2 size={16} /> }
+                    { text: "Live Demo", type: "primary", icon: <ExternalLink size={16} />, href: "https://inspireink.site.je/" },
+                    { text: "Source Code", type: "secondary", icon: <Code2 size={16} />, href: "https://github.com/mizanur-sajid/InspireInk" }
                   ],
                   isFeatured: false
                 }
@@ -774,8 +774,8 @@ export default function Home() {
 
                       {/* Actions */}
                       <div style={{ display: 'flex', gap: '1rem', marginTop: '0.5rem', flexWrap: 'wrap', width: '100%' }}>
-                        {hc.buttons.map((btn, i) => {
-                          const href = (i === 0 ? link : fileUrl) || '#';
+                        {hc.buttons.map((btn: any, i) => {
+                          const href = btn.href || (i === 0 ? link : fileUrl) || '#';
                           return (
                             <a key={i} href={href} target={href !== '#' ? "_blank" : "_self"} rel="noreferrer" className="proj-btn" style={{ flex: 1, minWidth: '120px', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px', padding: '10px 20px', borderRadius: '8px', fontSize: '0.9rem', fontWeight: 600, textDecoration: 'none', background: btn.type === 'primary' ? 'var(--primary-alpha-10)' : 'var(--glass-bg)', color: btn.type === 'primary' ? 'var(--primary-color)' : 'var(--text-primary)', border: btn.type === 'primary' ? '1px solid var(--primary-alpha-20)' : '1px solid var(--glass-border)', boxShadow: btn.type === 'primary' ? '0 0 15px var(--primary-alpha-10)' : 'none', textAlign: 'center' }}>
                               {btn.icon} {btn.text}
