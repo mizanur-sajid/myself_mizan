@@ -94,7 +94,7 @@ export default function Home() {
             <a href="#contact">
               <Button variant="primary">Start a Project</Button>
             </a>
-            <a href="/Mizan_CV.pdf" download>
+            <a href="/Mizan_CV.pdf" target="_blank" rel="noopener noreferrer">
               <Button variant="outline">View Résumé</Button>
             </a>
           </div>
@@ -495,7 +495,7 @@ export default function Home() {
               ];
 
               return enhancedCerts.map((hc, idx) => {
-                const dynamicCert = certifications[idx] || {};
+                const dynamicCert = certifications.find((c: any) => c.name === hc.title) || {};
                 const fileUrl = dynamicCert.fileUrl || hc.fileUrl;
                 return (
                   <GlassCard key={dynamicCert.id || idx} className="cert-card cert-card-inner" style={{ padding: '2.5rem', display: 'flex', flexDirection: 'column', gap: '1.25rem', border: '1px solid var(--glass-border)', position: 'relative', overflow: 'hidden' }}>
