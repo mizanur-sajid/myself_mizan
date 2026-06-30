@@ -458,7 +458,8 @@ export default function Home() {
                   glowColor: "var(--primary-color)",
                   glowBorder: "rgba(0, 240, 255, 0.3)",
                   glowShadow: "rgba(0, 240, 255, 0.15)",
-                  glowBg: "rgba(0, 240, 255, 0.05)"
+                  glowBg: "rgba(0, 240, 255, 0.05)",
+                  fileUrl: "/uploads/IT Support Service (Level-3).pdf"
                 },
                 {
                   title: "Foundation English Test (FET)",
@@ -473,7 +474,8 @@ export default function Home() {
                   glowColor: "var(--accent-color)",
                   glowBorder: "rgba(179, 102, 255, 0.3)",
                   glowShadow: "rgba(179, 102, 255, 0.15)",
-                  glowBg: "rgba(179, 102, 255, 0.05)"
+                  glowBg: "rgba(179, 102, 255, 0.05)",
+                  fileUrl: "/uploads/Foundation English Test (FET).pdf"
                 },
                 {
                   title: "Python Programming",
@@ -487,13 +489,14 @@ export default function Home() {
                   glowColor: "var(--primary-color)",
                   glowBorder: "rgba(0, 240, 255, 0.3)",
                   glowShadow: "rgba(0, 240, 255, 0.15)",
-                  glowBg: "rgba(0, 240, 255, 0.05)"
+                  glowBg: "rgba(0, 240, 255, 0.05)",
+                  fileUrl: "/uploads/Python Programming Course.pdf"
                 }
               ];
 
               return enhancedCerts.map((hc, idx) => {
                 const dynamicCert = certifications[idx] || {};
-                const fileUrl = dynamicCert.fileUrl;
+                const fileUrl = dynamicCert.fileUrl || hc.fileUrl;
                 return (
                   <GlassCard key={dynamicCert.id || idx} className="cert-card cert-card-inner" style={{ padding: '2.5rem', display: 'flex', flexDirection: 'column', gap: '1.25rem', border: '1px solid var(--glass-border)', position: 'relative', overflow: 'hidden' }}>
                     
