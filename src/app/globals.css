@@ -98,6 +98,33 @@ html {
   color: var(--text-primary);
 }
 
+/* ====================================================
+   SCROLLBAR STYLES
+   ==================================================== */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-color);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary-alpha-20);
+  border-radius: 5px;
+  border: 2px solid var(--bg-color);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-color);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary-alpha-20) var(--bg-color);
+}
+
 body {
   background-color: var(--bg-color);
   color: var(--text-primary);

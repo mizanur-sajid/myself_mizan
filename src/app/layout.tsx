@@ -13,6 +13,7 @@ export const metadata: Metadata = {
 
 import { ConstructionNotice } from '@/components/ui/ConstructionNotice';
 import { SocialSidebar } from '@/components/ui/SocialSidebar';
+import { SmoothScrolling } from '@/components/shared/SmoothScrolling';
 
 export default function RootLayout({
   children,
@@ -28,9 +29,11 @@ export default function RootLayout({
         </div>
         <div className="bg-noise"></div>
         <ThemeProvider>
-          {children}
-          <ConstructionNotice />
-          <SocialSidebar />
+          <SmoothScrolling>
+            {children}
+            <ConstructionNotice />
+            <SocialSidebar />
+          </SmoothScrolling>
         </ThemeProvider>
       </body>
     </html>
