@@ -582,6 +582,7 @@ export default function Home() {
                   year: "2025",
                   description: "Modern portfolio platform with admin-managed content, media uploads, and dynamic section rendering.",
                   badges: ["Web App", "CMS"],
+                  image: "/projects/portfolio.png",
                   stats: [],
                   features: [
                     "Admin dashboard",
@@ -602,6 +603,7 @@ export default function Home() {
                   year: "2024",
                   description: "A modern, intuitive writing prompt generator and daily journaling app built with React Native and Expo. Ignite your creativity and keep track of your thoughts!",
                   badges: ["Mobile App", "React Native"],
+                  image: "/projects/inspireink.png",
                   stats: [],
                   features: [
                     "Random Writing Prompts",
@@ -640,8 +642,12 @@ export default function Home() {
                       {hc.isFeatured && (
                          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, opacity: 0.1, backgroundImage: 'radial-gradient(circle at 20% 50%, var(--primary-color) 0%, transparent 50%), radial-gradient(circle at 80% 80%, var(--accent-color) 0%, transparent 50%)', filter: 'blur(30px)' }} />
                       )}
-                      <div className="proj-img" style={{ transition: 'transform 0.5s ease', opacity: 0.5 }}>
-                        {hc.isFeatured ? <Network size={80} color="var(--primary-color)" /> : hc.title.includes("CMS") ? <LayoutTemplate size={60} color="var(--accent-color)" /> : <LifeBuoy size={60} color="var(--primary-color)" />}
+                      <div className="proj-img" style={{ transition: 'transform 0.5s ease', opacity: hc.image ? 1 : 0.5, width: hc.image ? '100%' : 'auto', height: hc.image ? '100%' : 'auto', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        {hc.image ? (
+                          <img src={hc.image} alt={hc.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                        ) : (
+                          hc.isFeatured ? <Network size={80} color="var(--primary-color)" /> : hc.title.includes("CMS") ? <LayoutTemplate size={60} color="var(--accent-color)" /> : <LifeBuoy size={60} color="var(--primary-color)" />
+                        )}
                       </div>
 
                       {/* Status Badge */}
