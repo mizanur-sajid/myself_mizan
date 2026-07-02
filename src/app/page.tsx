@@ -11,7 +11,6 @@ import { AvailabilityBadge } from '../components/ui/AvailabilityBadge';
 import { Database, Brain, Eye, LineChart, Activity, Headset, Globe, Code2, CheckCircle2, Award, Building2, Layers, GitBranch, ExternalLink, ArrowRight, Monitor, Network, Sparkles, LayoutTemplate, LifeBuoy, MessageSquareText, ChevronUp, Briefcase, GraduationCap, FolderKanban } from 'lucide-react';
 import { sanitizeHtml } from '@/lib/sanitize';
 import { ImageViewerModal } from '../components/ui/ImageViewerModal';
-import { PdfViewerModal } from '../components/ui/PdfViewerModal';
 
 export default function Home() {
   const [skills, setSkills] = useState<any[]>([]);
@@ -22,7 +21,6 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [viewerImage, setViewerImage] = useState<string | null>(null);
-  const [viewerPdf, setViewerPdf] = useState<string | null>(null);
 
   useEffect(() => {
     const handleScrollTop = () => setShowScrollTop(window.scrollY > 400);
@@ -46,8 +44,18 @@ export default function Home() {
           fetch('/api/config.php')
         ]);
 
-        if (skillsRes.ok) {
-          const rawSkills = await skillsRes.json();
+        const tryParse = async (res: Response) => {
+          if (!res.ok) return null;
+          try {
+            const text = await res.text();
+            return JSON.parse(text);
+          } catch {
+            return null;
+          }
+        };
+
+        const rawSkills = await tryParse(skillsRes);
+        if (Array.isArray(rawSkills)) {
           setSkills(rawSkills.sort((a: any, b: any) => {
             if (a.name.toLowerCase() === 'python') return -1;
             if (b.name.toLowerCase() === 'python') return 1;
@@ -57,15 +65,19 @@ export default function Home() {
           }));
         }
         
-        if (pubsRes.ok) setPublications(await pubsRes.json());
+        const rawPubs = await tryParse(pubsRes);
+        if (Array.isArray(rawPubs)) setPublications(rawPubs);
 
-        if (certsRes.ok) setCertifications(await certsRes.json());
+        const rawCerts = await tryParse(certsRes);
+        if (Array.isArray(rawCerts)) setCertifications(rawCerts);
 
-        if (projsRes.ok) setProjects(await projsRes.json());
+        const rawProjs = await tryParse(projsRes);
+        if (Array.isArray(rawProjs)) setProjects(rawProjs);
         
-        if (configRes.ok) setConfig(await configRes.json());
-      } catch (err) {
-        console.error("Failed to load data", err);
+        const rawConfig = await tryParse(configRes);
+        if (rawConfig) setConfig(rawConfig);
+      } catch {
+        // Silently ignore - expected in dev mode without PHP backend
       } finally {
         setLoading(false);
       }
@@ -117,7 +129,7 @@ export default function Home() {
             <a href="#contact">
               <Button variant="primary">Start a Project</Button>
             </a>
-            <div onClick={() => setViewerPdf("/Mizan_CV.pdf")} style={{ cursor: 'pointer' }}>
+            <div onClick={() => setViewerImage("/Mizan_CV.png")} style={{ cursor: 'pointer' }}>
               <Button variant="outline">View Résumé</Button>
             </div>
           </div>
@@ -154,12 +166,12 @@ export default function Home() {
                {[...Array(6)].map((_, i) => <div key={i} className="skeleton" style={{ height: '140px', borderRadius: '24px' }} />)}
              </div>
           ) : skills.length > 0 ? (
-            Object.entries(skills.reduce((acc, skill) => {
+            (Object.entries(skills.reduce((acc, skill) => {
               const cat = skill.category === 'Technical Skills' ? 'Technical Skills' : 'Additional Skills';
               if (!acc[cat]) acc[cat] = [];
               acc[cat].push(skill);
               return acc;
-            }, { 'Technical Skills': [], 'Additional Skills': [] } as Record<string, typeof skills>))
+            }, { 'Technical Skills': [], 'Additional Skills': [] } as Record<string, typeof skills>)) as [string, any[]][])
             .filter(([_, catSkills]) => catSkills.length > 0)
             .map(([category, catSkills]) => (
               <div key={category} style={{ marginBottom: category === 'Technical Skills' ? '5rem' : '0' }}>
@@ -428,7 +440,7 @@ export default function Home() {
                   status: "Verified",
                   icon: <Headset size={20} color="var(--primary-color)" />,
                   glowColor: "var(--primary-color)",
-                  fileUrl: "/uploads/IT Support Service (Level-3).pdf"
+                  fileUrl: "/uploads/IT Support Service (Level-3).png"
                 },
                 {
                   title: "Foundation English Test (FET)",
@@ -441,7 +453,7 @@ export default function Home() {
                   status: "Verified",
                   icon: <Globe size={20} color="var(--accent-color)" />,
                   glowColor: "var(--accent-color)",
-                  fileUrl: "/uploads/Foundation English Test (FET).pdf"
+                  fileUrl: "/uploads/Foundation English Test (FET).png"
                 },
                 {
                   title: "Python Programming",
@@ -453,7 +465,7 @@ export default function Home() {
                   status: "Verified",
                   icon: <Code2 size={20} color="var(--primary-color)" />,
                   glowColor: "var(--primary-color)",
-                  fileUrl: "/uploads/Python Programming Course.pdf"
+                  fileUrl: "/uploads/Python Programming Course.png"
                 }
               ];
 
@@ -483,7 +495,7 @@ export default function Home() {
                       </div>
                     </div>
 
-                    <div className="cert-verified-badge" style={{ position: 'absolute', top: '2.5rem', right: '2.5rem', display: 'flex', alignItems: 'center', gap: '4px', background: 'var(--primary-alpha-10)', border: '1px solid var(--primary-alpha-20)', padding: '4px 10px', borderRadius: '20px', color: 'var(--primary-color)', fontSize: '0.7rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                    <div className="cert-verified-badge" style={{ position: 'absolute', top: '2.5rem', right: '2.5rem', display: 'flex', alignItems: 'center', gap: '4px', background: 'rgba(34, 197, 94, 0.2)', border: '1px solid rgba(34, 197, 94, 0.3)', padding: '4px 10px', borderRadius: '20px', color: '#ffffff', fontSize: '0.7rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                       <CheckCircle2 size={12} /> {hc.status}
                     </div>
 
@@ -512,9 +524,14 @@ export default function Home() {
                       </div>
 
                       {/* View Credential Link */}
-                      <div onClick={() => fileUrl ? setViewerPdf(fileUrl) : null} style={{ color: 'var(--text-primary)', fontSize: '0.85rem', fontWeight: 600, padding: '8px 16px', background: 'var(--surface-elevated)', borderRadius: '8px', border: '1px solid var(--glass-border)', transition: 'all 0.2s', display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer' }} className="hover-glow-white">
+                      <motion.div 
+                        whileHover={{ backgroundColor: 'rgba(34, 197, 94, 0.15)', borderColor: 'rgba(34, 197, 94, 0.4)', color: '#fff' }}
+                        whileTap={{ scale: 0.96 }}
+                        onClick={() => fileUrl ? setViewerImage(fileUrl.replace(/\.pdf$/i, '.png')) : null}
+                        style={{ color: 'var(--text-primary)', fontSize: '0.85rem', fontWeight: 600, padding: '8px 16px', background: 'var(--surface-elevated)', borderRadius: '8px', border: '1px solid var(--glass-border)', display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer', transition: 'all 0.2s ease' }}
+                      >
                         View Credentials ↗
-                      </div>
+                      </motion.div>
                     </div>
                   </GlassCard>
                   </motion.div>
@@ -867,7 +884,6 @@ export default function Home() {
       </AnimatePresence>
 
       <ImageViewerModal src={viewerImage} onClose={() => setViewerImage(null)} />
-      <PdfViewerModal url={viewerPdf} onClose={() => setViewerPdf(null)} />
       </div>
     </main>
   );

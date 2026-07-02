@@ -160,7 +160,7 @@ export default function AdminSkills() {
                     <div style={{ width: `${skill.level}%`, background: 'var(--primary-color)', height: '100%', borderRadius: '3px', transition: 'width 1s ease-out' }}></div>
                   </div>
                   {skill.description && (
-                    <div style={{ padding: '1rem 0', borderTop: '1px solid var(--glass-border)', fontSize: '0.875rem', color: 'var(--text-secondary)', flex: 1 }} dangerouslySetInnerHTML={{ __html: sanitizeHtml() }} />
+                    <div style={{ padding: '1rem 0', borderTop: '1px solid var(--glass-border)', fontSize: '0.875rem', color: 'var(--text-secondary)', flex: 1 }} dangerouslySetInnerHTML={{ __html: sanitizeHtml(skill.description) }} />
                   )}
                   <div style={{ display: 'flex', gap: '0.75rem', marginTop: 'auto', paddingTop: '1rem', borderTop: skill.description ? 'none' : '1px solid var(--glass-border)' }}>
                     <button onClick={() => handleEdit(skill)} style={{ background: 'var(--panel-bg-hover)', border: 'none', color: 'var(--text-primary)', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.5rem', flex: 1, justifyContent: 'center' }} className="hover:bg-white/10">

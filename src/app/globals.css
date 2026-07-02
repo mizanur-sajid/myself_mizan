@@ -1032,6 +1032,29 @@ input:focus, textarea:focus {
    Desktop view is UNTOUCHED (all rules scoped to @media)
    ==================================================== */
 
+/* --- 2560px: 4K / Ultra-Wide Monitors --- */
+@media (min-width: 2560px) {
+  .portfolio-main {
+    max-width: 1400px !important;
+  }
+  body {
+    font-size: 1.15rem;
+  }
+  .section-container {
+    gap: 10rem !important;
+  }
+}
+
+/* --- 1920px: Full HD Monitors --- */
+@media (min-width: 1920px) and (max-width: 2559px) {
+  .portfolio-main {
+    max-width: 1300px !important;
+  }
+  .section-container {
+    gap: 9rem !important;
+  }
+}
+
 /* --- 1440px: Large Laptops & External Monitors --- */
 @media (max-width: 1440px) {
   .portfolio-main {
@@ -1612,6 +1635,59 @@ input:focus, textarea:focus {
   }
 }
 
+/* --- 280px: Galaxy Fold / Ultra-Narrow Foldable Screens --- */
+@media (max-width: 280px) {
+  .portfolio-main {
+    padding: 0 0.25rem !important;
+  }
+  body {
+    font-size: 0.825rem;
+  }
+  .section-container {
+    gap: 1.5rem !important;
+  }
+  .section-title {
+    font-size: 1.1rem !important;
+  }
+  .section-title-skills {
+    font-size: 1rem !important;
+  }
+  .skills-grid {
+    grid-template-columns: 1fr !important;
+    gap: 0.3rem !important;
+  }
+  .skills-grid > div {
+    padding: 0.75rem 0.3rem !important;
+    border-radius: 10px !important;
+  }
+  .profile-image-container {
+    width: 110px !important;
+    height: 110px !important;
+  }
+  .glass-panel {
+    padding: 0.6rem !important;
+    border-radius: 12px !important;
+  }
+  .pub-card-content,
+  .cert-card-inner,
+  .proj-content-wrapper {
+    padding: 0.6rem !important;
+    border-radius: 12px !important;
+  }
+  .footer-glass {
+    padding: 0 0.4rem 0.35rem 0.4rem !important;
+    border-radius: 8px !important;
+  }
+  .sticky-nav {
+    padding: 0.25rem 0.35rem !important;
+    border-radius: 8px !important;
+  }
+  .sticky-nav img {
+    width: 80px !important;
+    height: auto !important;
+  }
+}
+
 /* ====================================================
    CONTACT FORM RESPONSIVE OVERRIDES
    ==================================================== */
@@ -1638,6 +1714,72 @@ input:focus, textarea:focus {
   .contact-card {
     padding: 1rem !important;
     border-radius: 14px !important;
+  }
+}
+
+@media (max-width: 280px) {
+  .contact-card {
+    padding: 0.75rem !important;
+    border-radius: 12px !important;
+  }
+}
+
+/* ====================================================
+   TOUCH DEVICE OPTIMIZATIONS
+   ==================================================== */
+@media (hover: none) and (pointer: coarse) {
+  /* Larger tap targets on touch screens */
+  .sticky-nav a,
+  .sticky-nav button,
+  .social-link,
+  .hero-cta-row a,
+  .hero-cta-row button {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Remove hover-dependent effects on touch */
+  .hover-glow-white:hover,
+  .glass-panel:hover {
+    transform: none !important;
+  }
+
+  /* Smoother scroll momentum on iOS */
+  * {
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* ====================================================
+   ACCESSIBILITY: Reduced Motion
+   ==================================================== */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .bg-elements {
+    animation: none !important;
+  }
+}
+
+/* ====================================================
+   LANDSCAPE PHONES
+   ==================================================== */
+@media (max-height: 500px) and (orientation: landscape) {
+  .hero-section {
+    min-height: auto !important;
+    padding-top: 1rem !important;
+    padding-bottom: 1rem !important;
+  }
+  .profile-image-container {
+    width: 150px !important;
+    height: 150px !important;
+  }
+  .section-container {
+    gap: 3rem !important;
   }
 }
 

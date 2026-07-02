@@ -10,9 +10,16 @@ export function SocialSidebar() {
 
   useEffect(() => {
     fetch('/api/socials.php')
-      .then(res => res.json())
-      .then(data => { if (Array.isArray(data)) setSocials(data); })
-      .catch(console.error);
+      .then(res => res.text())
+      .then(text => {
+        try {
+          const data = JSON.parse(text);
+          if (Array.isArray(data)) setSocials(data);
+        } catch {
+          // Silently ignore - expected in dev mode without PHP backend
+        }
+      })
+      .catch(() => {});
   }, []);
 
   useEffect(() => {

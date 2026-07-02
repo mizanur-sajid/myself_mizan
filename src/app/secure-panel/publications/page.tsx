@@ -264,7 +264,7 @@ export default function AdminPublications() {
                     </div>
 
                     {pub.description && (
-                      <div style={{ paddingTop: '1rem', borderTop: '1px solid var(--glass-border)', fontSize: '0.875rem', color: 'var(--text-secondary)', flex: 1 }} dangerouslySetInnerHTML={{ __html: sanitizeHtml() }} />
+                      <div style={{ paddingTop: '1rem', borderTop: '1px solid var(--glass-border)', fontSize: '0.875rem', color: 'var(--text-secondary)', flex: 1 }} dangerouslySetInnerHTML={{ __html: sanitizeHtml(pub.description) }} />
                     )}
                     
                     <div style={{ display: 'flex', gap: '0.75rem', marginTop: '1.5rem', paddingTop: '1rem', borderTop: '1px solid var(--glass-border)' }}>
