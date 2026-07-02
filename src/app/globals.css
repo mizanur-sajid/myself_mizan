@@ -1193,7 +1193,7 @@ input:focus, textarea:focus {
     grid-template-columns: repeat(2, 1fr) !important;
   }
   .footer-glass {
-    padding: 1rem 1.5rem !important;
+    padding: 0 1.5rem 1rem 1.5rem !important;
     margin: 0 auto 1.5rem auto !important;
     border-radius: 20px !important;
   }
@@ -1270,7 +1270,7 @@ input:focus, textarea:focus {
     padding: 1.5rem !important;
   }
   .footer-glass {
-    padding: 0.75rem 1rem !important;
+    padding: 0 1rem 0.75rem 1rem !important;
     margin: 0 auto 1rem auto !important;
     border-radius: 16px !important;
   }
@@ -1399,7 +1399,7 @@ input:focus, textarea:focus {
     height: clamp(150px, 58vw, 220px) !important;
   }
   .footer-glass {
-    padding: 0.6rem 0.8rem !important;
+    padding: 0 0.8rem 0.6rem 0.8rem !important;
     margin: 0 auto 0.75rem auto !important;
   }
   /* Scroll to top button */
@@ -1509,7 +1509,7 @@ input:focus, textarea:focus {
     height: clamp(130px, 50vw, 180px) !important;
   }
   .footer-glass {
-    padding: 0.5rem 0.6rem !important;
+    padding: 0 0.6rem 0.5rem 0.6rem !important;
     border-radius: 12px !important;
   }
   .sticky-nav {
@@ -1589,7 +1589,7 @@ input:focus, textarea:focus {
     border-radius: 14px !important;
   }
   .footer-glass {
-    padding: 0.4rem 0.5rem !important;
+    padding: 0 0.5rem 0.4rem 0.5rem !important;
     border-radius: 10px !important;
     margin: 0 auto 0.5rem auto !important;
   }

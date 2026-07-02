@@ -10,6 +10,7 @@ import { SkillIcon } from '../components/ui/SkillIcon';
 import { AvailabilityBadge } from '../components/ui/AvailabilityBadge';
 import { Database, Brain, Eye, LineChart, Activity, Headset, Globe, Code2, CheckCircle2, Award, Building2, Layers, GitBranch, ExternalLink, ArrowRight, Monitor, Network, Sparkles, LayoutTemplate, LifeBuoy, MessageSquareText, ChevronUp, Briefcase, GraduationCap, FolderKanban } from 'lucide-react';
 import { sanitizeHtml } from '@/lib/sanitize';
+import { ImageViewerModal } from '../components/ui/ImageViewerModal';
 
 export default function Home() {
   const [skills, setSkills] = useState<any[]>([]);
@@ -19,6 +20,7 @@ export default function Home() {
   const [config, setConfig] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const [viewerImage, setViewerImage] = useState<string | null>(null);
 
   useEffect(() => {
     const handleScrollTop = () => setShowScrollTop(window.scrollY > 400);
@@ -676,7 +678,16 @@ export default function Home() {
                       </div>
 
                       <div className="proj-img-overlay" style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, opacity: 0, transition: 'all 0.3s', display: 'flex', alignItems: 'flex-end', justifyContent: 'center', padding: '1rem' }}>
-                        <a href={fileUrl || '#'} target={fileUrl ? "_blank" : "_self"} rel="noreferrer" style={{ padding: '8px 16px', background: 'var(--primary-color)', color: '#fff', fontSize: '0.8rem', fontWeight: 600, borderRadius: '6px', display: 'flex', alignItems: 'center', gap: '6px' }}><Eye size={14} /> View Image</a>
+                        <button 
+                          onClick={(e) => {
+                            e.preventDefault();
+                            const src = fileUrl || hc.image;
+                            if (src) setViewerImage(src);
+                          }}
+                          style={{ padding: '8px 16px', background: 'var(--primary-color)', color: '#fff', fontSize: '0.8rem', fontWeight: 600, border: 'none', borderRadius: '6px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px' }}
+                        >
+                          <Eye size={14} /> View Image
+                        </button>
                       </div>
                     </div>
 
@@ -789,7 +800,7 @@ export default function Home() {
         transition={{ duration: 0.6, type: "spring", bounce: 0.3 }}
         style={{ 
           textAlign: 'center', 
-          padding: '1rem 2rem', 
+          padding: '0 2rem 1rem 2rem', 
           border: '1px solid var(--glass-border)', 
           background: 'var(--glass-bg)', 
           backdropFilter: 'blur(40px)', 
@@ -852,6 +863,8 @@ export default function Home() {
           </div>
         )}
       </AnimatePresence>
+
+      <ImageViewerModal src={viewerImage} onClose={() => setViewerImage(null)} />
       </div>
     </main>
   );
