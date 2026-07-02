@@ -11,6 +11,7 @@ import { AvailabilityBadge } from '../components/ui/AvailabilityBadge';
 import { Database, Brain, Eye, LineChart, Activity, Headset, Globe, Code2, CheckCircle2, Award, Building2, Layers, GitBranch, ExternalLink, ArrowRight, Monitor, Network, Sparkles, LayoutTemplate, LifeBuoy, MessageSquareText, ChevronUp, Briefcase, GraduationCap, FolderKanban } from 'lucide-react';
 import { sanitizeHtml } from '@/lib/sanitize';
 import { ImageViewerModal } from '../components/ui/ImageViewerModal';
+import { PdfViewerModal } from '../components/ui/PdfViewerModal';
 
 export default function Home() {
   const [skills, setSkills] = useState<any[]>([]);
@@ -21,6 +22,7 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [viewerImage, setViewerImage] = useState<string | null>(null);
+  const [viewerPdf, setViewerPdf] = useState<string | null>(null);
 
   useEffect(() => {
     const handleScrollTop = () => setShowScrollTop(window.scrollY > 400);
@@ -115,9 +117,9 @@ export default function Home() {
             <a href="#contact">
               <Button variant="primary">Start a Project</Button>
             </a>
-            <a href="/Mizan_CV.pdf" target="_blank" rel="noopener noreferrer">
+            <div onClick={() => setViewerPdf("/Mizan_CV.pdf")} style={{ cursor: 'pointer' }}>
               <Button variant="outline">View Résumé</Button>
-            </a>
+            </div>
           </div>
         </div>
         <div className="hero-image" style={{ flex: '1 1 300px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
@@ -510,9 +512,9 @@ export default function Home() {
                       </div>
 
                       {/* View Credential Link */}
-                      <a href={fileUrl || "#"} target={fileUrl ? "_blank" : undefined} rel={fileUrl ? "noreferrer" : undefined} style={{ color: 'var(--text-primary)', fontSize: '0.85rem', fontWeight: 600, padding: '8px 16px', background: 'var(--surface-elevated)', borderRadius: '8px', border: '1px solid var(--glass-border)', transition: 'all 0.2s', display: 'flex', alignItems: 'center', gap: '6px' }} className="hover-glow-white">
+                      <div onClick={() => fileUrl ? setViewerPdf(fileUrl) : null} style={{ color: 'var(--text-primary)', fontSize: '0.85rem', fontWeight: 600, padding: '8px 16px', background: 'var(--surface-elevated)', borderRadius: '8px', border: '1px solid var(--glass-border)', transition: 'all 0.2s', display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer' }} className="hover-glow-white">
                         View Credentials ↗
-                      </a>
+                      </div>
                     </div>
                   </GlassCard>
                   </motion.div>
@@ -624,7 +626,7 @@ export default function Home() {
               ];
 
               return enhancedProjects.map((hc, idx) => {
-                const dynamicProj = projects[idx] || {};
+                const dynamicProj = projects.find((p: any) => p.title === hc.title || p.name === hc.title) || {};
                 const link = dynamicProj.link;
                 const fileUrl = dynamicProj.fileUrl; // Admin uploaded file/image
 
@@ -644,9 +646,9 @@ export default function Home() {
                       {hc.isFeatured && (
                          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, opacity: 0.1, backgroundImage: 'radial-gradient(circle at 20% 50%, var(--primary-color) 0%, transparent 50%), radial-gradient(circle at 80% 80%, var(--accent-color) 0%, transparent 50%)', filter: 'blur(30px)' }} />
                       )}
-                      <div className="proj-img" style={{ transition: 'transform 0.5s ease', opacity: hc.image ? 1 : 0.5, width: hc.image ? '100%' : 'auto', height: hc.image ? '100%' : 'auto', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        {hc.image ? (
-                          <img src={hc.image} alt={hc.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                      <div className="proj-img" style={{ transition: 'transform 0.5s ease', opacity: (fileUrl || hc.image) ? 1 : 0.5, width: (fileUrl || hc.image) ? '100%' : 'auto', height: (fileUrl || hc.image) ? '100%' : 'auto', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        {(fileUrl || hc.image) ? (
+                          <img src={(fileUrl || hc.image)} alt={hc.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                         ) : (
                           hc.isFeatured ? <Network size={80} color="var(--primary-color)" /> : hc.title.includes("CMS") ? <LayoutTemplate size={60} color="var(--accent-color)" /> : <LifeBuoy size={60} color="var(--primary-color)" />
                         )}
@@ -865,6 +867,7 @@ export default function Home() {
       </AnimatePresence>
 
       <ImageViewerModal src={viewerImage} onClose={() => setViewerImage(null)} />
+      <PdfViewerModal url={viewerPdf} onClose={() => setViewerPdf(null)} />
       </div>
     </main>
   );
