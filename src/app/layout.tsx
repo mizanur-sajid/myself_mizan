@@ -20,12 +20,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" data-theme="dark" className={`${inter.variable} ${spaceGrotesk.variable}`}>
+    <html lang="en" data-theme="dark" suppressHydrationWarning className={`${inter.variable} ${spaceGrotesk.variable}`}>
       <body className="antialiased">
         <div className="bg-elements">
           <div className="glow glow-1"></div>
           <div className="glow glow-2"></div>
         </div>
+        <div className="bg-noise"></div>
         <ThemeProvider>
           {children}
           <ConstructionNotice />

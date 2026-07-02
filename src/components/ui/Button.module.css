@@ -16,6 +16,34 @@
   overflow: hidden;
 }
 
+/* Shimmer sweep effect on hover */
+.btn::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 30%;
+  height: 200%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.15),
+    transparent
+  );
+  transform: translateX(-100%) skewX(-15deg);
+  transition: none;
+  pointer-events: none;
+}
+
+.btn:hover::after {
+  animation: shimmer-sweep 0.75s ease forwards;
+}
+
+@keyframes shimmer-sweep {
+  0% { transform: translateX(-100%) skewX(-15deg); }
+  100% { transform: translateX(400%) skewX(-15deg); }
+}
+
 /* Premium Primary Button */
 .primary {
   background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
@@ -36,15 +64,17 @@
 
 /* Sophisticated Outline Button */
 .outline {
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--glass-bg);
   color: var(--text-primary);
   border: 1px solid var(--glass-border);
   backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
 .outline:hover {
-  border-color: var(--text-primary);
-  background: rgba(255,255,255,0.05);
+  border-color: var(--primary-alpha-20);
+  background: var(--glass-bg-hover);
+  box-shadow: 0 4px 15px -5px var(--primary-alpha-10);
 }
 
 /* High-end Neon/Accent Button */

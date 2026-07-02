@@ -8,7 +8,7 @@ import { ContactForm } from '../components/ui/ContactForm';
 import { StickyNav } from '../components/ui/StickyNav';
 import { SkillIcon } from '../components/ui/SkillIcon';
 import { AvailabilityBadge } from '../components/ui/AvailabilityBadge';
-import { Database, Brain, Eye, LineChart, Activity, Headset, Globe, Code2, CheckCircle2, Award, Building2, Layers, GitBranch, ExternalLink, ArrowRight, Monitor, Network, Sparkles, LayoutTemplate, LifeBuoy, MessageSquareText, ChevronUp } from 'lucide-react';
+import { Database, Brain, Eye, LineChart, Activity, Headset, Globe, Code2, CheckCircle2, Award, Building2, Layers, GitBranch, ExternalLink, ArrowRight, Monitor, Network, Sparkles, LayoutTemplate, LifeBuoy, MessageSquareText, ChevronUp, Briefcase, GraduationCap, FolderKanban } from 'lucide-react';
 import { sanitizeHtml } from '@/lib/sanitize';
 
 export default function Home() {
@@ -75,7 +75,12 @@ export default function Home() {
       <StickyNav />
 
       <div className="section-container" style={{ display: 'flex', flexDirection: 'column', gap: '8rem' }}>
+
+      {/* ====================================================
+         HERO SECTION
+         ==================================================== */}
       <motion.section 
+        id="about"
         className="hero-section" 
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
@@ -87,9 +92,23 @@ export default function Home() {
                <span className="hero-name-first">Mizanur</span> <br />
                <span>Rahman</span>.
           </h2>
-          <p style={{ fontSize: '1rem', marginBottom: '3rem', opacity: 0.7, maxWidth: '600px', lineHeight: 1.6 }}>
+          <p style={{ fontSize: '1rem', marginBottom: '2rem', color: 'var(--text-secondary)', maxWidth: '600px', lineHeight: 1.6 }}>
             Computer Science and IT Engineer with strong problem-solving skills and a passion for building practical technology solutions. Ready to contribute to impactful projects while continuously expanding professional expertise.
           </p>
+
+          {/* Hero Stat Pills */}
+          <div className="hero-stats-row" style={{ display: 'flex', gap: '0.75rem', marginBottom: '2.5rem', flexWrap: 'wrap' }}>
+            <div className="hero-stat-pill">
+              <FolderKanban size={14} color="var(--primary-color)" /> 3+ Projects
+            </div>
+            <div className="hero-stat-pill">
+              <Award size={14} color="var(--accent-color)" /> 3 Certifications
+            </div>
+            <div className="hero-stat-pill">
+              <GraduationCap size={14} color="var(--primary-color)" /> B.Sc. in CS
+            </div>
+          </div>
+
           <div className="hero-cta-row" style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
             <a href="#contact">
               <Button variant="primary">Start a Project</Button>
@@ -100,7 +119,7 @@ export default function Home() {
           </div>
         </div>
         <div className="hero-image" style={{ flex: '1 1 300px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-          <div className="profile-float profile-image-container" style={{ position: 'relative', width: 'clamp(250px, 30vw, 400px)', height: 'clamp(250px, 30vw, 400px)', borderRadius: '50%', padding: '10px', background: 'linear-gradient(135deg, var(--primary-color), var(--accent-color))', boxShadow: '0 20px 50px -10px var(--primary-alpha-20)' }}>
+          <div className="profile-float profile-image-container profile-gradient-ring" style={{ position: 'relative', width: 'clamp(250px, 30vw, 400px)', height: 'clamp(250px, 30vw, 400px)', borderRadius: '50%', boxShadow: '0 20px 50px -10px var(--primary-alpha-20)' }}>
             <div style={{ position: 'relative', width: '100%', height: '100%', borderRadius: '50%', overflow: 'hidden', background: 'var(--bg-color)' }}>
               <Image src="/profile.png" alt="Mizan Profile" fill style={{ objectFit: 'cover' }} priority />
             </div>
@@ -108,6 +127,9 @@ export default function Home() {
         </div>
       </motion.section>
 
+      {/* ====================================================
+         SKILLS SECTION
+         ==================================================== */}
       <motion.section 
         id="skills" 
         initial={{ opacity: 0, y: 40 }}
@@ -140,7 +162,6 @@ export default function Home() {
                 {category === 'Additional Skills' && (
                   <div style={{ marginBottom: '3rem' }}>
                     <h3 className="additional-skills-title" style={{ fontSize: '2.5rem', margin: '0 0 0.5rem 0', color: 'var(--text-primary)', fontWeight: 700, letterSpacing: '-0.02em' }}>Additional Skills</h3>
-
                   </div>
                 )}
                 
@@ -244,38 +265,11 @@ export default function Home() {
             ))
           ) : null}
         </div>
-        
-        <style dangerouslySetInnerHTML={{__html: `
-          .tech-skill-card:hover {
-            border-color: var(--primary-alpha-20) !important;
-            box-shadow: 0 0 30px var(--primary-alpha-10) !important;
-          }
-          .tech-skill-card:hover .skill-icon-svg {
-            color: var(--primary-color) !important;
-          }
-          .tech-skill-card:hover .skill-glow-dot {
-            opacity: 1 !important;
-            filter: blur(25px) !important;
-            width: 50px !important;
-            height: 50px !important;
-            bottom: -20px !important;
-          }
-          
-          .add-skill-card:hover {
-            border-color: var(--accent-alpha-20) !important;
-            box-shadow: 0 10px 30px -10px var(--accent-alpha-10) !important;
-          }
-          .add-skill-card:hover .add-skill-icon {
-            background: var(--accent-alpha-10) !important;
-            color: var(--accent-color) !important;
-            border-color: var(--accent-alpha-20) !important;
-          }
-          .add-skill-card:hover .skill-glow-dot-add {
-            opacity: 0.4 !important;
-          }
-        `}} />
       </motion.section>
 
+      {/* ====================================================
+         PUBLICATIONS SECTION
+         ==================================================== */}
       <motion.section 
         id="publications" 
         initial={{ opacity: 0, y: 40 }}
@@ -283,27 +277,6 @@ export default function Home() {
         viewport={{ once: true, margin: "-100px" }}
         transition={{ duration: 0.6 }}
         style={{ padding: '4rem 0' }}>
-        <style dangerouslySetInnerHTML={{__html: `
-          .ai-research-card {
-            transition: all 0.3s ease;
-          }
-          .ai-research-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 40px 0 var(--primary-alpha-10) !important;
-            border-color: var(--primary-alpha-20) !important;
-          }
-          .highlight-card:hover {
-            background: var(--glass-bg) !important;
-            transform: translateY(-2px) !important;
-          }
-          .hover-glow:hover {
-            background: var(--primary-alpha-20) !important;
-            box-shadow: 0 0 15px var(--primary-alpha-10);
-          }
-          .hover-glow-white:hover {
-            background: rgba(255, 255, 255, 0.1) !important;
-          }
-        `}} />
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '4rem' }}>
           <div>
             <p className="accent-text" style={{ marginBottom: '0.5rem' }}>Academic Research</p>
@@ -316,7 +289,7 @@ export default function Home() {
                {[...Array(1)].map((_, i) => <div key={i} className="skeleton" style={{ height: '320px', borderRadius: '24px' }} />)}
              </div>
           ) : publications.length > 0 ? publications.map(pub => (
-            <GlassCard key={pub.id} className="ai-research-card pub-card-content" style={{ padding: '2.5rem', display: 'flex', flexDirection: 'column', gap: '1.5rem', position: 'relative', overflow: 'hidden', boxShadow: '0 8px 32px 0 var(--primary-alpha-10)' }}>
+            <GlassCard key={pub.id} className="ai-research-card pub-card-content border-gradient" style={{ padding: '2.5rem', display: 'flex', flexDirection: 'column', gap: '1.5rem', position: 'relative', overflow: 'hidden', boxShadow: '0 8px 32px 0 var(--primary-alpha-10)' }}>
               
               {/* Background Glows & Particles */}
               <div style={{ position: 'absolute', top: '-50%', left: '-50%', width: '200%', height: '200%', background: 'radial-gradient(circle at 50% 50%, var(--primary-alpha-10) 0%, transparent 50%)', zIndex: 0, pointerEvents: 'none' }} />
@@ -336,14 +309,14 @@ export default function Home() {
                     </div>
                     <h3 style={{ fontSize: '1.5rem', margin: '0.5rem 0 0 0', fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '-0.02em', lineHeight: 1.3 }}>Deep Learning-Based Skin Disease Detection Using EfficientNetV2</h3>
                     <p style={{ fontSize: '0.95rem', margin: 0, color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      B.Sc. Final Year Thesis <span style={{ color: 'rgba(255,255,255,0.2)' }}>•</span> University of Global Village
+                      B.Sc. Final Year Thesis <span style={{ color: 'var(--divider-color)' }}>•</span> University of Global Village
                     </p>
                   </div>
                   <span style={{ fontSize: '1rem', color: 'var(--primary-color)', fontFamily: 'var(--font-space)', fontWeight: 600, background: 'var(--primary-alpha-10)', padding: '6px 12px', borderRadius: '8px', border: '1px solid var(--primary-alpha-20)' }}>2026</span>
                 </div>
 
                 {/* Abstract */}
-                <div style={{ padding: '1.25rem', borderRadius: '12px', background: 'rgba(255,255,255,0.02)', borderLeft: '3px solid var(--primary-color)', color: 'var(--text-primary)', opacity: 0.9, fontSize: '0.95rem', lineHeight: 1.6 }}>
+                <div style={{ padding: '1.25rem', borderRadius: '12px', background: 'var(--surface-elevated)', borderLeft: '3px solid var(--primary-color)', color: 'var(--text-primary)', opacity: 0.9, fontSize: '0.95rem', lineHeight: 1.6 }}>
                   "An AI-driven skin disease classification system leveraging EfficientNetV2 to detect multiple dermatological conditions with high accuracy."
                 </div>
 
@@ -355,7 +328,7 @@ export default function Home() {
                     { icon: <Eye size={18} color="var(--primary-color)" />, title: 'Explainability', desc: 'Grad-CAM visualization for interpretable predictions.' },
                     { icon: <LineChart size={18} color="var(--accent-color)" />, title: 'Performance', desc: 'High classification accuracy across multiple skin diseases.' }
                   ].map((highlight, idx) => (
-                    <div key={idx} style={{ display: 'flex', gap: '12px', padding: '1rem', borderRadius: '12px', background: 'var(--glass-bg)', border: '1px solid var(--glass-border)', transition: 'transform 0.2s ease', cursor: 'default' }} className="highlight-card">
+                    <div key={idx} style={{ display: 'flex', gap: '12px', padding: '1rem', borderRadius: '12px', background: 'var(--glass-bg)', border: '1px solid var(--glass-border)', transition: 'transform 0.2s ease, background 0.2s ease', cursor: 'default' }} className="highlight-card">
                       <div style={{ padding: '8px', borderRadius: '8px', background: 'var(--icon-bg)', border: '1px solid var(--icon-border)', display: 'flex', alignItems: 'center', justifyContent: 'center', height: 'fit-content' }}>
                         {highlight.icon}
                       </div>
@@ -370,7 +343,7 @@ export default function Home() {
                 {/* Tech Stack Pills */}
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '0.5rem' }}>
                   {['Python', 'TensorFlow', 'EfficientNetV2', 'Grad-CAM', 'OpenCV', 'Deep Learning'].map(tech => (
-                    <span key={tech} style={{ padding: '4px 12px', borderRadius: '100px', fontSize: '0.75rem', background: 'var(--glass-bg)', color: 'var(--text-secondary)', border: '1px solid var(--glass-border)' }}>{tech}</span>
+                    <span key={tech} style={{ padding: '4px 12px', borderRadius: '100px', fontSize: '0.75rem', background: 'var(--tag-bg)', color: 'var(--text-secondary)', border: '1px solid var(--tag-border)' }}>{tech}</span>
                   ))}
                 </div>
 
@@ -393,6 +366,9 @@ export default function Home() {
         </div>
       </motion.section>
 
+      {/* ====================================================
+         CERTIFICATIONS SECTION
+         ==================================================== */}
       <motion.section 
         id="certifications" 
         initial={{ opacity: 0, y: 40 }}
@@ -400,24 +376,6 @@ export default function Home() {
         viewport={{ once: true, margin: "-100px" }}
         transition={{ duration: 0.6 }}
         style={{ padding: '4rem 0' }}>
-        <style dangerouslySetInnerHTML={{__html: `
-          .cert-card {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-          }
-          .cert-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 15px 35px -5px var(--primary-alpha-10) !important;
-            border-color: var(--primary-alpha-20) !important;
-          }
-          .cert-card:hover .cert-icon-container {
-            transform: scale(1.1);
-            box-shadow: 0 0 15px var(--primary-alpha-10);
-          }
-          .cert-icon-container {
-            transition: all 0.3s ease;
-          }
-        `}} />
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '2rem' }}>
           <div>
             <p className="accent-text" style={{ marginBottom: '0.5rem' }}>Professional Validation</p>
@@ -438,7 +396,17 @@ export default function Home() {
           ))}
         </div>
 
-        <div className="cert-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))', gap: '2rem' }}>
+        <motion.div 
+          className="cert-grid" 
+          style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))', gap: '2rem' }}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+          variants={{
+            visible: { transition: { staggerChildren: 0.15 } },
+            hidden: {}
+          }}
+        >
           {loading ? (
              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))', gap: '2rem' }}>
                {[...Array(3)].map((_, i) => <div key={i} className="skeleton" style={{ height: '280px', borderRadius: '24px' }} />)}
@@ -456,9 +424,6 @@ export default function Home() {
                   status: "Verified",
                   icon: <Headset size={20} color="var(--primary-color)" />,
                   glowColor: "var(--primary-color)",
-                  glowBorder: "rgba(0, 240, 255, 0.3)",
-                  glowShadow: "rgba(0, 240, 255, 0.15)",
-                  glowBg: "rgba(0, 240, 255, 0.05)",
                   fileUrl: "/uploads/IT Support Service (Level-3).pdf"
                 },
                 {
@@ -472,9 +437,6 @@ export default function Home() {
                   status: "Verified",
                   icon: <Globe size={20} color="var(--accent-color)" />,
                   glowColor: "var(--accent-color)",
-                  glowBorder: "rgba(179, 102, 255, 0.3)",
-                  glowShadow: "rgba(179, 102, 255, 0.15)",
-                  glowBg: "rgba(179, 102, 255, 0.05)",
                   fileUrl: "/uploads/Foundation English Test (FET).pdf"
                 },
                 {
@@ -487,9 +449,6 @@ export default function Home() {
                   status: "Verified",
                   icon: <Code2 size={20} color="var(--primary-color)" />,
                   glowColor: "var(--primary-color)",
-                  glowBorder: "rgba(0, 240, 255, 0.3)",
-                  glowShadow: "rgba(0, 240, 255, 0.15)",
-                  glowBg: "rgba(0, 240, 255, 0.05)",
                   fileUrl: "/uploads/Python Programming Course.pdf"
                 }
               ];
@@ -498,12 +457,19 @@ export default function Home() {
                 const dynamicCert = certifications.find((c: any) => c.name === hc.title) || {};
                 const fileUrl = dynamicCert.fileUrl || hc.fileUrl;
                 return (
-                  <GlassCard key={dynamicCert.id || idx} className="cert-card cert-card-inner" style={{ padding: '2.5rem', display: 'flex', flexDirection: 'column', gap: '1.25rem', border: '1px solid var(--glass-border)', position: 'relative', overflow: 'hidden' }}>
+                  <motion.div
+                    key={dynamicCert.id || idx}
+                    variants={{
+                      hidden: { opacity: 0, y: 30 },
+                      visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } }
+                    }}
+                  >
+                  <GlassCard className="cert-card cert-card-inner" style={{ padding: '2.5rem', display: 'flex', flexDirection: 'column', gap: '1.25rem', border: '1px solid var(--glass-border)', position: 'relative', overflow: 'hidden', height: '100%' }}>
                     
                     {/* Header: Icon, Title, Issuer, Verified Badge */}
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '1rem' }}>
                       <div style={{ display: 'flex', gap: '1.25rem', alignItems: 'flex-start' }}>
-                        <div className="cert-icon-container" style={{ width: '48px', height: '48px', borderRadius: '12px', background: hc.glowBg, border: `1px solid ${hc.glowBorder}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, boxShadow: `0 0 15px ${hc.glowShadow}` }}>
+                        <div className="cert-icon-container" style={{ width: '48px', height: '48px', borderRadius: '12px', background: 'var(--icon-bg)', border: '1px solid var(--icon-border)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                           {hc.icon}
                         </div>
                         <div className="cert-title-wrap" style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem', paddingRight: '4rem' }}>
@@ -532,28 +498,32 @@ export default function Home() {
                       ))}
                     </div>
 
-                    <div style={{ marginTop: 'auto', paddingTop: '1.5rem', borderTop: '1px solid var(--glass-border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
+                    <div style={{ marginTop: 'auto', paddingTop: '1.5rem', borderTop: '1px solid var(--divider-color)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
                       {/* Category & Extra Badge */}
                       <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', flexWrap: 'wrap' }}>
                         <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', background: 'var(--glass-bg)', padding: '6px 12px', borderRadius: '100px', border: '1px solid var(--glass-border)' }}>{hc.category}</span>
                         {hc.extraBadge && (
-                          <span style={{ fontSize: '0.75rem', color: hc.glowColor, background: hc.glowBg, padding: '6px 12px', borderRadius: '100px', border: `1px solid ${hc.glowBorder}`, fontWeight: 600 }}>{hc.extraBadge}</span>
+                          <span style={{ fontSize: '0.75rem', color: hc.glowColor, background: 'var(--accent-alpha-10)', padding: '6px 12px', borderRadius: '100px', border: '1px solid var(--accent-alpha-20)', fontWeight: 600 }}>{hc.extraBadge}</span>
                         )}
                       </div>
 
                       {/* View Credential Link */}
-                      <a href={fileUrl || "#"} target={fileUrl ? "_blank" : undefined} rel={fileUrl ? "noreferrer" : undefined} style={{ color: 'var(--text-primary)', fontSize: '0.85rem', fontWeight: 600, padding: '8px 16px', background: 'rgba(255,255,255,0.03)', borderRadius: '8px', border: '1px solid var(--glass-border)', transition: 'all 0.2s', display: 'flex', alignItems: 'center', gap: '6px' }} className="hover-glow-white">
+                      <a href={fileUrl || "#"} target={fileUrl ? "_blank" : undefined} rel={fileUrl ? "noreferrer" : undefined} style={{ color: 'var(--text-primary)', fontSize: '0.85rem', fontWeight: 600, padding: '8px 16px', background: 'var(--surface-elevated)', borderRadius: '8px', border: '1px solid var(--glass-border)', transition: 'all 0.2s', display: 'flex', alignItems: 'center', gap: '6px' }} className="hover-glow-white">
                         View Credentials ↗
                       </a>
                     </div>
                   </GlassCard>
+                  </motion.div>
                 );
               });
             })()
           )}
-        </div>
+        </motion.div>
       </motion.section>
 
+      {/* ====================================================
+         PROJECTS SECTION
+         ==================================================== */}
       <motion.section 
         id="projects" 
         initial={{ opacity: 0, y: 40 }}
@@ -564,79 +534,22 @@ export default function Home() {
         {/* Animated Background Pattern */}
         <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, opacity: 0.02, backgroundImage: 'radial-gradient(var(--primary-color) 1px, transparent 1px)', backgroundSize: '30px 30px', pointerEvents: 'none', zIndex: 0 }} />
         
-        <style dangerouslySetInnerHTML={{__html: `
-          .proj-card {
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            z-index: 1;
-          }
-          .proj-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 20px 40px -10px var(--primary-alpha-10) !important;
-            border-color: var(--primary-alpha-20) !important;
-          }
-          .proj-card:hover .proj-img-overlay {
-            opacity: 1 !important;
-            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent) !important;
-          }
-          .proj-card:hover .proj-img {
-            transform: scale(1.05);
-          }
-          .proj-btn {
-            transition: all 0.2s ease;
-          }
-          .proj-btn:hover {
-            transform: translateY(-2px);
-          }
-          .proj-featured {
-            grid-column: 1 / -1;
-            flex-direction: row !important;
-          }
-          .proj-img-wrapper {
-            width: 100%;
-            height: 200px;
-            border-bottom: 1px solid var(--glass-border);
-          }
-          .proj-content-wrapper {
-            width: 100%;
-            padding: 2rem;
-          }
-          .proj-featured .proj-img-wrapper {
-            width: 45%;
-            height: auto;
-            min-height: 100%;
-            border-right: 1px solid var(--glass-border);
-            border-bottom: none;
-          }
-          .proj-featured .proj-content-wrapper {
-            width: 55%;
-            padding: 3.5rem;
-          }
-          @media (max-width: 900px) {
-            .proj-featured {
-              flex-direction: column !important;
-            }
-            .proj-featured .proj-img-wrapper {
-              width: 100%;
-              height: 250px;
-              min-height: 250px;
-              border-right: none;
-              border-bottom: 1px solid var(--glass-border);
-            }
-            .proj-featured .proj-content-wrapper {
-              width: 100%;
-              padding: 2rem;
-            }
-          }
-        `}} />
-        
         <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', marginBottom: '4rem' }}>
           <p className="accent-text" style={{ marginBottom: '0.5rem' }}>Showcase</p>
           <h2 className="section-title" style={{ fontSize: '3.5rem', margin: 0 }}>Projects</h2>
-
         </div>
 
-        <div className="proj-grid" style={{ position: 'relative', zIndex: 1, display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '2.5rem' }}>
+        <motion.div 
+          className="proj-grid" 
+          style={{ position: 'relative', zIndex: 1, display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '2.5rem' }}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+          variants={{
+            visible: { transition: { staggerChildren: 0.15 } },
+            hidden: {}
+          }}
+        >
           {loading ? (
              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '2.5rem' }}>
                {[...Array(3)].map((_, i) => <div key={i} className="skeleton" style={{ height: '400px', borderRadius: '24px' }} />)}
@@ -661,7 +574,8 @@ export default function Home() {
                     { text: "Research Details", type: "primary", icon: <ExternalLink size={16} />, href:"" },
                     { text: "GitHub Repository", type: "secondary", icon: <GitBranch size={16} />, href:"https://github.com/mizanur-sajid/AI-Skin-Disease-Detection-System" }
                   ],
-                  isFeatured: true
+                  isFeatured: true,
+                  status: "Completed"
                 },
                 {
                   title: "Portfolio CMS Platform",
@@ -680,7 +594,8 @@ export default function Home() {
                     { text: "Live Demo", type: "primary", icon: <ExternalLink size={16} />, href:"https://mizanurrahman.site.je/" },
                     { text: "Source Code", type: "secondary", icon: <Code2 size={16} />, href:"https://github.com/mizanur-sajid/myself_mizan" }
                   ],
-                  isFeatured: false
+                  isFeatured: false,
+                  status: "Live"
                 },
                 {
                   title: "InspireInk- AI based Prompt Assistant",
@@ -699,7 +614,8 @@ export default function Home() {
                     { text: "Live Demo", type: "primary", icon: <ExternalLink size={16} />, href: "https://inspireink.site.je/" },
                     { text: "Source Code", type: "secondary", icon: <Code2 size={16} />, href: "https://github.com/mizanur-sajid/InspireInk" }
                   ],
-                  isFeatured: false
+                  isFeatured: false,
+                  status: "Live"
                 }
               ];
 
@@ -709,22 +625,52 @@ export default function Home() {
                 const fileUrl = dynamicProj.fileUrl; // Admin uploaded file/image
 
                 return (
-                  <GlassCard key={dynamicProj.id || idx} className={`proj-card ${hc.isFeatured ? 'proj-featured' : ''}`} style={{ display: 'flex', flexDirection: 'column', gap: '0', overflow: 'hidden', padding: 0, border: '1px solid var(--glass-border)' }}>
+                  <motion.div
+                    key={dynamicProj.id || idx}
+                    variants={{
+                      hidden: { opacity: 0, y: 30 },
+                      visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } }
+                    }}
+                    className={hc.isFeatured ? 'proj-featured' : ''}
+                    style={{ display: hc.isFeatured ? 'flex' : 'contents' }}
+                  >
+                  <GlassCard className={`proj-card ${hc.isFeatured ? 'proj-featured' : ''}`} style={{ display: 'flex', flexDirection: 'column', gap: '0', overflow: 'hidden', padding: 0, border: '1px solid var(--glass-border)' }}>
                     {/* Thumbnail / Image Area */}
-                    <div className="proj-img-wrapper" style={{ background: hc.isFeatured ? 'linear-gradient(135deg, var(--primary-alpha-10), var(--accent-alpha-10))' : 'var(--glass-bg)', position: 'relative', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <div className="proj-img-wrapper" style={{ background: hc.isFeatured ? 'linear-gradient(135deg, var(--primary-alpha-10), var(--accent-alpha-10))' : 'var(--surface-elevated)', position: 'relative', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                       {hc.isFeatured && (
                          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, opacity: 0.1, backgroundImage: 'radial-gradient(circle at 20% 50%, var(--primary-color) 0%, transparent 50%), radial-gradient(circle at 80% 80%, var(--accent-color) 0%, transparent 50%)', filter: 'blur(30px)' }} />
                       )}
                       <div className="proj-img" style={{ transition: 'transform 0.5s ease', opacity: 0.5 }}>
                         {hc.isFeatured ? <Network size={80} color="var(--primary-color)" /> : hc.title.includes("CMS") ? <LayoutTemplate size={60} color="var(--accent-color)" /> : <LifeBuoy size={60} color="var(--primary-color)" />}
                       </div>
-                      {hc.isFeatured && (
-                        <div style={{ position: 'absolute', top: '1.5rem', left: '1.5rem', display: 'flex', alignItems: 'center', gap: '6px', background: 'var(--primary-alpha-10)', border: '1px solid var(--primary-alpha-20)', padding: '6px 12px', borderRadius: '100px', color: 'var(--primary-color)', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', boxShadow: '0 0 20px var(--primary-alpha-10)' }}>
-                          <Sparkles size={14} /> Featured Project
-                        </div>
-                      )}
+
+                      {/* Status Badge */}
+                      <div style={{ position: 'absolute', top: '1.5rem', left: '1.5rem', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        {hc.isFeatured && (
+                          <span style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'var(--primary-alpha-10)', border: '1px solid var(--primary-alpha-20)', padding: '6px 12px', borderRadius: '100px', color: 'var(--primary-color)', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', boxShadow: '0 0 20px var(--primary-alpha-10)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)' }}>
+                            <Sparkles size={14} /> Featured Project
+                          </span>
+                        )}
+                      </div>
+
+                      {/* Project Status */}
+                      <div style={{ position: 'absolute', top: '1.5rem', right: '1.5rem' }}>
+                        <span style={{ 
+                          display: 'flex', alignItems: 'center', gap: '4px', 
+                          padding: '4px 10px', borderRadius: '100px', fontSize: '0.7rem', fontWeight: 600, 
+                          textTransform: 'uppercase', letterSpacing: '0.05em',
+                          background: hc.status === 'Live' ? 'rgba(34, 197, 94, 0.12)' : 'var(--primary-alpha-10)',
+                          color: hc.status === 'Live' ? 'var(--success-color)' : 'var(--primary-color)',
+                          border: hc.status === 'Live' ? '1px solid rgba(34, 197, 94, 0.25)' : '1px solid var(--primary-alpha-20)',
+                          backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)'
+                        }}>
+                          <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: hc.status === 'Live' ? 'var(--success-color)' : 'var(--primary-color)' }} />
+                          {hc.status}
+                        </span>
+                      </div>
+
                       <div className="proj-img-overlay" style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, opacity: 0, transition: 'all 0.3s', display: 'flex', alignItems: 'flex-end', justifyContent: 'center', padding: '1rem' }}>
-                        <a href={fileUrl || '#'} target={fileUrl ? "_blank" : "_self"} rel="noreferrer" style={{ padding: '8px 16px', background: 'var(--primary-color)', color: '#000', fontSize: '0.8rem', fontWeight: 600, borderRadius: '6px', display: 'flex', alignItems: 'center', gap: '6px' }}><Eye size={14} /> View Image</a>
+                        <a href={fileUrl || '#'} target={fileUrl ? "_blank" : "_self"} rel="noreferrer" style={{ padding: '8px 16px', background: 'var(--primary-color)', color: '#fff', fontSize: '0.8rem', fontWeight: 600, borderRadius: '6px', display: 'flex', alignItems: 'center', gap: '6px' }}><Eye size={14} /> View Image</a>
                       </div>
                     </div>
 
@@ -767,7 +713,7 @@ export default function Home() {
                       </div>
 
                       {/* Tech Stack Chips */}
-                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: 'auto', paddingTop: '1.5rem', borderTop: '1px solid var(--glass-border)' }}>
+                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: 'auto', paddingTop: '1.5rem', borderTop: '1px solid var(--divider-color)' }}>
                         {hc.tech.map(t => (
                           <span key={t} style={{ padding: '4px 12px', background: 'var(--tag-bg)', border: '1px solid var(--tag-border)', borderRadius: '6px', fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
                             {t.trim()}
@@ -788,11 +734,12 @@ export default function Home() {
                       </div>
                     </div>
                   </GlassCard>
+                  </motion.div>
                 );
               });
             })()
           )}
-        </div>
+        </motion.div>
         
         <div style={{ textAlign: 'center', marginTop: '4rem', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem' }}>
           <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -801,6 +748,9 @@ export default function Home() {
         </div>
       </motion.section>
 
+      {/* ====================================================
+         CONTACT SECTION
+         ==================================================== */}
       <motion.section 
         id="contact" 
         initial={{ opacity: 0, y: 40 }}
@@ -822,6 +772,9 @@ export default function Home() {
         <ContactForm />
       </motion.section>
 
+      {/* ====================================================
+         FOOTER
+         ==================================================== */}
       <motion.footer 
         className="footer-glass"
         initial={{ opacity: 0, y: 80 }}
@@ -838,17 +791,20 @@ export default function Home() {
           margin: '0 auto 2rem auto',
           width: '100%',
           borderRadius: '24px',
-          boxShadow: '0 8px 32px -8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.05)'
+          boxShadow: 'var(--card-shadow)',
+          overflow: 'hidden'
         }}
       >
+        {/* Gradient top line */}
+        <div className="footer-gradient-line" />
 
         <p style={{ margin: 0, fontSize: '0.75rem', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
-          Made with <span style={{ color: '#ef4444', animation: 'skeleton-pulse 2s ease-in-out infinite' }}>❤️</span> and passion by
+          Made with <span className="footer-heart">❤️</span> and passion by
         </p>
         <div style={{ display: 'flex', justifyContent: 'center', margin: '0.25rem 0' }}>
           <Image src="/logo.png" alt="Signature Logo" width={160} height={48} className="logo-invert" style={{ objectFit: 'contain', opacity: 0.8 }} />
         </div>
-        <p style={{ margin: 0, fontSize: '0.7rem', color: 'var(--text-secondary)', fontFamily: 'var(--font-space)' }}>
+        <p style={{ margin: 0, fontSize: '0.7rem', color: 'var(--text-tertiary)', fontFamily: 'var(--font-space)' }}>
           {config?.footerText || `© ${new Date().getFullYear()} All Rights Reserved.`}
         </p>
       </motion.footer>

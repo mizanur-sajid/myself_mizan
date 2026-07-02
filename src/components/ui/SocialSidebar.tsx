@@ -50,96 +50,44 @@ export function SocialSidebar() {
   };
 
   return (
-    <>
-      <AnimatePresence>
-        {isVisible && socials.length > 0 && (
-          <motion.div 
-            className="social-sidebar" 
-            initial={{ y: '-100vh', opacity: 0 }}
-            animate={{ y: '-50%', opacity: 1 }}
-            exit={{ y: '100vh', opacity: 0 }}
-            transition={{ type: 'spring', stiffness: 120, damping: 20 }}
-            style={{
-              position: 'fixed',
-              right: '24px',
-              top: '50%',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              gap: '1.5rem',
-              zIndex: 50,
-              background: 'var(--glass-bg)',
-              backdropFilter: 'blur(16px)',
-              border: '1px solid var(--glass-border)',
-              padding: '1.5rem 1rem',
-              borderRadius: '2rem',
-              boxShadow: 'var(--card-shadow)',
-            }}
-          >
-            {socials.map((social) => (
-              <a key={social.id} href={social.url} target="_blank" rel="noreferrer" className={`social-link ${social.icon}`}>
+    <AnimatePresence>
+      {isVisible && socials.length > 0 && (
+        <motion.div 
+          className="social-sidebar" 
+          initial={{ y: '-100vh', opacity: 0 }}
+          animate={{ y: '-50%', opacity: 1 }}
+          exit={{ y: '100vh', opacity: 0 }}
+          transition={{ type: 'spring', stiffness: 120, damping: 20 }}
+          style={{
+            position: 'fixed',
+            right: '24px',
+            top: '50%',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: '0.5rem',
+            zIndex: 50,
+            background: 'var(--glass-bg)',
+            backdropFilter: 'blur(16px)',
+            border: '1px solid var(--glass-border)',
+            padding: '1.5rem 1rem',
+            borderRadius: '2rem',
+            boxShadow: 'var(--card-shadow)',
+          }}
+        >
+          {socials.map((social, idx) => (
+            <div key={social.id} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
+              <a href={social.url} target="_blank" rel="noreferrer" className={`social-link ${social.icon}`}>
                 <span className="social-tooltip">{social.name}</span>
                 {getIcon(social.icon)}
               </a>
-            ))}
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      <style dangerouslySetInnerHTML={{__html: `
-        .social-link {
-          position: relative;
-          color: var(--text-secondary);
-          transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-        .social-tooltip {
-          position: absolute;
-          right: 100%;
-          top: 50%;
-          transform: translateY(-50%) translateX(10px);
-          background: var(--bg-color);
-          padding: 6px 12px;
-          border-radius: 6px;
-          border: 1px solid var(--glass-border);
-          font-size: 0.85rem;
-          font-weight: 500;
-          opacity: 0;
-          visibility: hidden;
-          transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-          white-space: nowrap;
-          margin-right: 15px;
-          color: var(--text-primary);
-          box-shadow: var(--card-shadow);
-        }
-        .social-link:hover .social-tooltip {
-          opacity: 1;
-          visibility: visible;
-          transform: translateY(-50%) translateX(0);
-        }
-        .social-sidebar:hover {
-          transform: translateX(0) translateY(-50%) !important;
-        }
-        .social-link.github:hover {
-          color: var(--text-primary);
-          transform: translateY(-4px) scale(1.1);
-        }
-        .social-link.linkedin:hover {
-          color: #0a66c2;
-          transform: translateY(-4px) scale(1.1);
-        }
-        .social-link.email:hover {
-          color: #ea4335;
-          transform: translateY(-4px) scale(1.1);
-        }
-        @media (max-width: 768px) {
-          .social-sidebar {
-            display: none !important;
-          }
-        }
-      `}} />
-    </>
+              {idx < socials.length - 1 && (
+                <div className="social-sidebar-line" />
+              )}
+            </div>
+          ))}
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }

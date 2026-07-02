@@ -8,6 +8,7 @@ export const StickyNav = () => {
   const [activeSection, setActiveSection] = useState('');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [scrollOpacity, setScrollOpacity] = useState(0.4);
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
@@ -18,6 +19,10 @@ export const StickyNav = () => {
 
   useEffect(() => {
     const handleScroll = () => {
+      // Scroll-based background opacity
+      const opacity = Math.min(0.95, 0.4 + window.scrollY / 300);
+      setScrollOpacity(opacity);
+
       const sections = ['about', 'skills', 'publications', 'certifications', 'projects', 'contact'];
       let current = '';
       
@@ -67,13 +72,13 @@ export const StickyNav = () => {
       top: '1.5rem', 
       zIndex: 1000,
       background: 'var(--glass-bg)',
-      backdropFilter: 'blur(40px)',
-      WebkitBackdropFilter: 'blur(40px)',
+      backdropFilter: `blur(${Math.round(20 + scrollOpacity * 30)}px)`,
+      WebkitBackdropFilter: `blur(${Math.round(20 + scrollOpacity * 30)}px)`,
       margin: '0 auto 4rem auto',
       width: '100%',
       borderRadius: '100px',
-      boxShadow: '0 8px 32px -8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.05)',
-      transition: 'all 0.4s ease'
+      boxShadow: scrollOpacity > 0.6 ? 'var(--card-shadow)' : '0 4px 20px -8px rgba(0,0,0,0.05)',
+      transition: 'box-shadow 0.4s ease, border-color 0.4s ease'
     }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
         <a 
@@ -141,7 +146,7 @@ export const StickyNav = () => {
           display: 'flex',
           flexDirection: 'column',
           gap: '1.5rem',
-          boxShadow: '0 20px 40px rgba(0,0,0,0.2)',
+          boxShadow: 'var(--card-shadow)',
           zIndex: 1000
         }}>
           {links.map(link => (
@@ -155,7 +160,7 @@ export const StickyNav = () => {
                 fontWeight: 600,
                 textDecoration: 'none',
                 padding: '0.5rem 0',
-                borderBottom: '1px solid rgba(255,255,255,0.05)'
+                borderBottom: '1px solid var(--divider-color)'
               }}
             >
               {link.label}

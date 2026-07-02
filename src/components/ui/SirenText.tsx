@@ -75,17 +75,6 @@ export function SirenText() {
       onMouseLeave={stopSiren}
     >
       Under Construction 🚧
-      <style dangerouslySetInnerHTML={{__html: `
-        .siren-hover:hover {
-          color: #ff3333 !important;
-          text-shadow: 0 0 10px rgba(255, 51, 51, 0.8), 0 0 20px rgba(255, 51, 51, 0.5);
-          animation: flash 0.9s infinite alternate;
-        }
-        @keyframes flash {
-          0% { opacity: 1; }
-          100% { opacity: 0.6; }
-        }
-      `}} />
     </p>
   );
 }
