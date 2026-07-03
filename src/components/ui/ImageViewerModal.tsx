@@ -1,13 +1,14 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ZoomIn, ZoomOut, Maximize, Download } from 'lucide-react';
+import { X, ZoomIn, ZoomOut, Maximize, Download, Timer } from 'lucide-react';
 
 interface ImageViewerModalProps {
   src: string | null;
   onClose: () => void;
+  countdown?: number | null;
 }
 
-export function ImageViewerModal({ src, onClose }: ImageViewerModalProps) {
+export function ImageViewerModal({ src, onClose, countdown }: ImageViewerModalProps) {
   const [scale, setScale] = useState(1);
   const imgRef = useRef<HTMLImageElement>(null);
   const [baseSize, setBaseSize] = useState({ width: 0, height: 0 });
@@ -93,34 +94,46 @@ export function ImageViewerModal({ src, onClose }: ImageViewerModalProps) {
             onClick={(e) => e.stopPropagation()}
             style={{
               display: 'flex',
-              justifyContent: 'flex-end',
+              justifyContent: 'space-between',
               alignItems: 'center',
               padding: '1rem 2rem',
-              gap: '1rem',
+              width: '100%',
             }}
           >
-            <button onClick={handleZoomOut} style={{ background: 'rgba(255, 255, 255, 0.1)', border: 'none', color: '#fff', padding: '0.5rem', borderRadius: '50%', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }} title="Zoom Out">
-              <ZoomOut size={20} />
-            </button>
-            <button onClick={handleReset} style={{ background: 'rgba(255, 255, 255, 0.1)', border: 'none', color: '#fff', padding: '0.5rem', borderRadius: '50%', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }} title="Reset Zoom">
-              <Maximize size={20} />
-            </button>
-            <button onClick={handleZoomIn} style={{ background: 'rgba(255, 255, 255, 0.1)', border: 'none', color: '#fff', padding: '0.5rem', borderRadius: '50%', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }} title="Zoom In">
-              <ZoomIn size={20} />
-            </button>
-            <a 
-              href={src} 
-              download 
-              onClick={(e) => e.stopPropagation()}
-              style={{ background: 'rgba(255, 255, 255, 0.1)', border: 'none', color: '#fff', padding: '0.5rem', borderRadius: '50%', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', textDecoration: 'none' }} 
-              title="Download Image"
-            >
-              <Download size={20} />
-            </a>
-            <div style={{ width: '1px', height: '24px', background: 'rgba(255, 255, 255, 0.2)', margin: '0 0.5rem' }}></div>
-            <button onClick={onClose} style={{ background: 'rgba(239, 68, 68, 0.2)', border: '1px solid rgba(239, 68, 68, 0.5)', color: '#f87171', padding: '0.5rem', borderRadius: '50%', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }} title="Close">
-              <X size={20} />
-            </button>
+            {/* Left side: Countdown */}
+            <div style={{ color: '#fff', fontSize: '0.95rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px' }}>
+              {countdown !== undefined && countdown !== null && (
+                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'rgba(255, 255, 255, 0.1)', padding: '6px 16px', borderRadius: '100px', border: '1px solid rgba(255, 255, 255, 0.2)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)' }}>
+                   <Timer size={16} /> Next image in {countdown} seconds
+                 </div>
+              )}
+            </div>
+
+            {/* Right side: Actions */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+              <button onClick={handleZoomOut} style={{ background: 'rgba(255, 255, 255, 0.1)', border: 'none', color: '#fff', padding: '0.5rem', borderRadius: '50%', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }} title="Zoom Out">
+                <ZoomOut size={20} />
+              </button>
+              <button onClick={handleReset} style={{ background: 'rgba(255, 255, 255, 0.1)', border: 'none', color: '#fff', padding: '0.5rem', borderRadius: '50%', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }} title="Reset Zoom">
+                <Maximize size={20} />
+              </button>
+              <button onClick={handleZoomIn} style={{ background: 'rgba(255, 255, 255, 0.1)', border: 'none', color: '#fff', padding: '0.5rem', borderRadius: '50%', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }} title="Zoom In">
+                <ZoomIn size={20} />
+              </button>
+              <a 
+                href={src} 
+                download 
+                onClick={(e) => e.stopPropagation()}
+                style={{ background: 'rgba(255, 255, 255, 0.1)', border: 'none', color: '#fff', padding: '0.5rem', borderRadius: '50%', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', textDecoration: 'none' }} 
+                title="Download Image"
+              >
+                <Download size={20} />
+              </a>
+              <div style={{ width: '1px', height: '24px', background: 'rgba(255, 255, 255, 0.2)', margin: '0 0.5rem' }}></div>
+              <button onClick={onClose} style={{ background: 'rgba(239, 68, 68, 0.2)', border: '1px solid rgba(239, 68, 68, 0.5)', color: '#f87171', padding: '0.5rem', borderRadius: '50%', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }} title="Close">
+                <X size={20} />
+              </button>
+            </div>
           </div>
 
           {/* Image Container */}
@@ -129,7 +142,7 @@ export function ImageViewerModal({ src, onClose }: ImageViewerModalProps) {
             style={{ 
               flex: 1, 
               width: '100%',
-              overflow: 'auto', 
+              overflow: scale === 1 ? 'hidden' : 'auto', 
               display: 'flex', 
               flexDirection: 'column'
             }}
@@ -137,10 +150,13 @@ export function ImageViewerModal({ src, onClose }: ImageViewerModalProps) {
             <div 
               onClick={(e) => e.stopPropagation()} 
               style={{ 
-                flex: '1 0 auto',
+                flex: scale === 1 ? '1' : '0 0 auto',
+                minHeight: 0,
                 minWidth: '100%',
-                width: 'fit-content',
+                width: scale === 1 ? '100%' : 'fit-content',
+                height: scale === 1 ? '100%' : 'fit-content',
                 padding: '2rem',
+                boxSizing: 'border-box',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -153,15 +169,17 @@ export function ImageViewerModal({ src, onClose }: ImageViewerModalProps) {
                 alt="Enlarged view" 
                 onLoad={handleImageLoad}
                 style={{ 
-                  width: scale === 1 ? 'auto' : `${baseSize.width * scale}px`,
-                  height: scale === 1 ? 'auto' : `${baseSize.height * scale}px`,
-                  maxWidth: scale === 1 ? '90vw' : 'none', 
-                  maxHeight: scale === 1 ? '80vh' : 'none', 
+                  width: scale === 1 ? '100%' : `${baseSize.width * scale}px`,
+                  height: scale === 1 ? '100%' : `${baseSize.height * scale}px`,
+                  maxWidth: scale === 1 ? '100%' : 'none', 
+                  maxHeight: scale === 1 ? '100%' : 'none', 
                   objectFit: 'contain', 
                   display: 'block',
                   borderRadius: '8px', 
                   boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
-                  transition: 'width 0.2s ease-out, height 0.2s ease-out'
+                  transition: 'width 0.2s ease-out, height 0.2s ease-out',
+                  imageRendering: 'high-quality',
+                  WebkitFontSmoothing: 'antialiased'
                 }} 
               />
             </div>

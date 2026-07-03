@@ -21,6 +21,41 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [viewerImage, setViewerImage] = useState<string | null>(null);
+  const [carouselImages, setCarouselImages] = useState<string[] | null>(null);
+  const [carouselCountdown, setCarouselCountdown] = useState<number | null>(null);
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    let countdownTimer: NodeJS.Timeout;
+    
+    if (carouselImages && carouselImages.length > 0) {
+      setCarouselCountdown(5);
+      
+      countdownTimer = setInterval(() => {
+        setCarouselCountdown((prev) => {
+          if (prev === null) return null;
+          if (prev <= 1) return 5;
+          return prev - 1;
+        });
+      }, 1000);
+
+      timer = setInterval(() => {
+        setViewerImage((current) => {
+          if (!current) return current;
+          const currentIndex = carouselImages.indexOf(current);
+          const nextIndex = currentIndex === -1 ? 0 : (currentIndex + 1) % carouselImages.length;
+          return carouselImages[nextIndex];
+        });
+      }, 5000);
+    } else {
+      setCarouselCountdown(null);
+    }
+    
+    return () => {
+      clearInterval(timer);
+      clearInterval(countdownTimer);
+    };
+  }, [carouselImages]);
 
   useEffect(() => {
     const handleScrollTop = () => setShowScrollTop(window.scrollY > 400);
@@ -581,8 +616,9 @@ export default function Home() {
                 {
                   title: "AI Skin Disease Detection System",
                   year: "2026",
-                  description: "Deep learning-based medical image classification system for detecting multiple dermatological conditions using EfficientNetV2 and Grad-CAM explainability.",
+                  description: "DermAI Diagnostix – A deep learning-based medical image classification system for accurate skin disease detection using EfficientNetV2 with Grad-CAM explainability.",
                   badges: ["AI / ML", "Research", "Computer Vision"],
+                  image: "/projects/dermai.png",
                   stats: ["10K+ Images", "8 Disease Classes", "95%+ Accuracy", "Grad-CAM Explainability"],
                   features: [
                     "Multi-class skin disease classification",
@@ -592,7 +628,18 @@ export default function Home() {
                   ],
                   tech: ["Python", "TensorFlow", "EfficientNetV2", "OpenCV", "Grad-CAM", "Deep Learning"],
                   buttons: [
-                    { text: "Research Details", type: "primary", icon: <ExternalLink size={16} />, href:"" },
+                    { 
+                      text: "Research Details", 
+                      type: "primary", 
+                      icon: <ExternalLink size={16} />, 
+                      action: "carousel",
+                      images: [
+                        "/projects/dermai/classification_report.png",
+                        "/projects/dermai/confusion_matrix.png",
+                        "/projects/dermai/per_class_performance.png",
+                        "/projects/dermai/training_history.png"
+                      ]
+                    },
                     { text: "GitHub Repository", type: "secondary", icon: <GitBranch size={16} />, href:"https://github.com/mizanur-sajid/AI-Skin-Disease-Detection-System" }
                   ],
                   isFeatured: true,
@@ -620,9 +667,9 @@ export default function Home() {
                   status: "Live"
                 },
                 {
-                  title: "InspireInk- AI based Prompt Assistant",
+                  title: "InspireInk- Writing Helper",
                   year: "2024",
-                  description: "A modern, intuitive writing prompt generator and daily journaling app built with React Native and Expo. Ignite your creativity and keep track of your thoughts!",
+                  description: "A minimalist journaling app with daily prompts. Built using React Native & Expo.",
                   badges: ["Mobile App", "React Native"],
                   image: "/projects/inspireink.png",
                   stats: [],
@@ -759,8 +806,26 @@ export default function Home() {
 
                       {/* Actions */}
                       <div style={{ display: 'flex', gap: '1rem', marginTop: '0.5rem', flexWrap: 'wrap', width: '100%' }}>
-                        {hc.buttons.map((btn: any, i) => {
+                        {hc.buttons.map((btn: any, i: number) => {
                           const href = btn.href || (i === 0 ? link : fileUrl) || '#';
+                          if (btn.action === 'carousel') {
+                            return (
+                              <button 
+                                key={i}
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  if (btn.images && btn.images.length > 0) {
+                                    setViewerImage(btn.images[0]);
+                                    setCarouselImages(btn.images);
+                                  }
+                                }}
+                                className="proj-btn"
+                                style={{ flex: 1, minWidth: '120px', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px', padding: '10px 20px', borderRadius: '8px', fontSize: '0.9rem', fontWeight: 600, border: btn.type === 'primary' ? '1px solid var(--primary-alpha-20)' : '1px solid var(--glass-border)', background: btn.type === 'primary' ? 'var(--primary-alpha-10)' : 'var(--glass-bg)', color: btn.type === 'primary' ? 'var(--primary-color)' : 'var(--text-primary)', boxShadow: btn.type === 'primary' ? '0 0 15px var(--primary-alpha-10)' : 'none', cursor: 'pointer' }}
+                              >
+                                {btn.icon} {btn.text}
+                              </button>
+                            );
+                          }
                           return (
                             <a key={i} href={href} target={href !== '#' ? "_blank" : "_self"} rel="noreferrer" className="proj-btn" style={{ flex: 1, minWidth: '120px', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px', padding: '10px 20px', borderRadius: '8px', fontSize: '0.9rem', fontWeight: 600, textDecoration: 'none', background: btn.type === 'primary' ? 'var(--primary-alpha-10)' : 'var(--glass-bg)', color: btn.type === 'primary' ? 'var(--primary-color)' : 'var(--text-primary)', border: btn.type === 'primary' ? '1px solid var(--primary-alpha-20)' : '1px solid var(--glass-border)', boxShadow: btn.type === 'primary' ? '0 0 15px var(--primary-alpha-10)' : 'none', textAlign: 'center' }}>
                               {btn.icon} {btn.text}
@@ -883,7 +948,14 @@ export default function Home() {
         )}
       </AnimatePresence>
 
-      <ImageViewerModal src={viewerImage} onClose={() => setViewerImage(null)} />
+      <ImageViewerModal 
+        src={viewerImage} 
+        countdown={carouselCountdown}
+        onClose={() => {
+          setViewerImage(null);
+          setCarouselImages(null);
+        }} 
+      />
       </div>
     </main>
   );
