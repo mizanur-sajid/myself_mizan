@@ -44,7 +44,7 @@ export const AdminSidebar = () => {
       )}
 
       {/* Sidebar */}
-      <aside className={`admin-sidebar ${isOpen || !isMobile ? 'open' : ''}`} style={{ 
+      <aside data-lenis-prevent="true" className={`admin-sidebar ${isOpen || !isMobile ? 'open' : ''}`} style={{ 
         width: '260px', 
         height: '100%', 
         overflowY: 'auto', 
