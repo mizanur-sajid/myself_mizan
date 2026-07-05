@@ -90,27 +90,64 @@ export function ImageViewerModal({ src, onClose, countdown }: ImageViewerModalPr
           }}
         >
           {/* Toolbar */}
+          <style>{`
+            .iv-toolbar {
+              padding: 1rem 2rem;
+              gap: 1rem;
+              flex-wrap: nowrap;
+            }
+            .iv-actions {
+              gap: 1rem;
+            }
+            .iv-countdown {
+              font-size: 0.95rem;
+              padding: 6px 16px;
+            }
+            .iv-image-container {
+              padding: 2rem;
+            }
+            @media (max-width: 640px) {
+              .iv-toolbar {
+                padding: 1rem;
+                flex-wrap: wrap;
+                justify-content: center;
+              }
+              .iv-actions {
+                gap: 0.5rem;
+                width: 100%;
+                justify-content: center;
+              }
+              .iv-countdown {
+                font-size: 0.85rem;
+                padding: 4px 12px;
+              }
+              .iv-image-container {
+                padding: 1rem;
+              }
+            }
+          `}</style>
           <div 
             onClick={(e) => e.stopPropagation()}
+            className="iv-toolbar"
             style={{
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'center',
-              padding: '1rem 2rem',
               width: '100%',
+              boxSizing: 'border-box'
             }}
           >
             {/* Left side: Countdown */}
-            <div style={{ color: '#fff', fontSize: '0.95rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <div style={{ color: '#fff', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px' }}>
               {countdown !== undefined && countdown !== null && (
-                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'rgba(255, 255, 255, 0.1)', padding: '6px 16px', borderRadius: '100px', border: '1px solid rgba(255, 255, 255, 0.2)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)' }}>
-                   <Timer size={16} /> Next image in {countdown} seconds
+                 <div className="iv-countdown" style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'rgba(255, 255, 255, 0.1)', borderRadius: '100px', border: '1px solid rgba(255, 255, 255, 0.2)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)', whiteSpace: 'nowrap' }}>
+                   <Timer size={16} style={{ flexShrink: 0 }} /> Next image in {countdown} seconds
                  </div>
               )}
             </div>
 
             {/* Right side: Actions */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            <div className="iv-actions" style={{ display: 'flex', alignItems: 'center' }}>
               <button onClick={handleZoomOut} style={{ background: 'rgba(255, 255, 255, 0.1)', border: 'none', color: '#fff', padding: '0.5rem', borderRadius: '50%', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }} title="Zoom Out">
                 <ZoomOut size={20} />
               </button>
@@ -148,6 +185,7 @@ export function ImageViewerModal({ src, onClose, countdown }: ImageViewerModalPr
             }}
           >
             <div 
+              className="iv-image-container"
               onClick={(e) => e.stopPropagation()} 
               style={{ 
                 flex: scale === 1 ? '1' : '0 0 auto',
@@ -155,7 +193,6 @@ export function ImageViewerModal({ src, onClose, countdown }: ImageViewerModalPr
                 minWidth: '100%',
                 width: scale === 1 ? '100%' : 'fit-content',
                 height: scale === 1 ? '100%' : 'fit-content',
-                padding: '2rem',
                 boxSizing: 'border-box',
                 display: 'flex',
                 alignItems: 'center',
