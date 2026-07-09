@@ -884,7 +884,7 @@ export default function Home() {
         transition={{ duration: 0.6, type: "spring", bounce: 0.3 }}
         style={{ 
           textAlign: 'center', 
-          padding: '0 2rem 1rem 2rem', 
+          padding: '0 2rem 1.5rem 2rem', 
           border: '1px solid var(--glass-border)', 
           background: 'var(--glass-bg)', 
           backdropFilter: 'blur(40px)', 
@@ -899,15 +899,45 @@ export default function Home() {
         {/* Gradient top line */}
         <div className="footer-gradient-line" />
 
-        <p style={{ margin: 0, fontSize: '0.75rem', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
-          Made with <span className="footer-heart">❤️</span> and passion by
-        </p>
-        <div style={{ display: 'flex', justifyContent: 'center', margin: '0.25rem 0' }}>
-          <Image src="/logo.png" alt="Signature Logo" width={160} height={48} className="logo-invert" style={{ objectFit: 'contain', opacity: 0.8 }} />
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', flexWrap: 'wrap', gap: '1.5rem', paddingTop: '1.5rem' }}>
+          <a href="https://github.com/mizanur-sajid" target="_blank" rel="noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '12px 16px', background: 'var(--primary-alpha-10)', borderRadius: '16px', border: '1px solid var(--primary-alpha-20)', textDecoration: 'none', color: 'var(--text-primary)', transition: 'all 0.3s ease' }} className="hover-glow">
+            <div style={{ position: 'relative', width: '40px', height: '40px', borderRadius: '50%', overflow: 'hidden', border: '2px solid var(--primary-alpha-20)', flexShrink: 0 }}>
+              <img src="https://github.com/mizanur-sajid.png" alt="GitHub Profile" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <span style={{ fontWeight: 700, fontSize: '0.95rem', lineHeight: 1 }}>GitHub</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--primary-color)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.2c3-.3 6-1.5 6-6.5a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 5 3 6.2 6 6.5a4.8 4.8 0 0 0-1 3.2v4"/><path d="M9 18c-4.5 1-5-2.5-7-3"/></svg>
+              </div>
+              <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', lineHeight: 1 }}>@mizanur-sajid</span>
+            </div>
+          </a>
+
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flex: 1 }}>
+            <p style={{ margin: 0, fontSize: '0.75rem', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
+              Made with <span className="footer-heart">❤️</span> and passion by
+            </p>
+            <div style={{ display: 'flex', justifyContent: 'center', margin: '0.25rem 0' }}>
+              <Image src="/logo.png" alt="Signature Logo" width={160} height={48} className="logo-invert" style={{ objectFit: 'contain', opacity: 0.8 }} />
+            </div>
+            <p style={{ margin: 0, fontSize: '0.7rem', color: 'var(--text-tertiary)', fontFamily: 'var(--font-space)' }}>
+              {config?.footerText || `© ${new Date().getFullYear()} All Rights Reserved.`}
+            </p>
+          </div>
+
+          <a href="https://linkedin.com/in/mizanur-sajid" target="_blank" rel="noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '12px 16px', background: 'var(--accent-alpha-10)', borderRadius: '16px', border: '1px solid var(--accent-alpha-20)', textDecoration: 'none', color: 'var(--text-primary)', transition: 'all 0.3s ease' }} className="hover-glow">
+            <div style={{ position: 'relative', width: '40px', height: '40px', borderRadius: '50%', overflow: 'hidden', border: '2px solid var(--accent-alpha-20)', flexShrink: 0 }}>
+              <img src="/linkedin-profile.jpg" alt="LinkedIn Profile" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <span style={{ fontWeight: 700, fontSize: '0.95rem', lineHeight: 1 }}>LinkedIn</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent-color)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
+              </div>
+              <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', lineHeight: 1 }}>mizanur-sajid</span>
+            </div>
+          </a>
         </div>
-        <p style={{ margin: 0, fontSize: '0.7rem', color: 'var(--text-tertiary)', fontFamily: 'var(--font-space)' }}>
-          {config?.footerText || `© ${new Date().getFullYear()} All Rights Reserved.`}
-        </p>
       </motion.footer>
 
       {/* Scroll to Top Button */}
