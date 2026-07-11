@@ -194,3 +194,45 @@
     transform: scale(0.97) !important;
   }
 }
+
+/* Calm portfolio action treatment */
+.btn {
+  min-height: 48px;
+  padding: 13px 22px;
+  border-radius: 10px;
+  font-family: var(--font-inter), system-ui, sans-serif;
+  font-size: 0.9rem;
+  letter-spacing: 0.01em;
+  transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease, border-color 180ms ease;
+}
+
+.btn::after,
+.btn::before { display: none; }
+
+.primary {
+  background: var(--primary-color);
+  box-shadow: 0 11px 24px -14px var(--btn-primary-glow);
+}
+
+.primary:hover {
+  transform: translateY(-2px) !important;
+  filter: none;
+  background: color-mix(in srgb, var(--primary-color) 90%, #000);
+  box-shadow: 0 16px 28px -14px var(--btn-primary-glow);
+}
+
+.outline {
+  background: transparent;
+  border-color: var(--glass-border);
+  box-shadow: none;
+}
+
+.outline:hover {
+  transform: translateY(-2px) !important;
+  color: var(--primary-color);
+  background: var(--primary-alpha-10);
+  border-color: var(--primary-alpha-20);
+  box-shadow: none;
+}
+
+.btn:active { transform: translateY(0) scale(0.98) !important; }
