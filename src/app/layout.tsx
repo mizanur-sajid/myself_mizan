@@ -1,17 +1,17 @@
 import type { Metadata } from 'next';
-import { DM_Sans, Manrope } from 'next/font/google';
+import { Inter, Outfit } from 'next/font/google';
 import { ThemeProvider } from '../components/shared/ThemeProvider';
 import './globals.css';
 
-const inter = DM_Sans({
+const inter = Inter({
   subsets: ['latin'],
   variable: '--font-inter',
   display: 'swap',
 });
 
-const outfit = Manrope({
+const outfit = Outfit({
   subsets: ['latin'],
-  variable: '--font-space',
+  variable: '--font-outfit',
   display: 'swap',
 });
 
