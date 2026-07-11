@@ -145,7 +145,7 @@ export default function Home() {
                <span className="hero-name-first">Mizanur</span> <br />
                <span>Rahman</span>.
           </h2>
-          <p style={{ fontSize: '0.75rem', marginBottom: '2rem', color: 'var(--text-secondary)', maxWidth: '600px', lineHeight: 1.6 }}>
+          <p style={{ fontSize: '0.45rem', marginBottom: '2rem', color: 'var(--text-secondary)', maxWidth: '600px', lineHeight: 1.6 }}>
             Computer Science and IT Engineer with strong problem-solving skills and a passion for building practical technology solutions. Ready to contribute to impactful projects while continuously expanding professional expertise.
           </p>
 
