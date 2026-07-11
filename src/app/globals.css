@@ -144,7 +144,7 @@ body {
   font-size: 1.05rem;
   font-weight: 400;
   min-height: 100vh;
-  overflow-x: hidden;
+  overflow-x: clip;
   transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1), color 0.4s ease;
   line-height: 1.65;
   /* Smooth scroll momentum on all platforms */
@@ -2076,7 +2076,9 @@ body:has(.portfolio-main) h4 { font-family: var(--font-space), system-ui, sans-s
   .section-title-skills, .contact-title { font-size: clamp(2.3rem, 11vw, 3.5rem) !important; }
   .sticky-nav nav[style*='position: absolute'] { border-radius: 16px !important; }
   .cert-grid, .proj-grid { grid-template-columns: 1fr !important; }
-  .footer-glass { flex-wrap: wrap !important; border-radius: 16px !important; }
+  .footer-glass { grid-template-columns: 1fr !important; border-radius: 16px !important; }
+  .desktop-only-link { display: none !important; }
+  .profile-image-container { top: 0 !important; }
 }
 
 @media (max-width: 520px) {

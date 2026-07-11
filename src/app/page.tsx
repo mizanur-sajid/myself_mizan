@@ -23,6 +23,8 @@ export default function Home() {
   const [viewerImage, setViewerImage] = useState<string | null>(null);
   const [carouselImages, setCarouselImages] = useState<string[] | null>(null);
   const [carouselCountdown, setCarouselCountdown] = useState<number | null>(null);
+  const [hoverGithub, setHoverGithub] = useState(false);
+  const [hoverLinkedin, setHoverLinkedin] = useState(false);
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
@@ -136,14 +138,14 @@ export default function Home() {
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
-        style={{ minHeight: '70vh', display: 'flex', alignItems: 'center', justifyContent: 'space-between', position: 'relative', gap: '4rem', flexWrap: 'wrap-reverse' }}>
+        style={{ paddingTop: '0', display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', position: 'relative', gap: '4rem', flexWrap: 'wrap-reverse' }}>
         <div className="hero-text" style={{ maxWidth: '600px', zIndex: 10, flex: '1 1 400px' }}>
           <AvailabilityBadge />
           <h2 className="section-title" style={{ fontSize: 'clamp(3rem, 8vw, 5.5rem)', marginBottom: '1.5rem', lineHeight: 1.05 }}>
                <span className="hero-name-first">Mizanur</span> <br />
                <span>Rahman</span>.
           </h2>
-          <p style={{ fontSize: '1rem', marginBottom: '2rem', color: 'var(--text-secondary)', maxWidth: '600px', lineHeight: 1.6 }}>
+          <p style={{ fontSize: '0.75rem', marginBottom: '2rem', color: 'var(--text-secondary)', maxWidth: '600px', lineHeight: 1.6 }}>
             Computer Science and IT Engineer with strong problem-solving skills and a passion for building practical technology solutions. Ready to contribute to impactful projects while continuously expanding professional expertise.
           </p>
 
@@ -170,7 +172,7 @@ export default function Home() {
           </div>
         </div>
         <div className="hero-image" style={{ flex: '1 1 300px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-          <div className="profile-float profile-image-container profile-gradient-ring" style={{ position: 'relative', width: 'clamp(250px, 30vw, 400px)', height: 'clamp(250px, 30vw, 400px)', borderRadius: '50%', boxShadow: '0 20px 50px -10px var(--primary-alpha-20)' }}>
+          <div className="profile-float profile-image-container profile-gradient-ring" style={{ position: 'relative', top: '-7rem', width: 'clamp(250px, 30vw, 400px)', height: 'clamp(250px, 30vw, 400px)', borderRadius: '50%', boxShadow: '0 20px 50px -10px var(--primary-alpha-20)' }}>
             <div style={{ position: 'relative', width: '100%', height: '100%', borderRadius: '50%', overflow: 'hidden', background: 'var(--bg-color)' }}>
               <Image src="/profile.png" alt="Mizan Profile" fill style={{ objectFit: 'cover' }} priority />
             </div>
@@ -483,7 +485,6 @@ export default function Home() {
                   year: "2025",
                   description: "English language proficiency certification aligned with CEFR standards, demonstrating effective communication skills for academic and professional environments.",
                   skills: ["CEFR B1", "Professional Communication", "English Proficiency"],
-                  category: "Language",
                   extraBadge: "Score: 73",
                   status: "Verified",
                   icon: <Globe size={20} color="var(--accent-color)" />,
@@ -553,7 +554,9 @@ export default function Home() {
                     <div style={{ marginTop: 'auto', paddingTop: '1.5rem', borderTop: '1px solid var(--divider-color)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
                       {/* Category & Extra Badge */}
                       <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', flexWrap: 'wrap' }}>
-                        <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', background: 'var(--glass-bg)', padding: '6px 12px', borderRadius: '100px', border: '1px solid var(--glass-border)' }}>{hc.category}</span>
+                        {hc.category && (
+                          <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', background: 'var(--glass-bg)', padding: '6px 12px', borderRadius: '100px', border: '1px solid var(--glass-border)' }}>{hc.category}</span>
+                        )}
                         {hc.extraBadge && (
                           <span style={{ fontSize: '0.75rem', color: hc.glowColor, background: 'var(--accent-alpha-10)', padding: '6px 12px', borderRadius: '100px', border: '1px solid var(--accent-alpha-20)', fontWeight: 600 }}>{hc.extraBadge}</span>
                         )}
@@ -598,7 +601,7 @@ export default function Home() {
 
         <motion.div 
           className="proj-grid" 
-          style={{ position: 'relative', zIndex: 1, display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '2.5rem' }}
+          style={{ position: 'relative', zIndex: 1, display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(450px, 1fr))', gap: '2.5rem' }}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-50px" }}
@@ -884,9 +887,9 @@ export default function Home() {
         viewport={{ once: true, margin: "0px" }}
         transition={{ duration: 0.6, type: "spring", bounce: 0.3 }}
         style={{ 
-          display: 'flex',
+          display: 'grid',
+          gridTemplateColumns: '1fr auto 1fr',
           alignItems: 'center',
-          justifyContent: 'space-between',
           padding: '0.6rem 0.75rem',
           border: '1px solid var(--glass-border)', 
           background: 'var(--glass-bg)', 
@@ -900,23 +903,31 @@ export default function Home() {
       >
           {/* Left — GitHub */}
           <a href="https://github.com/mizanur-sajid" target="_blank" rel="noreferrer"
-            style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '8px 14px', background: 'var(--primary-alpha-10)', borderRadius: '100px', border: '1px solid var(--primary-alpha-20)', textDecoration: 'none', color: 'var(--text-primary)', transition: 'all 0.3s cubic-bezier(0.16,1,0.3,1)', flexShrink: 0 }}
-            className="hover-glow"
+            onMouseEnter={() => setHoverGithub(true)}
+            onMouseLeave={() => setHoverGithub(false)}
+            className="desktop-only-link"
+            style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '4px', textDecoration: 'none', color: 'var(--text-primary)', transition: 'all 0.3s cubic-bezier(0.16,1,0.3,1)', justifySelf: 'start', minHeight: '44px' }}
           >
-            <div style={{ width: '36px', height: '36px', borderRadius: '50%', overflow: 'hidden', border: '2px solid var(--primary-alpha-20)', flexShrink: 0 }}>
+            <div style={{ width: '36px', height: '36px', borderRadius: '50%', overflow: 'hidden', flexShrink: 0 }}>
               <img src="https://github.com/mizanur-sajid.png" alt="GitHub" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-                <span style={{ fontWeight: 700, fontSize: '0.88rem', lineHeight: 1 }}>GitHub</span>
-                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--primary-color)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.2c3-.3 6-1.5 6-6.5a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 5 3 6.2 6 6.5a4.8 4.8 0 0 0-1 3.2v4"/><path d="M9 18c-4.5 1-5-2.5-7-3"/></svg>
-              </div>
-              <span style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', lineHeight: 1 }}>@mizanur-sajid</span>
+              {hoverGithub ? (
+                <span style={{ fontWeight: 600, fontSize: '0.8rem', color: 'var(--bg-color)', background: 'var(--primary-color)', padding: '6px 12px', borderRadius: '100px', boxShadow: '0 4px 14px 0 var(--primary-alpha-20)', display: 'inline-block' }}>Visit GitHub Profile</span>
+              ) : (
+                <>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                    <span style={{ fontWeight: 700, fontSize: '0.88rem', lineHeight: 1 }}>GitHub</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--primary-color)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.2c3-.3 6-1.5 6-6.5a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 5 3 6.2 6 6.5a4.8 4.8 0 0 0-1 3.2v4"/><path d="M9 18c-4.5 1-5-2.5-7-3"/></svg>
+                  </div>
+                  <span style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', lineHeight: 1 }}>@mizanur-sajid</span>
+                </>
+              )}
             </div>
           </a>
 
           {/* Center — branding */}
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2px', flex: 1, minWidth: 0 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2px', justifySelf: 'center' }}>
             <p style={{ margin: 0, fontSize: '0.7rem', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '5px', whiteSpace: 'nowrap' }}>
               Made with <span className="footer-heart">❤️</span> and passion by
             </p>
@@ -928,18 +939,26 @@ export default function Home() {
 
           {/* Right — LinkedIn */}
           <a href="https://linkedin.com/in/mizanur-sajid" target="_blank" rel="noreferrer"
-            style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '8px 14px', background: 'var(--accent-alpha-10)', borderRadius: '100px', border: '1px solid var(--accent-alpha-20)', textDecoration: 'none', color: 'var(--text-primary)', transition: 'all 0.3s cubic-bezier(0.16,1,0.3,1)', flexShrink: 0 }}
-            className="hover-glow"
+            onMouseEnter={() => setHoverLinkedin(true)}
+            onMouseLeave={() => setHoverLinkedin(false)}
+            className="desktop-only-link"
+            style={{ display: 'flex', flexDirection: 'row-reverse', alignItems: 'center', gap: '10px', padding: '4px', textDecoration: 'none', color: 'var(--text-primary)', transition: 'all 0.3s cubic-bezier(0.16,1,0.3,1)', justifySelf: 'end', minHeight: '44px' }}
           >
-            <div style={{ width: '36px', height: '36px', borderRadius: '50%', overflow: 'hidden', border: '2px solid var(--accent-alpha-20)', flexShrink: 0 }}>
+            <div style={{ width: '36px', height: '36px', borderRadius: '50%', overflow: 'hidden', flexShrink: 0 }}>
               <img src="/linkedin-profile.jpg" alt="LinkedIn" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-                <span style={{ fontWeight: 700, fontSize: '0.88rem', lineHeight: 1 }}>LinkedIn</span>
-                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--accent-color)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
-              </div>
-              <span style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', lineHeight: 1 }}>mizanur-sajid</span>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1px', alignItems: 'flex-end' }}>
+              {hoverLinkedin ? (
+                <span style={{ fontWeight: 600, fontSize: '0.8rem', color: 'var(--bg-color)', background: 'var(--accent-color)', padding: '6px 12px', borderRadius: '100px', boxShadow: '0 4px 14px 0 var(--accent-alpha-20)', display: 'inline-block' }}>Visit LinkedIn Profile</span>
+              ) : (
+                <>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                    <span style={{ fontWeight: 700, fontSize: '0.88rem', lineHeight: 1 }}>LinkedIn</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--accent-color)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
+                  </div>
+                  <span style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', lineHeight: 1 }}>mizanur-sajid</span>
+                </>
+              )}
             </div>
           </a>
       </motion.footer>
