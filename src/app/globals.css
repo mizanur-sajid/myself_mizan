@@ -140,21 +140,21 @@ html {
 body {
   background-color: var(--bg-color);
   color: var(--text-primary);
-  font-family: var(--font-inter), "Inter", system-ui, sans-serif;
+  font-family: var(--font-body), "DM Sans", system-ui, sans-serif;
   font-size: 1.05rem;
   font-weight: 400;
   min-height: 100vh;
   overflow-x: clip;
   transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1), color 0.4s ease;
-  line-height: 1.65;
+  line-height: 1.68;
   /* Smooth scroll momentum on all platforms */
   -webkit-overflow-scrolling: touch;
   will-change: scroll-position;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-outfit), "Plus Jakarta Sans", "Outfit", "Inter", system-ui, sans-serif;
-  letter-spacing: -0.025em;
+  font-family: var(--font-heading), "Plus Jakarta Sans", system-ui, sans-serif;
+  letter-spacing: -0.03em;
   font-weight: 700;
   line-height: 1.12;
 }
@@ -436,7 +436,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .accent-text {
   color: var(--primary-color);
-  font-family: var(--font-space), sans-serif;
+  font-family: var(--font-mono), monospace;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   font-size: 0.875rem;
@@ -457,7 +457,7 @@ a:hover {
 }
 
 input, textarea {
-  font-family: var(--font-inter), sans-serif;
+  font-family: var(--font-body), sans-serif;
   font-size: 1rem;
 }
 
@@ -471,7 +471,7 @@ input:focus, textarea:focus {
    NAVIGATION
    ==================================================== */
 .nav-link {
-  font-family: var(--font-inter), sans-serif;
+  font-family: var(--font-body), sans-serif;
   font-weight: 500;
   transition: all 0.3s ease;
   position: relative;
@@ -914,7 +914,7 @@ input:focus, textarea:focus {
   border-top: none;
   background: var(--input-bg);
   border-radius: 0 0 12px 12px;
-  font-family: var(--font-inter), sans-serif;
+  font-family: var(--font-body), sans-serif;
   font-size: 1rem;
 }
 
@@ -1906,7 +1906,7 @@ img {
 }
 
 body:has(.portfolio-main) {
-  font-family: var(--font-inter), system-ui, sans-serif;
+  font-family: var(--font-body), system-ui, sans-serif;
   letter-spacing: -0.012em;
   background: var(--bg-color);
 }
@@ -1921,7 +1921,7 @@ body:has(.portfolio-main) .glow { display: none; }
 body:has(.portfolio-main) h1,
 body:has(.portfolio-main) h2,
 body:has(.portfolio-main) h3,
-body:has(.portfolio-main) h4 { font-family: var(--font-space), system-ui, sans-serif; }
+body:has(.portfolio-main) h4 { font-family: var(--font-heading), system-ui, sans-serif; }
 
 .portfolio-main {
   width: min(100%, 1280px) !important;
@@ -1980,7 +1980,7 @@ body:has(.portfolio-main) h4 { font-family: var(--font-space), system-ui, sans-s
 .hero-name-first { color: var(--primary-color); }
 .accent-text {
   color: var(--accent-color) !important;
-  font-family: var(--font-space), monospace;
+  font-family: var(--font-mono), monospace;
   font-size: 0.72rem !important;
   font-weight: 800 !important;
   letter-spacing: 0.14em;

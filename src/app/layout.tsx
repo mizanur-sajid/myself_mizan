@@ -1,17 +1,26 @@
 import type { Metadata } from 'next';
-import { Inter, Outfit } from 'next/font/google';
+import { Plus_Jakarta_Sans, DM_Sans, JetBrains_Mono } from 'next/font/google';
 import { ThemeProvider } from '../components/shared/ThemeProvider';
 import './globals.css';
 
-const inter = Inter({
+const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ['latin'],
-  variable: '--font-inter',
+  variable: '--font-heading',
+  weight: ['400', '500', '600', '700', '800'],
   display: 'swap',
 });
 
-const outfit = Outfit({
+const dmSans = DM_Sans({
   subsets: ['latin'],
-  variable: '--font-outfit',
+  variable: '--font-body',
+  weight: ['300', '400', '500', '600'],
+  display: 'swap',
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ['latin'],
+  variable: '--font-mono',
+  weight: ['400', '500'],
   display: 'swap',
 });
 
@@ -30,7 +39,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" data-theme="dark" suppressHydrationWarning className={`${inter.variable} ${outfit.variable}`}>
+    <html lang="en" data-theme="dark" suppressHydrationWarning className={`${plusJakartaSans.variable} ${dmSans.variable} ${jetbrainsMono.variable}`}>
       <body className="antialiased">
         <div className="bg-elements">
           <div className="glow glow-1"></div>
