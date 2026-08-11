@@ -12,6 +12,24 @@ import { Database, Brain, Eye, LineChart, Activity, Headset, Globe, Code2, Check
 import { sanitizeHtml } from '@/lib/sanitize';
 import { ImageViewerModal } from '../components/ui/ImageViewerModal';
 
+// Keep the public portfolio complete when PHP is unavailable (for example,
+// during a static preview). Valid API arrays, including an intentional empty
+// array, still take precedence over these display-only fallbacks.
+const fallbackSkills = [
+  { id: -1, name: 'Python', level: 95, category: 'Technical Skills', icon: 'python' },
+  { id: -2, name: 'JavaScript', level: 90, category: 'Technical Skills', icon: 'javascript' },
+  { id: -3, name: 'React', level: 88, category: 'Technical Skills', icon: 'react' },
+  { id: -4, name: 'Next.js', level: 86, category: 'Technical Skills', icon: 'nextjs' },
+  { id: -5, name: 'PHP', level: 84, category: 'Technical Skills', icon: 'php' },
+  { id: -6, name: 'MySQL', level: 82, category: 'Technical Skills', icon: 'mysql' },
+  { id: -7, name: 'IT Support', level: 92, category: 'Additional Skills', icon: 'headset' },
+  { id: -8, name: 'Troubleshooting', level: 90, category: 'Additional Skills', icon: 'wrench' },
+  { id: -9, name: 'Networking', level: 88, category: 'Additional Skills', icon: 'network' },
+  { id: -10, name: 'Problem Solving', level: 94, category: 'Additional Skills', icon: 'brain' },
+];
+
+const fallbackPublications = [{ id: -1, link: '', fileUrl: '' }];
+
 export default function Home() {
   const [skills, setSkills] = useState<any[]>([]);
   const [publications, setPublications] = useState<any[]>([]);
@@ -100,10 +118,16 @@ export default function Home() {
             if (b.name.toLowerCase() === 'it support') return -1;
             return a.id - b.id;
           }));
+        } else {
+          setSkills(fallbackSkills);
         }
         
         const rawPubs = await tryParse(pubsRes);
-        if (Array.isArray(rawPubs)) setPublications(rawPubs);
+        if (Array.isArray(rawPubs)) {
+          setPublications(rawPubs);
+        } else {
+          setPublications(fallbackPublications);
+        }
 
         const rawCerts = await tryParse(certsRes);
         if (Array.isArray(rawCerts)) setCertifications(rawCerts);
@@ -114,7 +138,9 @@ export default function Home() {
         const rawConfig = await tryParse(configRes);
         if (rawConfig) setConfig(rawConfig);
       } catch {
-        // Silently ignore - expected in dev mode without PHP backend
+        // Static previews cannot execute the PHP API.
+        setSkills(fallbackSkills);
+        setPublications(fallbackPublications);
       } finally {
         setLoading(false);
       }
@@ -141,7 +167,7 @@ export default function Home() {
         style={{ paddingTop: '0', display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', position: 'relative', gap: '4rem', flexWrap: 'wrap-reverse' }}>
         <div className="hero-text" style={{ maxWidth: '600px', zIndex: 10, flex: '1 1 400px' }}>
           <AvailabilityBadge />
-          <h2 className="section-title" style={{ fontSize: 'clamp(3rem, 8vw, 5.5rem)', marginBottom: '1.5rem', lineHeight: 1.05 }}>
+          <h2 className="section-title hero-name" style={{ fontSize: 'clamp(3rem, 8vw, 5.5rem)', marginBottom: '1.5rem', lineHeight: 1.05 }}>
                <span className="hero-name-first">Mizanur</span> <br />
                <span>Rahman</span>.
           </h2>

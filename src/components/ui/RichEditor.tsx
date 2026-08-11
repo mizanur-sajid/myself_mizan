@@ -12,7 +12,7 @@ interface RichEditorProps {
 }
 
 const CustomToolbar = () => (
-  <div id="quill-toolbar" style={{ border: 'none', borderBottom: '1px solid var(--glass-border)', padding: '12px 16px', display: 'flex', gap: '8px', flexWrap: 'wrap', background: 'rgba(0,0,0,0.2)' }}>
+  <div id="quill-toolbar" style={{ border: 'none', borderBottom: '1px solid var(--glass-border)', padding: '12px 16px', display: 'flex', gap: '8px', flexWrap: 'wrap', background: 'var(--surface-elevated)' }}>
     <button className="ql-bold" style={{ color: 'var(--text-secondary)' }}><Bold size={16} /></button>
     <button className="ql-italic" style={{ color: 'var(--text-secondary)' }}><Italic size={16} /></button>
     <button className="ql-underline" style={{ color: 'var(--text-secondary)' }}><Underline size={16} /></button>

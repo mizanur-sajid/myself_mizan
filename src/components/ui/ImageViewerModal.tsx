@@ -215,7 +215,7 @@ export function ImageViewerModal({ src, onClose, countdown }: ImageViewerModalPr
                   borderRadius: '8px', 
                   boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
                   transition: 'width 0.2s ease-out, height 0.2s ease-out',
-                  imageRendering: 'high-quality',
+                  imageRendering: 'auto',
                   WebkitFontSmoothing: 'antialiased'
                 }} 
               />

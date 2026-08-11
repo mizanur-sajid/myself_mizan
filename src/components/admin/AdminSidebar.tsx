@@ -37,7 +37,7 @@ export const AdminSidebar = () => {
         <button 
           className="mobile-menu-toggle" 
           onClick={() => setIsOpen(true)}
-          style={{ position: 'fixed', bottom: '1.5rem', right: '1.5rem', zIndex: 50, background: 'var(--primary-color)', color: '#000', border: 'none', borderRadius: '50%', width: '56px', height: '56px', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 10px 25px -5px rgba(0, 240, 255, 0.5)' }}
+          style={{ position: 'fixed', bottom: '1.5rem', right: '1.5rem', zIndex: 50, background: 'var(--primary-color)', color: 'var(--primary-contrast)', border: 'none', borderRadius: '50%', width: '56px', height: '56px', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 12px 28px -12px var(--btn-primary-glow)' }}
         >
           <Menu size={28} />
         </button>

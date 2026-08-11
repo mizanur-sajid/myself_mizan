@@ -244,7 +244,7 @@ export default function AdminMessages() {
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.5rem', gap: '1rem' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                        <h4 style={{ fontSize: '1.1rem', margin: 0, color: isUnread ? '#fff' : 'var(--text-primary)', fontWeight: isUnread ? 600 : 400 }}>{msg.name}</h4>
+                        <h4 style={{ fontSize: '1.1rem', margin: 0, color: 'var(--text-primary)', fontWeight: isUnread ? 600 : 400 }}>{msg.name}</h4>
                         {isUnread && <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'var(--primary-color)' }} />}
                       </div>
                       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '0.25rem', color: 'var(--text-secondary)', fontSize: '0.85rem', textAlign: 'right', flexShrink: 0 }}>
