@@ -209,7 +209,6 @@ export default function Home() {
         <div className="hero-grid-pattern" aria-hidden="true" />
         <div className="hero-text" style={{ maxWidth: '600px', zIndex: 10, flex: '1 1 400px' }}>
           <AvailabilityBadge />
-          <p className="hero-eyebrow"><span /> Computer Science &amp; IT Engineer</p>
           <h2 className="section-title hero-name" style={{ fontSize: 'clamp(3rem, 8vw, 5.5rem)', marginBottom: '1.5rem', lineHeight: 1.05 }}>
                <span className="hero-name-first">Mizanur</span> <br />
                <span>Rahman</span>.
@@ -261,7 +260,6 @@ export default function Home() {
         style={{ padding: '4rem 0' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '2rem', marginBottom: '4rem' }}>
           <div>
-            <p className="accent-text section-kicker" style={{ marginBottom: '0.5rem' }}><span>01</span> CORE COMPETENCIES</p>
             <h2 className="section-title section-title-skills" style={{ fontSize: '3.5rem', margin: '0 0 1rem 0' }}>Technical Skills</h2>
           </div>
         </div>
@@ -401,7 +399,6 @@ export default function Home() {
         style={{ padding: '4rem 0' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '4rem' }}>
           <div>
-            <p className="accent-text section-kicker" style={{ marginBottom: '0.5rem' }}><span>02</span> Academic Research</p>
             <h2 className="section-title" style={{ fontSize: '3rem' }}>Publications</h2>
           </div>
         </div>
@@ -500,7 +497,6 @@ export default function Home() {
         style={{ padding: '4rem 0' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '2rem' }}>
           <div>
-            <p className="accent-text section-kicker" style={{ marginBottom: '0.5rem' }}><span>03</span> Professional Validation</p>
             <h2 className="section-title" style={{ fontSize: '3rem' }}>Certifications</h2>
           </div>
         </div>
@@ -673,7 +669,6 @@ export default function Home() {
         <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, opacity: 0.02, backgroundImage: 'radial-gradient(var(--primary-color) 1px, transparent 1px)', backgroundSize: '30px 30px', pointerEvents: 'none', zIndex: 0 }} />
         
         <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', marginBottom: '4rem' }}>
-          <p className="accent-text section-kicker" style={{ marginBottom: '0.5rem' }}><span>04</span> Selected Work</p>
           <h2 className="section-title" style={{ fontSize: '3.5rem', margin: 0 }}>Projects</h2>
         </div>
 
@@ -942,7 +937,6 @@ export default function Home() {
         transition={{ duration: 0.6 }}
         style={{ padding: '6rem 0 4rem 0' }}>
         <div style={{ textAlign: 'center', marginBottom: '4rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <p className="accent-text section-kicker" style={{ marginBottom: '1rem' }}><span>05</span> Let&apos;s Collaborate</p>
           <div style={{ display: 'flex', alignItems: 'center', gap: '16px', justifyContent: 'center', marginBottom: '1rem' }}>
             <div style={{ padding: '12px', background: 'var(--primary-alpha-10)', borderRadius: '14px', border: '1px solid var(--primary-alpha-20)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 0 30px var(--primary-alpha-10)' }}>
               <MessageSquareText size={28} color="var(--primary-color)" />

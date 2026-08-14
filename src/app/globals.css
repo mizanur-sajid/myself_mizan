@@ -1850,26 +1850,6 @@ input:focus, textarea:focus {
   to { transform: translate3d(24px, 18px, 0) scale(1.04); }
 }
 
-.hero-eyebrow {
-  display: flex;
-  align-items: center;
-  gap: 0.65rem;
-  margin: 1.35rem 0 0.75rem !important;
-  color: var(--text-secondary) !important;
-  font-family: var(--font-mono), monospace;
-  font-size: 0.75rem !important;
-  font-weight: 700;
-  letter-spacing: 0.11em;
-  line-height: 1.4 !important;
-  text-transform: uppercase;
-}
-
-.hero-eyebrow span {
-  width: 1.75rem;
-  height: 1px;
-  background: var(--accent-color);
-}
-
 .hero-primary-action,
 .hero-secondary-action {
   text-decoration: none;
@@ -1890,25 +1870,6 @@ input:focus, textarea:focus {
 
 .hero-primary-action:hover button svg {
   transform: translateX(3px);
-}
-
-.section-kicker {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.65rem;
-}
-
-.section-kicker > span {
-  display: inline-grid;
-  place-items: center;
-  width: 1.8rem;
-  height: 1.8rem;
-  border: 1px solid var(--accent-alpha-20);
-  border-radius: 7px;
-  background: var(--accent-alpha-10);
-  color: var(--accent-color);
-  font-size: 0.63rem;
-  letter-spacing: 0;
 }
 
 .cert-card::before {
@@ -2034,7 +1995,6 @@ input:focus, textarea:focus {
   .hero-grid-pattern { inset: -3rem -1.1rem 0; background-size: 36px 36px; }
   .hero-ambient-primary { width: 24rem; height: 24rem; right: -13rem; }
   .hero-ambient-accent { display: none; }
-  .section-kicker > span { width: 1.65rem; height: 1.65rem; }
   .copy-toast { left: 1rem; right: 1rem; width: auto; }
 }
 
