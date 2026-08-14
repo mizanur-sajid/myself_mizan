@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
+import { motion } from 'framer-motion';
 import { ThemeToggle } from '@/components/shared/ThemeToggle';
 import { Menu, X } from 'lucide-react';
 
@@ -9,6 +10,7 @@ export const StickyNav = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [scrollOpacity, setScrollOpacity] = useState(0.4);
+  const [hoveredLink, setHoveredLink] = useState<string | null>(null);
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
@@ -101,23 +103,37 @@ export const StickyNav = () => {
           </button>
         </div>
       ) : (
-        <nav style={{ display: 'flex', gap: '2rem', alignItems: 'center', fontSize: '0.96rem', fontWeight: 600 }}>
+        <nav
+          className="desktop-nav"
+          onMouseLeave={() => setHoveredLink(null)}
+          style={{ display: 'flex', gap: '0.55rem', alignItems: 'center', fontSize: '0.96rem', fontWeight: 600 }}
+        >
           {links.map(link => (
             <a 
               key={link.id}
               href={`#${link.id}`} 
-              className="nav-link"
+              className={`nav-link ${hoveredLink === link.id ? 'nav-link-hovered' : ''}`}
+              onMouseEnter={() => setHoveredLink(link.id)}
+              onFocus={() => setHoveredLink(link.id)}
+              onBlur={() => setHoveredLink(null)}
               style={{
                 color: activeSection === link.id ? 'var(--primary-color)' : 'inherit',
-                paddingBottom: '0.25rem',
+                padding: '0.55rem 0.85rem',
                 position: 'relative'
               }}
             >
-              {link.label}
+              {hoveredLink === link.id && (
+                <motion.span
+                  layoutId="nav-hover-capsule"
+                  className="nav-hover-capsule"
+                  transition={{ type: 'spring', stiffness: 420, damping: 32 }}
+                />
+              )}
+              <span className="nav-link-label">{link.label}</span>
               {activeSection === link.id && (
                 <span style={{
-                  position: 'absolute',
-                  bottom: '-4px', left: '10%', width: '80%', height: '3px',
+                  position: 'absolute', zIndex: 2,
+                  bottom: '1px', left: '20%', width: '60%', height: '2px',
                   background: 'var(--primary-color)',
                   borderRadius: '100px',
                   boxShadow: '0 2px 10px var(--primary-alpha-20)'

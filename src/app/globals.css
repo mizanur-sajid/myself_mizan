@@ -2168,9 +2168,34 @@ body:has(.portfolio-main) h4 { font-family: var(--font-heading), system-ui, sans
   font-weight: 700;
   letter-spacing: 0.025em;
   text-decoration: none;
-  transition: color 180ms ease;
+  transition: color 180ms ease, transform 180ms ease, font-size 180ms ease, font-weight 180ms ease;
 }
 .sticky-nav .nav-link:hover { color: var(--primary-color) !important; }
+.desktop-nav .nav-link::after { display: none; }
+.desktop-nav .nav-link-label {
+  position: relative;
+  z-index: 2;
+  display: inline-block;
+  transition: transform 180ms ease, color 180ms ease;
+}
+.desktop-nav .nav-link-hovered {
+  color: var(--text-primary) !important;
+  font-weight: 850 !important;
+}
+.desktop-nav .nav-link-hovered .nav-link-label {
+  transform: scale(1.08);
+}
+.nav-hover-capsule {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border: 1px solid var(--glass-border-hover);
+  border-radius: 11px;
+  background: var(--glass-bg-hover);
+  box-shadow: 0 10px 24px -17px var(--btn-primary-glow), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
 .sticky-nav .logo-invert { width: 118px !important; opacity: 0.9; }
 
 .hero-section {
