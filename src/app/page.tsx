@@ -8,7 +8,7 @@ import { ContactForm } from '../components/ui/ContactForm';
 import { StickyNav } from '../components/ui/StickyNav';
 import { SkillIcon } from '../components/ui/SkillIcon';
 import { AvailabilityBadge } from '../components/ui/AvailabilityBadge';
-import { Database, Brain, Eye, LineChart, Activity, Headset, Globe, Code2, CheckCircle2, Award, Building2, Layers, GitBranch, ExternalLink, ArrowRight, Monitor, Network, Sparkles, LayoutTemplate, LifeBuoy, MessageSquareText, ChevronUp, Briefcase, GraduationCap, FolderKanban } from 'lucide-react';
+import { Database, Brain, Eye, LineChart, Activity, Headset, Globe, Code2, Check, CheckCircle2, Share2, Award, Building2, Layers, GitBranch, ExternalLink, ArrowRight, Monitor, Network, Sparkles, LayoutTemplate, LifeBuoy, MessageSquareText, ChevronUp, Briefcase, GraduationCap, FolderKanban } from 'lucide-react';
 import { sanitizeHtml } from '@/lib/sanitize';
 import { ImageViewerModal } from '../components/ui/ImageViewerModal';
 
@@ -43,6 +43,29 @@ export default function Home() {
   const [carouselCountdown, setCarouselCountdown] = useState<number | null>(null);
   const [hoverGithub, setHoverGithub] = useState(false);
   const [hoverLinkedin, setHoverLinkedin] = useState(false);
+  const [copiedCredential, setCopiedCredential] = useState<string | null>(null);
+
+  const copyCredentialLink = async (fileUrl: string, credentialTitle: string) => {
+    const shareUrl = new URL(fileUrl, window.location.origin).href;
+
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+    } catch {
+      const temporaryInput = document.createElement('textarea');
+      temporaryInput.value = shareUrl;
+      temporaryInput.style.position = 'fixed';
+      temporaryInput.style.opacity = '0';
+      document.body.appendChild(temporaryInput);
+      temporaryInput.select();
+      document.execCommand('copy');
+      temporaryInput.remove();
+    }
+
+    setCopiedCredential(credentialTitle);
+    window.setTimeout(() => {
+      setCopiedCredential((current) => current === credentialTitle ? null : current);
+    }, 2000);
+  };
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
@@ -564,6 +587,15 @@ export default function Home() {
                         <div className="cert-verified-badge" style={{ display: 'flex', alignItems: 'center', gap: '4px', background: 'rgba(34, 197, 94, 0.15)', border: '1px solid rgba(34, 197, 94, 0.3)', padding: '2px 8px', borderRadius: '12px', color: 'var(--success-color)', fontSize: '0.65rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                           <CheckCircle2 size={12} /> {hc.status}
                         </div>
+                        <button
+                          type="button"
+                          onClick={() => copyCredentialLink(fileUrl, hc.title)}
+                          aria-label={`Copy link to ${hc.title} credential`}
+                          title={copiedCredential === hc.title ? 'Link copied' : 'Copy credential link'}
+                          style={{ appearance: 'none', border: '1px solid var(--glass-border)', background: 'var(--glass-bg)', color: copiedCredential === hc.title ? 'var(--success-color)' : 'var(--text-secondary)', borderRadius: '8px', minWidth: '28px', height: '28px', padding: copiedCredential === hc.title ? '0 8px' : 0, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '5px', cursor: 'pointer', fontSize: '0.7rem', fontWeight: 600, transition: 'all 0.2s ease' }}
+                        >
+                          {copiedCredential === hc.title ? <><Check size={13} /> Copied</> : <Share2 size={13} />}
+                        </button>
                       </div>
                       <p style={{ fontSize: '0.9rem', color: 'var(--text-primary)', opacity: 0.85, margin: 0, lineHeight: 1.6 }}>{hc.description}</p>
                     </div>
