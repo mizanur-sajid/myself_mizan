@@ -42,3 +42,6 @@ next-env.d.ts
 
 # confidential deployment scripts
 scripts/deploy.js
+
+# uploads
+/public/uploads/
