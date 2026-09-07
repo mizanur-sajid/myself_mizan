@@ -426,7 +426,7 @@ export default function Home() {
                         Multi-Class Classification
                       </span>
                     </div>
-                    <h3 style={{ fontSize: '1.5rem', margin: '0.5rem 0 0 0', fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '-0.02em', lineHeight: 1.3 }}>Deep Learning-Based Skin Disease Detection Using EfficientNetV2</h3>
+                    <h3 style={{ fontSize: '1.5rem', margin: '0.5rem 0 0 0', fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '-0.02em', lineHeight: 1.3 }}>Development and Study of New Deep Learning Architectures for Skin Disease Classification</h3>
                     <p style={{ fontSize: '0.95rem', margin: 0, color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '8px' }}>
                       B.Sc. Final Year Thesis <span style={{ color: 'var(--divider-color)' }}>•</span> University of Global Village
                     </p>
