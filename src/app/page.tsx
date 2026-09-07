@@ -438,7 +438,7 @@ export default function Home() {
 
                 {/* Abstract */}
                 <div style={{ padding: '1.25rem', borderRadius: '12px', background: 'var(--surface-elevated)', borderLeft: '3px solid var(--primary-color)', color: 'var(--text-primary)', opacity: 0.9, fontSize: '0.95rem', lineHeight: 1.6 }}>
-                  "An AI-driven skin disease classification system leveraging EfficientNetV2 to detect multiple dermatological conditions with high accuracy."
+                  "UGVNet: A dual-backbone deep learning architecture with adaptive feature fusion and global attention for skin disease classification."
                 </div>
 
                 {/* Research Highlights Grid */}
@@ -463,7 +463,7 @@ export default function Home() {
 
                 {/* Tech Stack Pills */}
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '0.5rem' }}>
-                  {['Python', 'TensorFlow', 'EfficientNetV2', 'Grad-CAM', 'OpenCV', 'Deep Learning'].map(tech => (
+                  {['Python', 'PyTorch', 'EfficientNetV2', 'Grad-CAM', 'ConvNeXt-Tiny', 'Deep Learning'].map(tech => (
                     <span key={tech} style={{ padding: '4px 12px', borderRadius: '100px', fontSize: '0.75rem', background: 'var(--tag-bg)', color: 'var(--text-secondary)', border: '1px solid var(--tag-border)' }}>{tech}</span>
                   ))}
                 </div>
@@ -731,7 +731,7 @@ export default function Home() {
                     "Advanced image preprocessing pipeline",
                     "High accuracy prediction system"
                   ],
-                  tech: ["Python", "TensorFlow", "EfficientNetV2", "OpenCV", "Grad-CAM", "Deep Learning"],
+                  tech: ["Python", "PyTorch", "EfficientNetV2", "ConvNeXt-Tiny", "Grad-CAM", "Deep Learning"],
                   buttons: [
                     { 
                       text: "Research Details", 
