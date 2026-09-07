@@ -8,9 +8,10 @@ import { ContactForm } from '../components/ui/ContactForm';
 import { StickyNav } from '../components/ui/StickyNav';
 import { SkillIcon } from '../components/ui/SkillIcon';
 import { AvailabilityBadge } from '../components/ui/AvailabilityBadge';
-import { Database, Brain, Eye, LineChart, Activity, Headset, Globe, Code2, Check, CheckCircle2, Share2, Award, Building2, Layers, GitBranch, ExternalLink, ArrowRight, ArrowDownToLine, Monitor, Network, Sparkles, LayoutTemplate, LifeBuoy, MessageSquareText, ChevronUp, Briefcase, GraduationCap, FolderKanban } from 'lucide-react';
+import { Database, Brain, Eye, LineChart, Activity, Headset, Globe, Code2, Check, CheckCircle2, Share2, Award, Building2, Layers, GitBranch, ExternalLink, ArrowRight, ArrowDownToLine, Monitor, Network, Sparkles, LayoutTemplate, LifeBuoy, MessageSquareText, ChevronUp, Briefcase, GraduationCap, FolderKanban, FileText } from 'lucide-react';
 import { sanitizeHtml } from '@/lib/sanitize';
 import { ImageViewerModal } from '../components/ui/ImageViewerModal';
+import { PdfViewerModal } from '../components/ui/PdfViewerModal';
 
 // Keep the public portfolio complete when PHP is unavailable (for example,
 // during a static preview). Valid API arrays, including an intentional empty
@@ -28,17 +29,18 @@ const fallbackSkills = [
   { id: -10, name: 'Problem Solving', level: 94, category: 'Additional Skills', icon: 'brain' },
 ];
 
-const fallbackPublications = [{ id: -1, link: '', fileUrl: '' }];
+const fallbackPublications = [{ id: -1, title: 'Development and Study of New Deep Learning Architectures for Skin Disease Classification', link: '', fileUrl: '/uploads/Thesis.pdf' }];
 
 export default function Home() {
-  const [skills, setSkills] = useState<any[]>([]);
-  const [publications, setPublications] = useState<any[]>([]);
+  const [skills, setSkills] = useState<any[]>(fallbackSkills);
+  const [publications, setPublications] = useState<any[]>(fallbackPublications);
   const [certifications, setCertifications] = useState<any[]>([]);
   const [projects, setProjects] = useState<any[]>([]);
   const [config, setConfig] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [viewerImage, setViewerImage] = useState<string | null>(null);
+  const [viewerPdf, setViewerPdf] = useState<{ url: string; title: string } | null>(null);
   const [carouselImages, setCarouselImages] = useState<string[] | null>(null);
   const [carouselCountdown, setCarouselCountdown] = useState<number | null>(null);
   const [hoverGithub, setHoverGithub] = useState(false);
@@ -234,7 +236,7 @@ export default function Home() {
             <a href="#contact" className="hero-primary-action">
               <Button variant="primary">Start a Project <ArrowRight size={16} /></Button>
             </a>
-            <div className="hero-secondary-action" onClick={() => setViewerImage("/Mizan_CV.png")} style={{ cursor: 'pointer' }}>
+            <div className="hero-secondary-action" onClick={() => setViewerPdf({ url: "/Mizan_CV.pdf", title: "Mizanur Rahman — Résumé" })} style={{ cursor: 'pointer' }}>
               <Button variant="outline"><ArrowDownToLine size={16} /> View Résumé</Button>
             </div>
           </div>
@@ -403,7 +405,7 @@ export default function Home() {
           </div>
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-          {loading ? (
+          {loading && publications.length === 0 ? (
              <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
                {[...Array(1)].map((_, i) => <div key={i} className="skeleton" style={{ height: '320px', borderRadius: '24px' }} />)}
              </div>
@@ -468,12 +470,40 @@ export default function Home() {
 
                 {/* Actions (Dynamic Links) */}
                 <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
+                  <button
+                    type="button"
+                    onClick={() => setViewerPdf({
+                      url: pub.fileUrl || '/uploads/Thesis.pdf',
+                      title: 'Development and Study of New Deep Learning Architectures for Skin Disease Classification'
+                    })}
+                    style={{
+                      padding: '10px 22px',
+                      borderRadius: '8px',
+                      background: 'linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%)',
+                      color: '#ffffff',
+                      fontSize: '0.9rem',
+                      fontWeight: 600,
+                      border: 'none',
+                      cursor: 'pointer',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                      boxShadow: '0 4px 16px var(--primary-alpha-20)',
+                      transition: 'all 0.25s ease',
+                    }}
+                    className="hover-glow"
+                  >
+                    <FileText size={17} />
+                    <span>View Research Paper</span>
+                    <span style={{ fontSize: '0.7rem', padding: '2px 6px', borderRadius: '4px', background: 'rgba(255, 255, 255, 0.22)', fontWeight: 700, letterSpacing: '0.05em' }}>PDF</span>
+                  </button>
+
                   {pub.link && (
                     <a href={pub.link} target="_blank" rel="noreferrer" style={{ padding: '10px 20px', borderRadius: '8px', background: 'var(--primary-alpha-10)', color: 'var(--primary-color)', fontSize: '0.9rem', fontWeight: 600, textDecoration: 'none', border: '1px solid var(--primary-alpha-20)', transition: 'all 0.2s', display: 'flex', alignItems: 'center', gap: '8px' }} className="hover-glow">
                       Read Publication ↗
                     </a>
                   )}
-                  {pub.fileUrl && (
+                  {pub.fileUrl && pub.fileUrl !== '/uploads/Thesis.pdf' && !pub.fileUrl.endsWith('.pdf') && (
                     <a href={pub.fileUrl} target="_blank" rel="noreferrer" style={{ padding: '10px 20px', borderRadius: '8px', background: 'var(--glass-bg)', color: 'var(--text-primary)', fontSize: '0.9rem', fontWeight: 600, textDecoration: 'none', border: '1px solid var(--glass-border)', transition: 'all 0.2s' }} className="hover-glow-white">
                       View Uploaded Document
                     </a>
@@ -1081,6 +1111,12 @@ export default function Home() {
           setViewerImage(null);
           setCarouselImages(null);
         }} 
+      />
+
+      <PdfViewerModal
+        url={viewerPdf?.url || null}
+        title={viewerPdf?.title}
+        onClose={() => setViewerPdf(null)}
       />
       </div>
     </main>

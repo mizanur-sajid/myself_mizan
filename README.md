@@ -133,7 +133,7 @@ myself_mizan/
 │   │   └── auth/                   # Login / logout / CSRF endpoints
 │   ├── uploads/                    # User-uploaded media (images, documents)
 │   ├── profile.png                 # Profile photo
-│   └── Mizan_CV.png                # Résumé (displayed in PDF viewer)
+│   └── Mizan_CV.pdf                # Résumé (displayed in PDF viewer)
 ├── scripts/
 │   └── deploy.js                   # FTP deployment script (basic-ftp)
 ├── src/
