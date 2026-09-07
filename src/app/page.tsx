@@ -477,25 +477,23 @@ export default function Home() {
                       title: 'Development and Study of New Deep Learning Architectures for Skin Disease Classification'
                     })}
                     style={{
-                      padding: '10px 22px',
+                      padding: '10px 20px',
                       borderRadius: '8px',
-                      background: 'linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%)',
-                      color: '#ffffff',
+                      background: 'var(--primary-alpha-10)',
+                      color: 'var(--primary-color)',
                       fontSize: '0.9rem',
                       fontWeight: 600,
-                      border: 'none',
+                      border: '1px solid var(--primary-alpha-20)',
                       cursor: 'pointer',
                       display: 'inline-flex',
                       alignItems: 'center',
                       gap: '8px',
-                      boxShadow: '0 4px 16px var(--primary-alpha-20)',
-                      transition: 'all 0.25s ease',
+                      transition: 'all 0.2s',
                     }}
                     className="hover-glow"
                   >
                     <FileText size={17} />
                     <span>View Research Paper</span>
-                    <span style={{ fontSize: '0.7rem', padding: '2px 6px', borderRadius: '4px', background: 'rgba(255, 255, 255, 0.22)', fontWeight: 700, letterSpacing: '0.05em' }}>PDF</span>
                   </button>
 
                   {pub.link && (
