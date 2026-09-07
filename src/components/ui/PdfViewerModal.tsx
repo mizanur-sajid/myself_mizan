@@ -13,7 +13,8 @@ import {
   Lock, 
   FileText, 
   Loader2, 
-  AlertCircle 
+  AlertCircle,
+  RotateCcw
 } from 'lucide-react';
 
 interface PdfViewerModalProps {
@@ -28,6 +29,7 @@ export function PdfViewerModal({ url, title = 'Research Paper', onClose }: PdfVi
   const [pageInput, setPageInput] = useState<string>('1');
   const [scale, setScale] = useState<number>(1.2);
   const [loading, setLoading] = useState<boolean>(true);
+  const [loadingStatus, setLoadingStatus] = useState<string>('Initializing viewer...');
   const [loadingProgress, setLoadingProgress] = useState<number>(0);
   const [error, setError] = useState<string | null>(null);
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
@@ -96,71 +98,114 @@ export function PdfViewerModal({ url, title = 'Research Paper', onClose }: PdfVi
     setPageInput(currentPage.toString());
   }, [currentPage]);
 
-  // Load PDF document using pdfjs-dist
-  useEffect(() => {
-    let isCancelled = false;
-
+  // Load PDF document using streaming fetch and legacy pdfjs-dist
+  const loadDocument = useCallback(async () => {
     if (!url) return;
 
     setLoading(true);
     setError(null);
     setLoadingProgress(0);
+    setLoadingStatus('Downloading document...');
 
-    const loadPdf = async () => {
-      try {
-        const pdfjsLib = await import('pdfjs-dist');
-        pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs';
+    let abortController = new AbortController();
 
-        const loadingTask = pdfjsLib.getDocument({
-          url,
-          cMapUrl: 'https://cdn.jsdelivr.net/npm/pdfjs-dist@6.1.200/cmaps/',
-          cMapPacked: true,
-        });
-
-        loadingTask.onProgress = (progressData: { loaded: number; total: number }) => {
-          if (progressData.total > 0) {
-            const percent = Math.round((progressData.loaded / progressData.total) * 100);
-            setLoadingProgress(percent);
-          }
-        };
-
-        const doc = await loadingTask.promise;
-        if (isCancelled) return;
-
-        pdfDocRef.current = doc;
-        setNumPages(doc.numPages);
-        setCurrentPage(1);
-        setLoading(false);
-      } catch (err: any) {
-        if (!isCancelled) {
-          console.error('Failed to load PDF:', err);
-          setError(err?.message || 'Failed to load PDF document.');
-          setLoading(false);
-        }
+    try {
+      // 1. Fetch file with streaming progress
+      const response = await fetch(url, { signal: abortController.signal });
+      if (!response.ok) {
+        throw new Error(`Failed to load document (${response.status} ${response.statusText})`);
       }
-    };
 
-    loadPdf();
+      const contentLength = response.headers.get('content-length');
+      const total = contentLength ? parseInt(contentLength, 10) : 0;
+      let arrayBuffer: ArrayBuffer;
+
+      if (response.body && total > 0) {
+        const reader = response.body.getReader();
+        const chunks: Uint8Array[] = [];
+        let loaded = 0;
+
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          if (value) {
+            chunks.push(value);
+            loaded += value.length;
+            const percent = Math.min(99, Math.round((loaded / total) * 100));
+            setLoadingProgress(percent);
+            setLoadingStatus(`Downloading document... ${percent}%`);
+          }
+        }
+
+        const combined = new Uint8Array(loaded);
+        let offset = 0;
+        for (const chunk of chunks) {
+          combined.set(chunk, offset);
+          offset += chunk.length;
+        }
+        arrayBuffer = combined.buffer;
+      } else {
+        arrayBuffer = await response.arrayBuffer();
+      }
+
+      setLoadingStatus('Rendering PDF pages...');
+      setLoadingProgress(100);
+
+      // 2. Load pdfjs library (legacy build with universal compatibility)
+      // @ts-ignore
+      const pdfjsLib = await import('pdfjs-dist/legacy/build/pdf.mjs');
+      if (pdfjsLib.GlobalWorkerOptions) {
+        pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.js';
+      }
+
+      // 3. Parse PDF document
+      const loadingTask = pdfjsLib.getDocument({
+        data: new Uint8Array(arrayBuffer),
+        cMapUrl: '/cmaps/',
+        cMapPacked: true,
+      });
+
+      const doc = await loadingTask.promise;
+      pdfDocRef.current = doc;
+      setNumPages(doc.numPages);
+      setCurrentPage(1);
+      setLoading(false);
+    } catch (err: any) {
+      if (err?.name === 'AbortError') return;
+      console.error('PDF Load Error:', err);
+      setError(err?.message || 'Failed to open PDF document.');
+      setLoading(false);
+    }
+  }, [url]);
+
+  useEffect(() => {
+    loadDocument();
 
     return () => {
-      isCancelled = true;
+      if (renderTaskRef.current) {
+        try {
+          renderTaskRef.current.cancel();
+        } catch {
+          // ignore
+        }
+        renderTaskRef.current = null;
+      }
       if (pdfDocRef.current) {
         try {
           pdfDocRef.current.destroy();
         } catch {
-          // ignore cleanup error
+          // ignore
         }
         pdfDocRef.current = null;
       }
     };
-  }, [url]);
+  }, [loadDocument]);
 
   // Render current page onto canvas
   const renderCurrentPage = useCallback(async () => {
     if (!pdfDocRef.current || !canvasRef.current || currentPage < 1) return;
 
     try {
-      // Cancel previous ongoing render if any
       if (renderTaskRef.current) {
         try {
           renderTaskRef.current.cancel();
@@ -494,13 +539,13 @@ export function PdfViewerModal({ url, title = 'Research Paper', onClose }: PdfVi
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem', color: '#fff' }}>
                 <Loader2 size={36} className="animate-spin" color="var(--primary-color)" />
                 <p style={{ margin: 0, fontSize: '0.95rem', fontWeight: 500 }}>
-                  Loading Research Paper... {loadingProgress > 0 ? `${loadingProgress}%` : ''}
+                  {loadingStatus}
                 </p>
-                <div style={{ width: '220px', height: '4px', background: 'rgba(255, 255, 255, 0.1)', borderRadius: '4px', overflow: 'hidden' }}>
+                <div style={{ width: '240px', height: '5px', background: 'rgba(255, 255, 255, 0.12)', borderRadius: '4px', overflow: 'hidden' }}>
                   <div
                     style={{
                       height: '100%',
-                      width: `${loadingProgress > 0 ? loadingProgress : 30}%`,
+                      width: `${loadingProgress > 0 ? loadingProgress : 15}%`,
                       background: 'linear-gradient(90deg, var(--primary-color), var(--accent-color))',
                       transition: 'width 0.2s ease',
                     }}
@@ -514,20 +559,37 @@ export function PdfViewerModal({ url, title = 'Research Paper', onClose }: PdfVi
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem', color: '#f87171', background: 'rgba(239, 68, 68, 0.1)', padding: '2rem', borderRadius: '12px', border: '1px solid rgba(239, 68, 68, 0.2)' }}>
                 <AlertCircle size={36} />
                 <p style={{ margin: 0, fontSize: '0.95rem', textAlign: 'center' }}>{error}</p>
-                <button
-                  onClick={onClose}
-                  style={{
-                    marginTop: '0.5rem',
-                    padding: '8px 18px',
-                    borderRadius: '8px',
-                    background: 'rgba(255, 255, 255, 0.1)',
-                    border: '1px solid rgba(255, 255, 255, 0.2)',
-                    color: '#fff',
-                    cursor: 'pointer',
-                  }}
-                >
-                  Close
-                </button>
+                <div style={{ display: 'flex', gap: '10px' }}>
+                  <button
+                    onClick={loadDocument}
+                    style={{
+                      padding: '8px 16px',
+                      borderRadius: '8px',
+                      background: 'var(--primary-color)',
+                      border: 'none',
+                      color: '#fff',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '6px',
+                    }}
+                  >
+                    <RotateCcw size={14} /> Retry
+                  </button>
+                  <button
+                    onClick={onClose}
+                    style={{
+                      padding: '8px 16px',
+                      borderRadius: '8px',
+                      background: 'rgba(255, 255, 255, 0.1)',
+                      border: '1px solid rgba(255, 255, 255, 0.2)',
+                      color: '#fff',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    Close
+                  </button>
+                </div>
               </div>
             )}
 
