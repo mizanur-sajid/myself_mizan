@@ -95,7 +95,7 @@ All routes are protected by `AuthGuard` with session authentication and CSRF tok
 |---|---|
 | API | PHP (REST endpoints, PDO) |
 | Database | MySQL |
-| Deploy | basic-ftp (FTP to InfinityFree) |
+| Deploy | Netlify (Continuous Deployment) |
 
 ---
 
@@ -132,12 +132,9 @@ ENABLE_VIEW_COUNTER=false
 ```bash
 # Build the static export
 npm run build
-
-# Deploy to InfinityFree via FTP
-npm run deploy
 ```
 
-The build generates a fully static export in `out/`, and the deploy script uploads it to `/htdocs` on InfinityFree.
+The build generates an optimized static export in `out/`, which is automatically deployed on push by **Netlify** via continuous integration.
 
 ---
 

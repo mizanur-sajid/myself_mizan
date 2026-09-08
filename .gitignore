@@ -40,8 +40,6 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# confidential deployment scripts
-scripts/deploy.js
 
 # uploads: ignore dynamic uploads, but track committed portfolio assets
 /public/uploads/*

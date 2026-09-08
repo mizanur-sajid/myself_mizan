@@ -769,7 +769,7 @@ export default function Home() {
                   ],
                   tech: ["Next.js", "React", "Node.js", "MySQL"],
                   buttons: [
-                    { text: "Live Demo", type: "primary", icon: <ExternalLink size={16} />, href:"https://mizanurrahman.site.je/" },
+                    { text: "Live Demo", type: "primary", icon: <ExternalLink size={16} />, href: "https://myselfmizan.netlify.app/" },
                     { text: "Source Code", type: "secondary", icon: <Code2 size={16} />, href:"https://github.com/mizanur-sajid/myself_mizan" }
                   ],
                   isFeatured: false,
