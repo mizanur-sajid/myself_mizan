@@ -1,6 +1,6 @@
 <div align="center">
 
-# Mizanur Rahman — Portfolio
+# Mizanur Rahman : Portfolio
 
 **A full-stack personal portfolio and content management system.**
 
