@@ -110,8 +110,31 @@ export function PdfViewerModal({ url, title = 'Research Paper', onClose }: PdfVi
     let abortController = new AbortController();
 
     try {
-      // 1. Fetch file with streaming progress
-      const response = await fetch(url, { signal: abortController.signal });
+      // 1. Fetch file with streaming progress (with intelligent fallback path handling)
+      let targetUrl = url;
+      let response = await fetch(targetUrl, { signal: abortController.signal });
+
+      if (!response.ok && response.status === 404) {
+        let fallbackUrl: string | null = null;
+        if (targetUrl.includes('/uploads/Thesis.pdf')) {
+          fallbackUrl = targetUrl.replace('/uploads/Thesis.pdf', '/Thesis.pdf');
+        } else if (targetUrl.includes('/Thesis.pdf')) {
+          fallbackUrl = targetUrl.replace('/Thesis.pdf', '/uploads/Thesis.pdf');
+        } else if (targetUrl.startsWith('/uploads/')) {
+          fallbackUrl = targetUrl.replace('/uploads/', '/');
+        } else if (targetUrl.startsWith('/') && !targetUrl.startsWith('/uploads/')) {
+          fallbackUrl = `/uploads${targetUrl}`;
+        }
+
+        if (fallbackUrl && fallbackUrl !== targetUrl) {
+          const fallbackRes = await fetch(fallbackUrl, { signal: abortController.signal });
+          if (fallbackRes.ok) {
+            response = fallbackRes;
+            targetUrl = fallbackUrl;
+          }
+        }
+      }
+
       if (!response.ok) {
         const detail = response.statusText ? ` ${response.statusText}` : '';
         throw new Error(response.status === 404 ? `Document not found (404)` : `Failed to load document (${response.status}${detail})`);
