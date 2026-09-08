@@ -43,6 +43,8 @@ next-env.d.ts
 # confidential deployment scripts
 scripts/deploy.js
 
-# uploads (allow static portfolio assets and thesis document)
-# /public/uploads/
+# uploads: ignore dynamic uploads, but track committed portfolio assets
+/public/uploads/*
+!/public/uploads/Thesis.pdf
+!/public/uploads/*.png
 
