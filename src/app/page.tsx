@@ -472,10 +472,14 @@ export default function Home() {
                 <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
                   <button
                     type="button"
-                    onClick={() => setViewerPdf({
-                      url: pub.fileUrl || '/uploads/Thesis.pdf',
-                      title: 'Development and Study of New Deep Learning Architectures for Skin Disease Classification'
-                    })}
+                    onClick={() => {
+                      const fileTarget = (pub.fileUrl && String(pub.fileUrl).trim() !== '') ? pub.fileUrl : '/uploads/Thesis.pdf';
+                      const normalizedUrl = fileTarget.startsWith('http') || fileTarget.startsWith('/') ? fileTarget : `/${fileTarget}`;
+                      setViewerPdf({
+                        url: normalizedUrl,
+                        title: pub.title || 'Development and Study of New Deep Learning Architectures for Skin Disease Classification'
+                      });
+                    }}
                     style={{
                       padding: '10px 20px',
                       borderRadius: '8px',

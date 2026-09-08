@@ -113,7 +113,8 @@ export function PdfViewerModal({ url, title = 'Research Paper', onClose }: PdfVi
       // 1. Fetch file with streaming progress
       const response = await fetch(url, { signal: abortController.signal });
       if (!response.ok) {
-        throw new Error(`Failed to load document (${response.status} ${response.statusText})`);
+        const detail = response.statusText ? ` ${response.statusText}` : '';
+        throw new Error(response.status === 404 ? `Document not found (404)` : `Failed to load document (${response.status}${detail})`);
       }
 
       const contentLength = response.headers.get('content-length');
