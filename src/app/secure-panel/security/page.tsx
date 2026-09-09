@@ -73,7 +73,7 @@ export default function SecurityPage() {
       } else {
         setMessage({ text: data.error || 'Failed to update credentials.', type: 'error' });
       }
-    } catch (error) {
+    } catch (_error) {
       setMessage({ text: 'An error occurred.', type: 'error' });
     }
     setLoading(false);

@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ZoomIn, ZoomOut, Maximize, Download, Timer } from 'lucide-react';
+import { X, ZoomIn, ZoomOut, Maximize, Timer } from 'lucide-react';
 
 interface ImageViewerModalProps {
   src: string | null;
@@ -27,10 +27,18 @@ export function ImageViewerModal({ src, onClose, countdown }: ImageViewerModalPr
     };
   }, [src]);
 
-  // Handle escape key to close
+  // Handle keyboard shortcuts (Escape to close, block Save & Print)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
+      if (e.key === 'Escape') {
+        onClose();
+        return;
+      }
+      // Block Save (Ctrl+S / Cmd+S) and Print (Ctrl+P / Cmd+P)
+      if ((e.ctrlKey || e.metaKey) && (e.key === 's' || e.key === 'p' || e.key === 'S' || e.key === 'P')) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
@@ -76,6 +84,7 @@ export function ImageViewerModal({ src, onClose, countdown }: ImageViewerModalPr
           exit={{ opacity: 0 }}
           transition={{ duration: 0.2 }}
           onClick={onClose}
+          onContextMenu={(e) => e.preventDefault()}
           style={{
             position: 'fixed',
             top: 0,
@@ -84,9 +93,12 @@ export function ImageViewerModal({ src, onClose, countdown }: ImageViewerModalPr
             height: '100vh',
             background: 'rgba(0, 0, 0, 0.85)',
             backdropFilter: 'blur(10px)',
+            WebkitBackdropFilter: 'blur(10px)',
             zIndex: 99999,
             display: 'flex',
             flexDirection: 'column',
+            userSelect: 'none',
+            WebkitUserSelect: 'none',
           }}
         >
           {/* Toolbar */}
@@ -157,15 +169,6 @@ export function ImageViewerModal({ src, onClose, countdown }: ImageViewerModalPr
               <button onClick={handleZoomIn} style={{ background: 'rgba(255, 255, 255, 0.1)', border: 'none', color: '#fff', padding: '0.5rem', borderRadius: '50%', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }} title="Zoom In">
                 <ZoomIn size={20} />
               </button>
-              <a 
-                href={src} 
-                download 
-                onClick={(e) => e.stopPropagation()}
-                style={{ background: 'rgba(255, 255, 255, 0.1)', border: 'none', color: '#fff', padding: '0.5rem', borderRadius: '50%', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', textDecoration: 'none' }} 
-                title="Download Image"
-              >
-                <Download size={20} />
-              </a>
               <div style={{ width: '1px', height: '24px', background: 'rgba(255, 255, 255, 0.2)', margin: '0 0.5rem' }}></div>
               <button onClick={onClose} style={{ background: 'rgba(239, 68, 68, 0.2)', border: '1px solid rgba(239, 68, 68, 0.5)', color: '#f87171', padding: '0.5rem', borderRadius: '50%', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }} title="Close">
                 <X size={20} />
@@ -205,6 +208,9 @@ export function ImageViewerModal({ src, onClose, countdown }: ImageViewerModalPr
                 src={src} 
                 alt="Enlarged view" 
                 onLoad={handleImageLoad}
+                onContextMenu={(e) => e.preventDefault()}
+                onDragStart={(e) => e.preventDefault()}
+                draggable={false}
                 style={{ 
                   width: scale === 1 ? '100%' : `${baseSize.width * scale}px`,
                   height: scale === 1 ? '100%' : `${baseSize.height * scale}px`,
@@ -216,7 +222,9 @@ export function ImageViewerModal({ src, onClose, countdown }: ImageViewerModalPr
                   boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
                   transition: 'width 0.2s ease-out, height 0.2s ease-out',
                   imageRendering: 'auto',
-                  WebkitFontSmoothing: 'antialiased'
+                  WebkitFontSmoothing: 'antialiased',
+                  userSelect: 'none',
+                  WebkitUserSelect: 'none',
                 }} 
               />
             </div>

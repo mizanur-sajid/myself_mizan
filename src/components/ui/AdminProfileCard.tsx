@@ -4,7 +4,7 @@ import { LogoutButton } from './LogoutButton';
 import { ImageCropperModal } from './ImageCropperModal';
 
 export const AdminProfileCard = () => {
-  const [avatarUrl, setAvatarUrl] = useState('/admin-avatar.png');
+  const [avatarUrl, _setAvatarUrl] = useState('/admin-avatar.png');
   const [timestamp, setTimestamp] = useState<number | null>(null);
   const [uploading, setUploading] = useState(false);
   const [cropImageSrc, setCropImageSrc] = useState<string | null>(null);

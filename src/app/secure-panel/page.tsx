@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { AdminCharts } from '@/components/admin/AdminCharts';
 import { ActivityFeed } from '@/components/admin/ActivityFeed';
-import { Users, Eye, Mail, BookOpen, Code, Briefcase, Award } from 'lucide-react';
+import { Eye, Mail, BookOpen, Code, Briefcase, Award } from 'lucide-react';
 
 export default function AdminDashboard() {
   const [messagesCount, setMessagesCount] = useState(0);

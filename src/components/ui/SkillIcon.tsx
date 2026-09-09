@@ -1,7 +1,7 @@
 import React from 'react';
 import { 
   Code, Wrench, Network, FileText, Monitor, Search, BarChart, 
-  Lightbulb, MessageSquare, BookOpen, Users, Brain, Cpu, Headset, Laptop, Database 
+  Lightbulb, MessageSquare, BookOpen, Users, Brain, Headset, Laptop, Database 
 } from 'lucide-react';
 
 export function SkillIcon({ name, size = 24 }: { name: string, size?: number }) {

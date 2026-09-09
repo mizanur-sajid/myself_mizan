@@ -438,7 +438,7 @@ export default function Home() {
 
                 {/* Abstract */}
                 <div style={{ padding: '1.25rem', borderRadius: '12px', background: 'var(--surface-elevated)', borderLeft: '3px solid var(--primary-color)', color: 'var(--text-primary)', opacity: 0.9, fontSize: '0.95rem', lineHeight: 1.6 }}>
-                  "UGVNet: A dual-backbone deep learning architecture with adaptive feature fusion and global attention for skin disease classification."
+                  &ldquo;UGVNet: A dual-backbone deep learning architecture with adaptive feature fusion and global attention for skin disease classification.&rdquo;
                 </div>
 
                 {/* Research Highlights Grid */}
@@ -976,7 +976,7 @@ export default function Home() {
             <h2 className="section-title contact-title" style={{ fontSize: '3.5rem', margin: 0 }}>Get In Touch</h2>
           </div>
           <p style={{ color: 'var(--text-secondary)', fontSize: '1.1rem', maxWidth: '600px', lineHeight: 1.6 }}>
-            Interested in collaboration, research discussions, or professional opportunities? I'd love to hear from you.
+            Interested in collaboration, research discussions, or professional opportunities? I&apos;d love to hear from you.
           </p>
         </div>
         <ContactForm />

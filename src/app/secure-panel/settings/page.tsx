@@ -55,7 +55,7 @@ export default function AdminSettings() {
       } else {
         setMessage({ text: data.error || 'Failed to save configuration.', type: 'error' });
       }
-    } catch (error) {
+    } catch (_error) {
       setMessage({ text: 'An error occurred.', type: 'error' });
     }
     setLoading(false);

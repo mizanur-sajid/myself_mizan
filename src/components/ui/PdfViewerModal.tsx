@@ -124,7 +124,7 @@ export function PdfViewerModal({ url, title = 'Research Paper', onClose, initial
     setLoadingProgress(0);
     setLoadingStatus('Downloading document...');
 
-    let abortController = new AbortController();
+    const abortController = new AbortController();
 
     try {
       // 1. Fetch file with streaming progress (with intelligent fallback path handling)
@@ -193,7 +193,6 @@ export function PdfViewerModal({ url, title = 'Research Paper', onClose, initial
       setLoadingProgress(100);
 
       // 2. Load pdfjs library (legacy build with universal compatibility)
-      // @ts-ignore
       const pdfjsLib = await import('pdfjs-dist/legacy/build/pdf.mjs');
       if (pdfjsLib.GlobalWorkerOptions) {
         pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.js';
@@ -399,7 +398,7 @@ export function PdfViewerModal({ url, title = 'Research Paper', onClose, initial
                   {title}
                 </span>
                 <span style={{ fontSize: '0.72rem', color: '#94a3b8', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                  <Lock size={10} color="#38bdf8" /> Protected View • Download Disabled
+                  <Lock size={10} color="#38bdf8" /> Protected View
                 </span>
               </div>
             </div>
