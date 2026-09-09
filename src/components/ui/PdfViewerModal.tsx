@@ -21,13 +21,30 @@ interface PdfViewerModalProps {
   url: string | null;
   title?: string;
   onClose: () => void;
+  initialScale?: number;
 }
 
-export function PdfViewerModal({ url, title = 'Research Paper', onClose }: PdfViewerModalProps) {
+export function PdfViewerModal({ url, title = 'Research Paper', onClose, initialScale }: PdfViewerModalProps) {
   const [numPages, setNumPages] = useState<number>(0);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [pageInput, setPageInput] = useState<string>('1');
-  const [scale, setScale] = useState<number>(1.2);
+
+  // Default view: 60% for mobile (< 768px) and 100% for web
+  const getDefaultScale = useCallback(() => {
+    if (initialScale) return initialScale;
+    if (typeof window !== 'undefined' && window.innerWidth < 768) {
+      return 0.6;
+    }
+    return 1.0;
+  }, [initialScale]);
+
+  const [scale, setScale] = useState<number>(() => {
+    if (initialScale) return initialScale;
+    if (typeof window !== 'undefined' && window.innerWidth < 768) {
+      return 0.6;
+    }
+    return 1.0;
+  });
   const [loading, setLoading] = useState<boolean>(true);
   const [loadingStatus, setLoadingStatus] = useState<string>('Initializing viewer...');
   const [loadingProgress, setLoadingProgress] = useState<number>(0);
@@ -39,13 +56,13 @@ export function PdfViewerModal({ url, title = 'Research Paper', onClose }: PdfVi
   const pdfDocRef = useRef<any>(null);
   const renderTaskRef = useRef<any>(null);
 
-  // Prevent background scroll when modal is open
+  // Prevent background scroll when modal is open and reset view to default
   useEffect(() => {
     if (url) {
       document.body.style.overflow = 'hidden';
       setCurrentPage(1);
       setPageInput('1');
-      setScale(1.2);
+      setScale(getDefaultScale());
       setError(null);
     } else {
       document.body.style.overflow = '';
@@ -53,7 +70,7 @@ export function PdfViewerModal({ url, title = 'Research Paper', onClose }: PdfVi
     return () => {
       document.body.style.overflow = '';
     };
-  }, [url]);
+  }, [url, getDefaultScale]);
 
   // Handle keyboard shortcuts (Navigating pages, closing, and blocking Ctrl+S / Ctrl+P)
   useEffect(() => {
@@ -310,12 +327,12 @@ export function PdfViewerModal({ url, title = 'Research Paper', onClose }: PdfVi
 
   const handleZoomOut = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setScale(prev => Math.max(Number((prev - 0.2).toFixed(1)), 0.6));
+    setScale(prev => Math.max(Number((prev - 0.2).toFixed(1)), 0.4));
   };
 
   const handleResetZoom = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setScale(1.2);
+    setScale(getDefaultScale());
   };
 
   // Fullscreen toggle
@@ -456,14 +473,14 @@ export function PdfViewerModal({ url, title = 'Research Paper', onClose }: PdfVi
               <div style={{ display: 'flex', alignItems: 'center', gap: '4px', background: 'rgba(255, 255, 255, 0.06)', padding: '4px 6px', borderRadius: '10px', border: '1px solid rgba(255, 255, 255, 0.1)' }}>
                 <button
                   onClick={handleZoomOut}
-                  disabled={scale <= 0.6}
+                  disabled={scale <= 0.4}
                   style={{
                     background: 'transparent',
                     border: 'none',
-                    color: scale <= 0.6 ? 'rgba(255, 255, 255, 0.25)' : '#fff',
+                    color: scale <= 0.4 ? 'rgba(255, 255, 255, 0.25)' : '#fff',
                     padding: '5px',
                     borderRadius: '6px',
-                    cursor: scale <= 0.6 ? 'not-allowed' : 'pointer',
+                    cursor: scale <= 0.4 ? 'not-allowed' : 'pointer',
                     display: 'flex',
                     alignItems: 'center',
                   }}
