@@ -228,7 +228,7 @@ export default function Home() {
               <Award size={14} color="var(--accent-color)" /> 3 Certifications
             </div>
             <div className="hero-stat-pill">
-              <GraduationCap size={14} color="var(--primary-color)" /> B.Sc. in CS
+              <GraduationCap size={14} color="var(--primary-color)" /> B.Sc. in CSE
             </div>
           </div>
 
