@@ -29,7 +29,7 @@ const fallbackSkills = [
   { id: -10, name: 'Problem Solving', level: 94, category: 'Additional Skills', icon: 'brain' },
 ];
 
-const fallbackPublications = [{ id: -1, title: 'Development and Study of New Deep Learning Architectures for Skin Disease Classification', link: '', fileUrl: '/uploads/Thesis.pdf' }];
+const fallbackPublications = [{ id: -1, title: 'Development and Study of New Deep Learning Architectures for Skin Disease Classification', link: 'https://www.academia.edu/176452045/Development_and_Study_of_New_Deep_Learning_Architectures_for_Skin_Disease_Classification?source=swp_share', fileUrl: '/uploads/Thesis.pdf' }];
 
 export default function Home() {
   const [skills, setSkills] = useState<any[]>(fallbackSkills);
@@ -469,47 +469,83 @@ export default function Home() {
                 </div>
 
                 {/* Actions (Dynamic Links) */}
-                <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      const fileTarget = (pub.fileUrl && String(pub.fileUrl).trim() !== '') ? pub.fileUrl : '/uploads/Thesis.pdf';
-                      const normalizedUrl = fileTarget.startsWith('http') || fileTarget.startsWith('/') ? fileTarget : `/${fileTarget}`;
-                      setViewerPdf({
-                        url: normalizedUrl,
-                        title: pub.title || 'Development and Study of New Deep Learning Architectures for Skin Disease Classification'
-                      });
-                    }}
-                    style={{
-                      padding: '10px 20px',
-                      borderRadius: '8px',
-                      background: 'var(--primary-alpha-10)',
-                      color: 'var(--primary-color)',
-                      fontSize: '0.9rem',
-                      fontWeight: 600,
-                      border: '1px solid var(--primary-alpha-20)',
-                      cursor: 'pointer',
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '8px',
-                      transition: 'all 0.2s',
-                    }}
-                    className="hover-glow"
-                  >
-                    <FileText size={17} />
-                    <span>View Research Paper</span>
-                  </button>
+                <div className="pub-actions-row" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '1rem', flexWrap: 'wrap', gap: '1rem' }}>
+                  <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const fileTarget = (pub.fileUrl && String(pub.fileUrl).trim() !== '') ? pub.fileUrl : '/uploads/Thesis.pdf';
+                        const normalizedUrl = fileTarget.startsWith('http') || fileTarget.startsWith('/') ? fileTarget : `/${fileTarget}`;
+                        setViewerPdf({
+                          url: normalizedUrl,
+                          title: pub.title || 'Development and Study of New Deep Learning Architectures for Skin Disease Classification'
+                        });
+                      }}
+                      style={{
+                        padding: '10px 20px',
+                        borderRadius: '8px',
+                        background: 'var(--primary-alpha-10)',
+                        color: 'var(--primary-color)',
+                        fontSize: '0.9rem',
+                        fontWeight: 600,
+                        border: '1px solid var(--primary-alpha-20)',
+                        cursor: 'pointer',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                        transition: 'all 0.2s',
+                      }}
+                      className="hover-glow"
+                    >
+                      <FileText size={17} />
+                      <span>View Research Paper</span>
+                    </button>
 
-                  {pub.link && (
-                    <a href={pub.link} target="_blank" rel="noreferrer" style={{ padding: '10px 20px', borderRadius: '8px', background: 'var(--primary-alpha-10)', color: 'var(--primary-color)', fontSize: '0.9rem', fontWeight: 600, textDecoration: 'none', border: '1px solid var(--primary-alpha-20)', transition: 'all 0.2s', display: 'flex', alignItems: 'center', gap: '8px' }} className="hover-glow">
-                      Read Publication ↗
-                    </a>
-                  )}
-                  {pub.fileUrl && pub.fileUrl !== '/uploads/Thesis.pdf' && !pub.fileUrl.endsWith('.pdf') && (
-                    <a href={pub.fileUrl} target="_blank" rel="noreferrer" style={{ padding: '10px 20px', borderRadius: '8px', background: 'var(--glass-bg)', color: 'var(--text-primary)', fontSize: '0.9rem', fontWeight: 600, textDecoration: 'none', border: '1px solid var(--glass-border)', transition: 'all 0.2s' }} className="hover-glow-white">
-                      View Uploaded Document
-                    </a>
-                  )}
+                    {pub.fileUrl && pub.fileUrl !== '/uploads/Thesis.pdf' && !pub.fileUrl.endsWith('.pdf') && (
+                      <a href={pub.fileUrl} target="_blank" rel="noreferrer" style={{ padding: '10px 20px', borderRadius: '8px', background: 'var(--glass-bg)', color: 'var(--text-primary)', fontSize: '0.9rem', fontWeight: 600, textDecoration: 'none', border: '1px solid var(--glass-border)', transition: 'all 0.2s', display: 'inline-flex', alignItems: 'center', gap: '8px' }} className="hover-glow-white">
+                        View Uploaded Document
+                      </a>
+                    )}
+                  </div>
+
+                  {(() => {
+                    const paperUrl = (pub.link && pub.link.trim() !== '') 
+                      ? pub.link 
+                      : (pub.id === -1 || pub.title?.toLowerCase().includes('skin disease'))
+                        ? 'https://www.academia.edu/176452045/Development_and_Study_of_New_Deep_Learning_Architectures_for_Skin_Disease_Classification?source=swp_share'
+                        : '';
+                    if (!paperUrl) return null;
+
+                    const isAcademia = paperUrl.includes('academia.edu');
+                    const label = isAcademia ? 'View on Academia.edu' : 'Read Publication';
+
+                    return (
+                      <a
+                        href={paperUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        style={{
+                          padding: '10px 20px',
+                          borderRadius: '8px',
+                          background: 'var(--primary-alpha-10)',
+                          color: 'var(--primary-color)',
+                          fontSize: '0.9rem',
+                          fontWeight: 600,
+                          textDecoration: 'none',
+                          border: '1px solid var(--primary-alpha-20)',
+                          transition: 'all 0.2s',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '8px',
+                          marginLeft: 'auto'
+                        }}
+                        className="hover-glow pub-academia-btn"
+                      >
+                        <ExternalLink size={16} />
+                        <span>{label}</span>
+                      </a>
+                    );
+                  })()}
                 </div>
               </div>
             </GlassCard>

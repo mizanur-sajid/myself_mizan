@@ -687,6 +687,33 @@ input:focus, textarea:focus {
   background: var(--surface-elevated) !important;
 }
 
+.pub-actions-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+@media (max-width: 640px) {
+  .pub-actions-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .pub-actions-row > div {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  .pub-actions-row button,
+  .pub-actions-row a {
+    width: 100%;
+    justify-content: center;
+    margin-left: 0 !important;
+  }
+}
+
 /* ====================================================
    CERTIFICATION CARDS
    ==================================================== */
